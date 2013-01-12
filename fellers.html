@@ -31,30 +31,29 @@
                     total -= 1;
                 }
                 walk.push([step,total]);
-                
-                // plot requires an array of data-points and
-                // javascript cannot use negative array indexes
-                // so work-around
-                if (total >= 0) {
-                    if (freqPos[total] === undefined) {
-                        freqPos[total] = [total,0];
-                    }
-                    freqPos[total][1]++;
-                } else {
-                    if (freqNeg[-total] === undefined) {
-                        freqNeg[-total] = [total,0];
-                    }
-                    freqNeg[-total][1]++;
-                }
-                
                 if (total === 0) {
                     if (prob[step] === undefined) {
                         prob[step] = [step,0];
                     }
                     prob[step][1]++;                    
-                }                
+                }                                
             }
-            if (numberOfWalks % 50 === 0) {
+            // plot requires an array of data-points and
+            // javascript cannot use negative array indexes
+            // so work-around
+            if (total >= 0) {
+                if (freqPos[total] === undefined) {
+                    freqPos[total] = [total,0];
+                }
+                freqPos[total][1]++;
+            } else {
+                if (freqNeg[-total] === undefined) {
+                    freqNeg[-total] = [total,0];
+                }
+                freqNeg[-total][1]++;
+            }
+            
+            if (numberOfWalks % 100 === 0) {
                 $.plot($("#fellers-walk"), [ { label: "Walk-"+numberOfWalks, data: walk } ],
                        linePlotOptions());            
                 $.plot($("#fellers-freq"), [ freqNeg.concat(freqPos) ],
@@ -62,7 +61,8 @@
                 $.plot($("#fellers-prob"), [ prob ],
                        histogramPlotOptions("Y:frequency total@[step]==0, X:step"));
             }
-            if (numberOfWalks++ === 1000) {
+            
+            if (numberOfWalks++ === 5000) {
                 clearInterval(fid);
                 return;
             }                     
