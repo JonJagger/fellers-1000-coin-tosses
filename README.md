@@ -2,9 +2,10 @@ Fellers-1000-coin-tosses
 ========================
 
 This is a simple html file which simulates lots "Feller's walks".
-where each Feller's walk is a 1000 step walk as described in
-Don Reinersten's book The Principles of Product Development FLOW
-on page 77,78...
+where each Feller's walk is a 1000 step walk as described on pages
+77,78 of Don Reinersten's book
+<a href="http://jonjagger.blogspot.co.uk/2012/06/principles-of-product-development-flow.html">
+The Principles of Product Development FLOW</a>.
 
 Image you have a fair coin, and you toss it 1000 times. Each time
 if you get a head you add 1 to a total, if you get a tail you
@@ -24,7 +25,7 @@ that walk, after 411 coin tosses the total was -53.
 
 The bottom-left graph shows cumulative frequency of the total
 (at the end of the 1000 steps) for lots of walks.
-For example, a plotted point a [x=-3, y=2903] this means that
+For example, a plotted point a [x=-3, y=2903] means that
 after lots of walks (see legend in top graph) 2903 of them finished
 with a total of -3.
 
