@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Feller's coin tosses</title>    
+    <script src="jquery-1.8.3.js"           type="text/javascript"></script>
+    <script src="jquery.flot.js"            type="text/javascript" ></script>
+    <script src="jquery.flot.axislabels.js" type="text/javascript" ></script>
+
+    <script type="text/javascript">
+
+        var fid;
+        var numberOfWalks = 0;
+        var walk = [ ];
+        var freqNeg = [ ];
+        var freqPos = [ ];
+        var prob = [ ];
+        
+        $(document).ready(function () {
+            fid = setInterval(doOneWalk, 10);
+        });
+        
+        function doOneWalk() {
+            walk = [ ];
+            var total = 0;
+            for (var step = 0; step < 1000; step++) {
+                var rnd = Math.random();
+                var toss = (rnd < 0.5) ? "head" : "tail";
+                if (toss === "head") {
+                    total += 1;
+                } else {
+                    total -= 1;
+                }
+                walk.push([step,total]);
+                
+                // plot requires an array of data-points and
+                // javascript cannot use negative array indexes
+                // so work-around
+                if (total >= 0) {
+                    if (freqPos[total] === undefined) {
+                        freqPos[total] = [total,0];
+                    }
+                    freqPos[total][1]++;
+                } else {
+                    if (freqNeg[-total] === undefined) {
+                        freqNeg[-total] = [total,0];
+                    }
+                    freqNeg[-total][1]++;
+                }
+                
+                if (total === 0) {
+                    if (prob[step] === undefined) {
+                        prob[step] = [step,0];
+                    }
+                    prob[step][1]++;                    
+                }                
+            }
+            if (numberOfWalks % 50 === 0) {
+                $.plot($("#fellers-walk"), [ { label: "Walk-"+numberOfWalks, data: walk } ],
+                       linePlotOptions());            
+                $.plot($("#fellers-freq"), [ freqNeg.concat(freqPos) ],
+                       histogramPlotOptions("Y:frequency, X:total after 1000 step walk"));
+                $.plot($("#fellers-prob"), [ prob ],
+                       histogramPlotOptions("Y:frequency total@[step]==0, X:step"));
+            }
+            if (numberOfWalks++ === 1000) {
+                clearInterval(fid);
+                return;
+            }                     
+        }       
+
+        function linePlotOptions() {
+            return {
+                xaxis: {
+                    position: "bottom",
+                    min: 0,
+                    max: 1000
+                },
+                yaxis: {
+                    tickDecimals: 0,
+                },
+                series: {
+                    lines: {
+                        show: true
+                    },
+                    points: {
+                        show: false,
+                    }
+                }
+            };            
+        }
+        
+        function histogramPlotOptions(label) {
+            return {
+                xaxis: {
+                    axisLabel: label,                    
+                    position: "bottom"
+                },
+                yaxis: {
+                    tickDecimals: 0,
+                    min: 0
+                },
+                bars: {
+                    show: true,
+                    lineWidth: 1
+                }
+            };
+        }
+    </script>
+</head>
+<body>          
+    <style type="text/css">
+    #fellers-walk { width: 1200px; height: 300px; }
+    #fellers-freq { width: 600px; height: 300px; }
+    #fellers-prob { width: 600px; height: 300px; }
+    </style>
+    
+    <table>
+        <tr>
+            <td colspan="2"><div id="fellers-walk"></div></td>
+        </tr>
+        <tr>
+            <td><div id="fellers-freq"></div></td>
+            <td><div id="fellers-prob"></div></td>
+        </tr>
+    </table>
+</body>
+</html>
