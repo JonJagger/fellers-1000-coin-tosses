@@ -8,15 +8,30 @@
 
     <script type="text/javascript">
 
-        var fid;
-        var numberOfWalks = 0;
         var walk = [ ];
         var freqNeg = [ ];
         var freqPos = [ ];
         var prob = [ ];
         
         $(document).ready(function () {
-            fid = setInterval(doOneWalk, 10);
+            var n = 0;
+            var fid = setInterval(
+                function() {
+                    if (n++ === 5000) {
+                        clearInterval(fid);
+                    } else {
+                        doOneWalk();
+                        if (n % 100 === 0) {
+                            $.plot($("#fellers-walk"), [ { label: "Walk-"+n, data: walk } ],
+                                   linePlotOptions(walk));            
+                            $.plot($("#fellers-freq"), [ freqNeg.concat(freqPos) ],
+                                   histogramPlotOptions("Y:frequency, X:total after 1000 step walk"));
+                            $.plot($("#fellers-prob"), [ prob ],
+                                   histogramPlotOptions("Y:frequency total@[step]==0, X:step"));
+                        }                                    
+                    }                    
+                },
+                10);
         });
         
         function doOneWalk() {
@@ -53,30 +68,23 @@
                 freqNeg[-total][1]++;
             }
             
-            if (numberOfWalks % 100 === 0) {
-                $.plot($("#fellers-walk"), [ { label: "Walk-"+numberOfWalks, data: walk } ],
-                       linePlotOptions());            
-                $.plot($("#fellers-freq"), [ freqNeg.concat(freqPos) ],
-                       histogramPlotOptions("Y:frequency, X:total after 1000 step walk"));
-                $.plot($("#fellers-prob"), [ prob ],
-                       histogramPlotOptions("Y:frequency total@[step]==0, X:step"));
-            }
-            
-            if (numberOfWalks++ === 5000) {
-                clearInterval(fid);
-                return;
-            }                     
         }       
 
-        function linePlotOptions() {
+        function linePlotOptions(walk) {
             return {
+                legend: {
+                    position: "nw"
+                },                                
                 xaxis: {
+                    axisLabel: "Y:total, X:step",                                        
                     position: "bottom",
                     min: 0,
-                    max: 1000
+                    max: walk.length
                 },
                 yaxis: {
                     tickDecimals: 0,
+                    min: -50,
+                    max: 50                    
                 },
                 series: {
                     lines: {
