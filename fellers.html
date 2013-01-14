@@ -8,17 +8,18 @@
 
     <script type="text/javascript">
 
-        var walk = [ ];
-        
-        // plot requires an array of data-points and
-        // javascript cannot use negative array indexes
-        // so work-around        
-        var NEG = 0;
-        var POS = 1;
+        // Frequencies of cumulative total after N coin
+        // flips where N=10,30,100,1000
         var freq_10   = [ [ ], [ ] ]  // -ve, +ve
         var freq_30   = [ [ ], [ ] ]  // -ve, +ve
         var freq_100  = [ [ ], [ ] ]; // -ve, +ve
         var freq_1000 = [ [ ], [ ] ]; // -ve, +ve
+        // Work-around: plot requires an array of data-points
+        // and javascript cannot use negative array indexes
+        // so I use one array for -ve x-values and
+        // one array for +ve x-values
+        var NEG = 0;
+        var POS = 1;
         
         $(document).ready(function () {
             var n = 0;
@@ -27,7 +28,7 @@
                     if (n++ === 5000) {
                         clearInterval(fid);
                     } else {
-                        doOneWalk();
+                        var walk = doOneWalk();
                         if (n % 100 === 0) {
                             $.plot($("#fellers-walk"),
                                    [ { label: "Walk-"+n, data: walk } ],
@@ -43,7 +44,7 @@
         });
         
         function doOneWalk() {
-            walk = [ ];
+            var walk = [ ];
             var total = 0;
             for (var step = 0; step < 1000; step++) {
                 var rnd = Math.random();
@@ -66,6 +67,7 @@
                 }
             }
             recordTotal(freq_1000, total);
+            return walk;
         }       
 
         function recordTotal(array, total) {
@@ -78,12 +80,12 @@
         }
 
         function getProbabilities(n) {
-            var probs = [ ];
-            probs.push({ label: "after 10 flips",   data: calcProbs(n,freq_10)   });
-            probs.push({ label: "after 30 flips",   data: calcProbs(n,freq_30)   });
-            probs.push({ label: "after 100 flips",  data: calcProbs(n,freq_100)  });
-            probs.push({ label: "after 1000 flips", data: calcProbs(n,freq_1000) });
-            return probs;
+            return [ 
+                { label: "after 10 flips",   data: calcProbs(n,freq_10)   },
+                { label: "after 30 flips",   data: calcProbs(n,freq_30)   },
+                { label: "after 100 flips",  data: calcProbs(n,freq_100)  },
+                { label: "after 1000 flips", data: calcProbs(n,freq_1000) }
+            ];
         }
         
         function calcProbs(n, freq) {
