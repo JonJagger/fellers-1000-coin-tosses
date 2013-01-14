@@ -9,9 +9,16 @@
     <script type="text/javascript">
 
         var walk = [ ];
-        var freqNeg = [ ];
-        var freqPos = [ ];
-        var prob = [ ];
+        
+        // plot requires an array of data-points and
+        // javascript cannot use negative array indexes
+        // so work-around        
+        var NEG = 0;
+        var POS = 1;
+        var freq_10   = [ [ ], [ ] ]  // -ve, +ve
+        var freq_30   = [ [ ], [ ] ]  // -ve, +ve
+        var freq_100  = [ [ ], [ ] ]; // -ve, +ve
+        var freq_1000 = [ [ ], [ ] ]; // -ve, +ve
         
         $(document).ready(function () {
             var n = 0;
@@ -22,12 +29,13 @@
                     } else {
                         doOneWalk();
                         if (n % 100 === 0) {
-                            $.plot($("#fellers-walk"), [ { label: "Walk-"+n, data: walk } ],
-                                   linePlotOptions(walk));            
-                            $.plot($("#fellers-freq"), [ freqNeg.concat(freqPos) ],
-                                   histogramPlotOptions("Y:frequency, X:total after 1000 step walk"));
-                            $.plot($("#fellers-prob"), [ prob ],
-                                   histogramPlotOptions("Y:frequency total@[step]==0, X:step"));
+                            $.plot($("#fellers-walk"),
+                                   [ { label: "Walk-"+n, data: walk } ],
+                                   walkPlotOptions(walk));
+                                                        
+                            $.plot($("#fellers-prob"),
+                                   getProbabilities(n),
+                                   probabilityPlotOptions());
                         }                                    
                     }                    
                 },
@@ -46,37 +54,89 @@
                     total -= 1;
                 }
                 walk.push([step,total]);
-                if (total === 0) {
-                    if (prob[step] === undefined) {
-                        prob[step] = [step,0];
-                    }
-                    prob[step][1]++;                    
-                }                                
-            }
-            // plot requires an array of data-points and
-            // javascript cannot use negative array indexes
-            // so work-around
-            if (total >= 0) {
-                if (freqPos[total] === undefined) {
-                    freqPos[total] = [total,0];
+                
+                if (step === 10) {
+                    recordTotal(freq_10, total);
                 }
-                freqPos[total][1]++;
-            } else {
-                if (freqNeg[-total] === undefined) {
-                    freqNeg[-total] = [total,0];
+                if (step === 30) {
+                    recordTotal(freq_30, total);
                 }
-                freqNeg[-total][1]++;
+                if (step === 100) {
+                    recordTotal(freq_100, total);
+                }
             }
-            
+            recordTotal(freq_1000, total);
         }       
 
-        function linePlotOptions(walk) {
+        function recordTotal(array, total) {
+            var NP = (total < 0) ? NEG : POS;
+            var index = Math.abs(total);
+            if (array[NP][index] === undefined) {
+                array[NP][index] = [total,0];
+            }
+            array[NP][index][1]++;            
+        }
+
+        function getProbabilities(n) {
+            var probs = [ ];
+            probs.push({ label: "after 10 flips",   data: calcProbs(n,freq_10)   });
+            probs.push({ label: "after 30 flips",   data: calcProbs(n,freq_30)   });
+            probs.push({ label: "after 100 flips",  data: calcProbs(n,freq_100)  });
+            probs.push({ label: "after 1000 flips", data: calcProbs(n,freq_1000) });
+            return probs;
+        }
+        
+        function calcProbs(n, freq) {
+            var probs = [ [ ], [ ] ];
+            var neg = freq[NEG];
+            for (var at in neg) {
+                if (neg[at] !== undefined) {
+                    probs[NEG][at] = [ neg[at][0], neg[at][1] / n ];
+                }
+            }
+            var pos = freq[POS];
+            for (var at in pos) {
+                if (pos[at] !== undefined) {
+                    probs[POS][at] = [ pos[at][0], pos[at][1] / n ];
+                }
+            }
+            var all = probs[NEG].reverse().concat(probs[POS]);
+            var result = [ ];
+            for (var at = 0; at < all.length; at++) {
+                if (all[at] !== undefined) {
+                    result.push(all[at]);
+                }
+            }            
+            return result;
+        }
+    
+        function probabilityPlotOptions() {
             return {
                 legend: {
                     position: "nw"
                 },                                
                 xaxis: {
-                    axisLabel: "Y:total, X:step",                                        
+                    axisLabel: "Y:probability, X:total",                                        
+                    position: "bottom",
+                },
+                series: {
+                    lines: {
+                        show: true
+                    },
+                    points: {
+                        show: false,
+                    }
+                }
+            };                        
+        }
+        
+        function walkPlotOptions(walk) {
+            return {
+                legend: {
+                    position: "nw"
+                },                                
+                xaxis: {
+                    axisLabel: "Y:total, X:flip",                                        
                     position: "bottom",
                     min: 0,
                     max: walk.length
@@ -96,38 +156,19 @@
                 }
             };            
         }
-        
-        function histogramPlotOptions(label) {
-            return {
-                xaxis: {
-                    axisLabel: label,                    
-                    position: "bottom"
-                },
-                yaxis: {
-                    tickDecimals: 0,
-                    min: 0
-                },
-                bars: {
-                    show: true,
-                    lineWidth: 1
-                }
-            };
-        }
     </script>
 </head>
 <body>          
     <style type="text/css">
     #fellers-walk { width: 1200px; height: 300px; }
-    #fellers-freq { width: 600px; height: 300px; }
-    #fellers-prob { width: 600px; height: 300px; }
+    #fellers-prob { width: 1200px; height: 300px; }
     </style>
     
     <table>
         <tr>
-            <td colspan="2"><div id="fellers-walk"></div></td>
+            <td><div id="fellers-walk"></div></td>
         </tr>
         <tr>
-            <td><div id="fellers-freq"></div></td>
             <td><div id="fellers-prob"></div></td>
         </tr>
     </table>
