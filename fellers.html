@@ -63,11 +63,29 @@
             }
             return this;
         }
+        var actualFeedbackCount = 0;
         
-        var feedback = function() {
+        function feedback() {
             ordinals.shuffle();
-            return (ordinals !== [ ] && ordinals[0] === 0);
-        };
+            var result = (ordinals !== [ ] && ordinals[0] === 0);
+            if (result) {
+                actualFeedbackCount += 1;
+            }
+            return result;
+        }
+                
+        function expectedFeedback() {
+            return (FEEDBACK === 0)
+                ? 'none'
+                : '~every ' + FEEDBACK + 'th throw';            
+        }
+        
+        function actualFeedback(n) {
+            return (actualFeedbackCount === 0)
+                ? 'none'
+                : (1 / (actualFeedbackCount / (FLIPS_PER_WALK * n))).toFixed(2);
+                
+        }
         
         var ordinals = function() {
             var array = [ ];
@@ -181,22 +199,14 @@
             }            
             return plot;
         }
-    
-        function getCountPlotOptions() {            
-            var spaces = "&nbsp;&nbsp;&nbsp;&nbsp;";
-            var feedbackLabel =
-              (FEEDBACK === 0)
-                ? 'none'
-                : '~every ' + FEEDBACK + 'th throw';
-                
+
+        function getCountPlotOptions() {                            
             return {
                 legend: {
                     position: "nw"
                 },                                
                 xaxis: {
-                    axisLabel: "Y:count, X:total" +
-                               spaces +
-                               "(feedback == " + feedbackLabel + ")",
+                    axisLabel: "count&uarr; &larr;total&rarr;",
                     position: "bottom",
                 },
                 series: {
@@ -216,7 +226,7 @@
                     position: "nw"
                 },                                
                 xaxis: {
-                    axisLabel: "Y:total, X:flip", 
+                    axisLabel: "total&uarr; flip&rarr;", 
                     position: "bottom",
                     min: 0,
                     max: walk.length
@@ -251,13 +261,35 @@
         function range(array) {
             var min = array[0][0];
             var max = array[array.length-1][0];
-            return min + "," + max;            
+            return '[' + min + ',' + max + ']';
+        }
+        
+        function walkLabel(n) {
+            var percentDone = (n / NUMBER_OF_WALKS * 100).toFixed(0);
+            return n+"th Walk (" + percentDone + "%)";
+        }
+        
+        function display(n,walk) {
+            var plot;
+            $.plot($("#fellers-walk"),
+                   [ { label: walkLabel(n), data: walk } ],
+                   getWalkPlotOptions(walk));                                                        
+            $.plot($("#fellers-counts"),
+                   plot = getCountPlots(),
+                   getCountPlotOptions());
+            $('#expected_feedback').html(expectedFeedback());
+            $('#actual_feedback').html(actualFeedback(n));
+            $('#total_50').html(countAtTotalZero(plot[0].data));
+            $('#total_100').html(countAtTotalZero(plot[1].data));
+            $('#total_1000').html(countAtTotalZero(plot[2].data));                            
+            $('#min_max_50').html(range(plot[0].data));
+            $('#min_max_100').html(range(plot[1].data));
+            $('#min_max_1000').html(range(plot[2].data));            
         }
         
         $(document).ready(function () {
             // Do as a for loop and the plots don't appear?!            
             var n = 0;
-            var plot;
             var fid = setInterval(
                 function() {
                     if (n++ === NUMBER_OF_WALKS) {
@@ -265,19 +297,7 @@
                     } else {
                         var walk = doOneWalk();
                         if (n % WALKS_PER_PLOT === 0) {
-                            $.plot($("#fellers-walk"),
-                                   [ { label: n+"th Walk", data: walk } ],
-                                   getWalkPlotOptions(walk));
-                                                        
-                            $.plot($("#fellers-counts"),
-                                   plot = getCountPlots(),
-                                   getCountPlotOptions());
-                            $('#total_50').html(countAtTotalZero(plot[0].data));
-                            $('#total_100').html(countAtTotalZero(plot[1].data));
-                            $('#total_1000').html(countAtTotalZero(plot[2].data));                            
-                            $('#min_max_50').html(range(plot[0].data));
-                            $('#min_max_100').html(range(plot[1].data));
-                            $('#min_max_1000').html(range(plot[2].data));
+                            display(n, walk);
                         }                                    
                     }                    
                 },
@@ -289,10 +309,10 @@
     <style type="text/css">
     #fellers-walk   { width: 1200px; height: 300px; }
     #fellers-counts { width: 1200px; height: 300px; }
+    #stats { font-size: 0.8em; }
     </style>      
 </head>
-<body>          
-      
+<body>                
     <table>
         <tr>
             <td><div id="fellers-walk"></div></td>
@@ -301,21 +321,34 @@
             <td><div id="fellers-counts"></div></td>
         </tr>
     </table>
-    <table>
+    <table id="stats">
         <tr>
-            <td>~50 flips, count[total=0] == <span id="total_50"></span></td>
+            <td>feedback</td>
             <td>&nbsp;&nbsp;&nbsp;</td>
-            <td>~min-max == <span id="min_max_50"></span></td>
+            <td>expected == <span id="expected_feedback"></span></td>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>actual == <span id="actual_feedback"></span></td>
         </tr>
         <tr>
-            <td>~100 flips, count[total=0] == <span id="total_100"></span></td>
+            <td>~50 flips</td>
             <td>&nbsp;&nbsp;&nbsp;</td>
-            <td>~min-max == <span id="min_max_100"></span></td>
+            <td>count[total=0] == <span id="total_50"></span></td>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>range == <span id="min_max_50"></span></td>
         </tr>
         <tr>
-            <td>~1000 flips, count[total=0] == <span id="total_1000"></span></td>
+            <td>~100 flips</td>
             <td>&nbsp;&nbsp;&nbsp;</td>
-            <td>~min-max == <span id="min_max_1000"></span></td>
+            <td>count[total=0] == <span id="total_100"></span></td>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>range == <span id="min_max_100"></span></td>
+        </tr>
+        <tr>
+            <td>~1000 flips</td>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>count[total=0] == <span id="total_1000"></span></td>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td>range == <span id="min_max_1000"></span></td>
         </tr>
     </table>
 </body>
