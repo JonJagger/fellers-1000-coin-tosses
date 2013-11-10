@@ -8,117 +8,200 @@
 
     <script type="text/javascript">
 
-        // Frequencies of cumulative total after N coin
-        // flips where N=10,30,100,1000
-        var freq_10   = [ [ ], [ ] ]  // -ve, +ve
-        var freq_30   = [ [ ], [ ] ]  // -ve, +ve
-        var freq_100  = [ [ ], [ ] ]; // -ve, +ve
-        var freq_1000 = [ [ ], [ ] ]; // -ve, +ve
-        // Work-around: plot requires an array of data-points
-        // and javascript cannot use negative array indexes
-        // so I use one array for -ve x-values and
-        // one array for +ve x-values
+        // Code to investigate Feller's walk
+        //
+        // Image you have a fair coin, and you flip it 1000 times,
+        // adding 1 or subtracting 1 each time you flip either a head
+        // or a tail respectively. How do you think the cumulative total
+        // will behave as the number of coin flips progresses from 1 to 1000?
+        //
+        // For the code below it is important to understand that...
+        // *** if the number of steps is even the total is always even.
+        // *** if the number of steps is odd  the total is always odd.
+        //
+        // Suppose the number of steps in a walk == 4. Possibilities are:
+        //     0H 4T == 0-4 == -4
+        //     1H 3T == 1-3 == -2
+        //     2H 2T == 2-2 ==  0
+        //     3H 1T == 3-1 == +2
+        //     4H 0T == 4-0 == +4
+        //
+        // Suppose the number of steps in a walk == 5. Possibilities are:
+        //     0H 5T == 0-5 == -5
+        //     1H 4T == 1-4 == -3
+        //     2H 3T == 2-3 == -1
+        //     3H 2T == 3-2 == +1
+        //     4H 1T == 4-1 == +3
+        //     5H 0T == 5-0 == +5
+        //        
+        // http://jonjagger.blogspot.co.uk/2013/01/fellers-walk.html
+        
+        var NUMBER_OF_WALKS = 2000;
+        var FLIPS_PER_WALK = 1000;
+        
+        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // What are the effects of adding feedback, of nudging
+        // the total back towards zero every so often...?
+        // To get a feedback nudge every Nth throw (on average)
+        // set FEEDBACK to N. To get no feedback set N to zero.
+        
+        var FEEDBACK = 0;
+        
+        Array.prototype.shuffle = function() {
+            // Fischer-Yates shuffle (after Ronald Fisher)
+            // http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+            var i = this.length, j, temp;
+            if (i === 0) {
+                return this;
+            }
+            while ( --i ) {
+               j = Math.floor( Math.random() * ( i + 1 ) );
+               temp = this[i];
+               this[i] = this[j];
+               this[j] = temp;
+            }
+            return this;
+        }
+        
+        var feedback = function() {
+            ordinals.shuffle();
+            return (ordinals !== [ ] && ordinals[0] === 0);
+        };
+        
+        var ordinals = function() {
+            var array = [ ];
+            for (var i = 0; i < FEEDBACK; i++) {
+                array.push(i);
+            }
+            return array;
+        }();
+                
+
         var NEG = 0;
         var POS = 1;
         
-        $(document).ready(function () {
-            var n = 0;
-            var fid = setInterval(
-                function() {
-                    if (n++ === 5000) {
-                        clearInterval(fid);
-                    } else {
-                        var walk = doOneWalk();
-                        if (n % 100 === 0) {
-                            $.plot($("#fellers-walk"),
-                                   [ { label: "Walk-"+n, data: walk } ],
-                                   walkPlotOptions(walk));
-                                                        
-                            $.plot($("#fellers-prob"),
-                                   getProbabilities(n),
-                                   probabilityPlotOptions());
-                        }                                    
-                    }                    
-                },
-                0);
-        });
+        var flotCounts = function() {
+            // flot.js requires an array of data-points
+            // But javascript cannot use negative array indexes
+            // So I use one array for -ve x-values and
+            // one array for +ve x-values and convert them
+            // back using countPlots()
+            var array =  [ ];
+            array[NEG] = [ ];
+            array[POS] = [ ];
+            return array;
+        };
         
-        function doOneWalk() {
+        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // Counts of cumulative total after 
+        // N coin flips where N=10,50,100,500
+        var counts_10    = flotCounts(); 
+        var counts_50    = flotCounts(); 
+        var counts_100   = flotCounts(); 
+        var counts_1000  = flotCounts();         
+        
+        function doOneWalk() {            
+            var HEAD = +1;
+            var TAIL = -1;
             var walk = [ ];
             var total = 0;
-            for (var step = 0; step < 1000; step++) {
-                var rnd = Math.random();
-                var toss = (rnd < 0.5) ? "head" : "tail";
-                if (toss === "head") {
-                    total += 1;
+            for (var flip = 1; flip < FLIPS_PER_WALK+1; flip++) {
+                if (feedback()) {
+                    // I must _not_ tweak the feedback like this:
+                    //    if (total < 0)
+                    //      total += 1;
+                    //    if (total > 0)
+                    //      total -= 1;
+                    // If I do this, then for the case when total === 0
+                    // I will _not_ do a head+1 or a tail-1 at all.
+                    // This will alter the final total to be odd when
+                    // its normally even (or vice versa). See ***
+                    // Thus I will get an outlier in the series data.
+                    total += (total < 0) ? HEAD : TAIL;
                 } else {
-                    total -= 1;
+                    total += (Math.random() < 0.5) ? HEAD : TAIL;
                 }
-                walk.push([step,total]);
+                walk.push([flip,total]);
                 
-                if (step === 10) {
-                    recordTotal(freq_10, total);
+                // To get a smooth plot with values for both 
+                // odd and even totals I need totals for walks
+                // whose length are both odd and even. See ***
+                
+                if (flip === 9 || flip === 10) {
+                    recordTotal(counts_10, total);
                 }
-                if (step === 30) {
-                    recordTotal(freq_30, total);
+                if (flip === 49 || flip === 50) {
+                    recordTotal(counts_50, total);
                 }
-                if (step === 100) {
-                    recordTotal(freq_100, total);
+                if (flip === 99 || flip === 100) {
+                    recordTotal(counts_100, total);
+                }
+                if (flip === 999 || flip === 1000) {
+                    recordTotal(counts_1000, total);
                 }
             }
-            recordTotal(freq_1000, total);
             return walk;
         }       
 
-        function recordTotal(array, total) {
+        function recordTotal(array, total) {            
             var NP = (total < 0) ? NEG : POS;
-            var index = Math.abs(total);
-            if (array[NP][index] === undefined) {
-                array[NP][index] = [total,0];
+            var absTotal = Math.abs(total);
+            if (array[NP][absTotal] === undefined) {
+                array[NP][absTotal] = [total,0];
             }
-            array[NP][index][1]++;            
+            array[NP][absTotal][1] += 1;            
         }
 
-        function getProbabilities(n) {
+        function getCountPlots() {
             return [ 
-                { label: "after 10 flips",   data: calcProbs(n,freq_10)   },
-                { label: "after 30 flips",   data: calcProbs(n,freq_30)   },
-                { label: "after 100 flips",  data: calcProbs(n,freq_100)  },
-                { label: "after 1000 flips", data: calcProbs(n,freq_1000) }
+                //{ label: "after ~10 flips",   data: countPlot(counts_10)   },
+                { label: "after ~50 flips",   data: countPlot(counts_50)   },
+                { label: "after ~100 flips",  data: countPlot(counts_100)  },
+                { label: "after ~1000 flips", data: countPlot(counts_1000) },
             ];
         }
         
-        function calcProbs(n, freq) {
+        function countPlot(counts) {            
             var probs = [ [ ], [ ] ];
-            var neg = freq[NEG];
+            var neg = counts[NEG];
             for (var at in neg) {
-                if (neg[at] !== undefined) {
-                    probs[NEG][at] = [ neg[at][0], neg[at][1] / n ];
+                if (neg[at] != undefined) {
+                    probs[NEG][at] = neg[at];
                 }
             }
-            var pos = freq[POS];
+            var pos = counts[POS];
             for (var at in pos) {
-                if (pos[at] !== undefined) {
-                    probs[POS][at] = [ pos[at][0], pos[at][1] / n ];
+                if (pos[at] != undefined) {
+                    probs[POS][at] = pos[at];
                 }
             }
             var all = probs[NEG].reverse().concat(probs[POS]);
-            var result = [ ];
+            // all has lots of null entries because the array indexes
+            // are not contiguous. plot cannot handle nulls
+            var plot = [ ];
             for (var at = 0; at < all.length; at++) {
-                if (all[at] !== undefined) {
-                    result.push(all[at]);
+                if (all[at] != undefined) {
+                    plot.push(all[at]);
                 }
             }            
-            return result;
+            return plot;
         }
     
-        function probabilityPlotOptions() {
+        function getCountPlotOptions() {            
+            var spaces = "&nbsp;&nbsp;&nbsp;&nbsp;";
+            var feedbackLabel =
+              (FEEDBACK === 0)
+                ? 'none'
+                : '~every ' + FEEDBACK + 'th throw';
+                
             return {
                 legend: {
                     position: "nw"
                 },                                
                 xaxis: {
-                    axisLabel: "Y:probability, X:total",                                        
+                    axisLabel: "Y:count, X:total" +
+                               spaces +
+                               "(feedback == " + feedbackLabel + ")",
                     position: "bottom",
                 },
                 series: {
@@ -132,23 +215,24 @@
             };                        
         }
         
-        function walkPlotOptions(walk) {
+        function getWalkPlotOptions(walk) {
             return {
                 legend: {
                     position: "nw"
                 },                                
                 xaxis: {
-                    axisLabel: "Y:total, X:flip",                                        
+                    axisLabel: "Y:total, X:flip", 
                     position: "bottom",
                     min: 0,
                     max: walk.length
                 },
                 yaxis: {
                     tickDecimals: 0,
-                    min: -50,
-                    max: 50                    
+                    min: -40,
+                    max: 40                    
                 },
                 series: {
+                    color: "green",
                     lines: {
                         show: true
                     },
@@ -158,12 +242,36 @@
                 }
             };            
         }
+        
+        $(document).ready(function () {
+            // As a for loop the plots don't appear?!            
+            var n = 0;
+            var fid = setInterval(
+                function() {
+                    if (n++ === NUMBER_OF_WALKS) {
+                        clearInterval(fid);
+                    } else {
+                        var walk = doOneWalk();
+                        if (n % 25 === 0) {
+                            $.plot($("#fellers-walk"),
+                                   [ { label: n+"th Walk", data: walk } ],
+                                   getWalkPlotOptions(walk));
+                                                        
+                            $.plot($("#fellers-counts"),
+                                   getCountPlots(),
+                                   getCountPlotOptions());
+                        }                                    
+                    }                    
+                },
+                0);
+        });
+        
     </script>
 </head>
 <body>          
     <style type="text/css">
-    #fellers-walk { width: 1200px; height: 300px; }
-    #fellers-prob { width: 1200px; height: 300px; }
+    #fellers-walk   { width: 1200px; height: 300px; }
+    #fellers-counts { width: 1200px; height: 300px; }
     </style>
     
     <table>
@@ -171,7 +279,7 @@
             <td><div id="fellers-walk"></div></td>
         </tr>
         <tr>
-            <td><div id="fellers-prob"></div></td>
+            <td><div id="fellers-counts"></div></td>
         </tr>
     </table>
 </body>
