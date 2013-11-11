@@ -112,7 +112,9 @@
                 // So I use one array for -ve x-values and
                 // one array for +ve x-values and convert them
                 // back using countPlots()
-                var array = [ [/*-ve*/], [/*+ve*/] ];
+                var array = [ ];
+                array[NEG] = [ ];
+                array[POS] = [ ];
                 
                 array.record = function(total) {            
                     var NP = (total < 0) ? NEG : POS;
@@ -124,6 +126,7 @@
                 }
                                 
                 array.getPlot = function() {            
+                    var plot = [ ];
                     function xfer(to,from) {
                         for (var at in from) {
                             if (from[at] !== undefined) {
@@ -137,12 +140,28 @@
                     var all = probs[NEG].reverse().concat(probs[POS]);
                     // all has lots of null entries because the array indexes
                     // are not contiguous. plot cannot handle nulls
-                    var plot = [ ];
                     for (var at = 0; at !== all.length; at++) {
                         if (all[at] !== undefined) {
                             plot.push(all[at]);
                         }
-                    }            
+                    }
+                    
+                    plot.rangeOfTotals = function() {
+                        var min = this[0][0];
+                        var max = this[this.length - 1][0];
+                        return min + ',' + max;
+                    }
+                    
+                    plot.countAtTotalZero = function() {
+                        var count;
+                        for (var at = 0; at !== this.length; at++) {
+                            if (this[at][0] === 0) {
+                                return this[at][1];
+                            }
+                        }
+                        return '?';
+                    }
+                    
                     return plot;
                 }            
                 
@@ -253,22 +272,6 @@
                 return n + "th Walk (" + percentDone + "%)";
             }
             
-            function countAtTotalZero(array) {
-                var count;
-                for (var at = 0; at !== array.length; at++) {
-                    if (array[at][0] === 0) {
-                        return array[at][1];
-                    }
-                }
-                return '?';
-            }
-            
-            function rangeOfTotals(array) {
-                var min = array[0][0];
-                var max = array[array.length - 1][0];
-                return min + ',' + max;
-            }
-            
             function stdDev(plots) {
                 // standard deviation is a measure of how much
                 // variation there is in the data set from its average.
@@ -298,13 +301,13 @@
                    plot,
                    plotOptions.forCounts());
             
-            $('.stats #flips_50 #total').html(countAtTotalZero(data_50));
-            $('.stats #flips_100 #total').html(countAtTotalZero(data_100));
-            $('.stats #flips_1000 #total').html(countAtTotalZero(data_1000));
+            $('.stats #flips_50 #total').html(data_50.countAtTotalZero());
+            $('.stats #flips_100 #total').html(data_100.countAtTotalZero());
+            $('.stats #flips_1000 #total').html(data_1000.countAtTotalZero());
             
-            $('.stats #flips_50 #range').html(rangeOfTotals(data_50));
-            $('.stats #flips_100 #range').html(rangeOfTotals(data_100));
-            $('.stats #flips_1000 #range').html(rangeOfTotals(data_1000));
+            $('.stats #flips_50 #range').html(data_50.rangeOfTotals());
+            $('.stats #flips_100 #range').html(data_100.rangeOfTotals());
+            $('.stats #flips_1000 #range').html(data_1000.rangeOfTotals());
             
             $('.stats #flips_50 #std_dev').html(stdDev(data_50));            
             $('.stats #flips_100 #std_dev').html(stdDev(data_100));            
