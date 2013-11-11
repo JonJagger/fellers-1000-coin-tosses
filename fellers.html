@@ -273,9 +273,18 @@
             return '[' + min + ',' + max + ']';
         }
         
-        function stdDev(array) {
-            //TODO:
-            return jStat.stdev([1,2,3,4]).toFixed(2);
+        function stdDev(plots) {
+            var raw = [ ];
+            for (var at = 0; at < plots.length; at++) {
+                if (plots[at] != undefined) {
+                    var total = plots[at][0];
+                    var count = plots[at][1];
+                    for (var i = 0; i < count; i++) {
+                        raw.push(total);
+                    }
+                }
+            }
+            return jStat.stdev(raw).toFixed(2);
         }
         
         function walkLabel(n) {
@@ -391,6 +400,7 @@
             clearInterval(fid);
             $('#fellers-walk, #fellers-counts').hide();
             $('.stats, .feedback, #run_again').hide();
+            actualFeedbackCount = 0;
             setupAndRunSimulation();            
         }
         
