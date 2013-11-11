@@ -104,7 +104,9 @@
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Counts of cumulative total after 
         // N coin flips where N=50,100,500
-        var counts_50    = undefined;
+        var counts = [ ];
+        
+        //var counts_50    = undefined;
         var counts_100   = undefined;
         var counts_1000  = undefined;
         
@@ -120,9 +122,9 @@
                 array[POS] = [ ];
                 return array;
             }
-            counts_50    = flotCounts(); 
-            counts_100   = flotCounts(); 
-            counts_1000  = flotCounts();                     
+            counts[50]   = flotCounts();
+            counts[100]  = flotCounts(); 
+            counts[1000] = flotCounts();                     
         }
         
         function doOneWalk() {            
@@ -164,13 +166,13 @@
                 // whose length are both odd and even. See ***
                 
                 if (flip === 49 || flip === 50) {
-                    recordTotal(counts_50, total);
+                    recordTotal(counts[50], total);
                 }
                 if (flip === 99 || flip === 100) {
-                    recordTotal(counts_100, total);
+                    recordTotal(counts[100], total);
                 }
                 if (flip === 999 || flip === 1000) {
-                    recordTotal(counts_1000, total);
+                    recordTotal(counts[1000], total);
                 }
             }
             return walk;
@@ -203,9 +205,9 @@
                 return plot;
             }            
             return [ 
-                { label: "after 50 flips",   data: countPlot(counts_50)   },
-                { label: "after 100 flips",  data: countPlot(counts_100)  },
-                { label: "after 1000 flips", data: countPlot(counts_1000) },
+                { label: "after 50 flips",   data: countPlot(counts[50])   },
+                { label: "after 100 flips",  data: countPlot(counts[100])  },
+                { label: "after 1000 flips", data: countPlot(counts[1000]) },
             ];
         }
         
