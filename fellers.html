@@ -109,7 +109,7 @@
         var counts_1000  = undefined;
         
         function resetCounts() {            
-            var flotCounts = function() {
+            function flotCounts() {
                 // flot.js requires an array of data-points
                 // But javascript cannot use negative array indexes
                 // So I use one array for -ve x-values and
@@ -119,7 +119,7 @@
                 array[NEG] = [ ];
                 array[POS] = [ ];
                 return array;
-            };            
+            }
             counts_50    = flotCounts(); 
             counts_100   = flotCounts(); 
             counts_1000  = flotCounts();                     
@@ -130,6 +130,16 @@
             var TAIL = -1;
             var walk = [ ];
             var total = 0;
+            
+            function recordTotal(array, total) {            
+                var NP = (total < 0) ? NEG : POS;
+                var absTotal = Math.abs(total);
+                if (array[NP][absTotal] === undefined) {
+                    array[NP][absTotal] = [total,0];
+                }
+                array[NP][absTotal][1] += 1;            
+            }
+            
             for (var flip = 1; flip < FLIPS_PER_WALK+1; flip++) {
                 if (feedback()) {
                     // I must _not_ tweak the feedback like this:
@@ -166,16 +176,32 @@
             return walk;
         }       
 
-        function recordTotal(array, total) {            
-            var NP = (total < 0) ? NEG : POS;
-            var absTotal = Math.abs(total);
-            if (array[NP][absTotal] === undefined) {
-                array[NP][absTotal] = [total,0];
-            }
-            array[NP][absTotal][1] += 1;            
-        }
-
         function getCountPlots() {
+            function countPlot(counts) {            
+                var probs = [ [ ], [ ] ];
+                var neg = counts[NEG];
+                for (var at in neg) {
+                    if (neg[at] != undefined) {
+                        probs[NEG][at] = neg[at];
+                    }
+                }
+                var pos = counts[POS];
+                for (var at in pos) {
+                    if (pos[at] != undefined) {
+                        probs[POS][at] = pos[at];
+                    }
+                }
+                var all = probs[NEG].reverse().concat(probs[POS]);
+                // all has lots of null entries because the array indexes
+                // are not contiguous. plot cannot handle nulls
+                var plot = [ ];
+                for (var at = 0; at < all.length; at++) {
+                    if (all[at] != undefined) {
+                        plot.push(all[at]);
+                    }
+                }            
+                return plot;
+            }            
             return [ 
                 { label: "after 50 flips",   data: countPlot(counts_50)   },
                 { label: "after 100 flips",  data: countPlot(counts_100)  },
@@ -183,32 +209,6 @@
             ];
         }
         
-        function countPlot(counts) {            
-            var probs = [ [ ], [ ] ];
-            var neg = counts[NEG];
-            for (var at in neg) {
-                if (neg[at] != undefined) {
-                    probs[NEG][at] = neg[at];
-                }
-            }
-            var pos = counts[POS];
-            for (var at in pos) {
-                if (pos[at] != undefined) {
-                    probs[POS][at] = pos[at];
-                }
-            }
-            var all = probs[NEG].reverse().concat(probs[POS]);
-            // all has lots of null entries because the array indexes
-            // are not contiguous. plot cannot handle nulls
-            var plot = [ ];
-            for (var at = 0; at < all.length; at++) {
-                if (all[at] != undefined) {
-                    plot.push(all[at]);
-                }
-            }            
-            return plot;
-        }
-
         var plotOptions = {
             forCounts: function() {                            
                 return {
