@@ -12,18 +12,13 @@ These 1000 coin flips comprise one walk.
 For each walk, you start with a total of zero, and, each time
 you flip the coin, you add 1 to your total if you get a head,
 and you subtract 1 from your total if you get a tail.
+
 What will the cumulative total look like as the number of coin flips
 progresses from 1 to 1000? Most people's intuition
 is that the total will hover around zero. However, as Don explains,
 this is not true. 
 
-The top graph shows the cumulative total at each step of a single
-1000 coin flip walk. For example, a plotted point of [x=411,y=-53] means
-that in that walk, after 411 coin flips the cumulative total was -53.
+How effective are occasional nudges back towards zero during the walk?
 
-The bottom graph shows the probabilities for the cumulative total
-after N flips (with N=10,30,100,1000).
-For example, a plotted point a [x=-4, y=0.1027] for N=30 means that
-after lots of walks (see legend in top graph) the probability that
-the total at flip 30 is -4 is 0.1027.
-
+Try it!
+https://rawgithub.com/JonJagger/Fellers-1000-coin-tosses/master/fellers.html
