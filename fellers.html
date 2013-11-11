@@ -274,6 +274,13 @@
         }
         
         function stdDev(plots) {
+            // standard deviation is a measure of how much
+            // variation there is in the data set from its average.
+            // For a normal distribution
+            //    68.27% of the data set lies within 1 standard deviation
+            //    95.45% of the data set lies within 2 standard deviations
+            //    99.73% of the data set lies within 3 standard deviations
+            // http://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule
             var raw = [ ];
             for (var at = 0; at < plots.length; at++) {
                 if (plots[at] != undefined) {
