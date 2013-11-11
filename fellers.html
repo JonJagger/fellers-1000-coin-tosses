@@ -149,11 +149,18 @@
                 
                 return array;
             }
-            counts[50]   = flotCounts();
-            counts[100]  = flotCounts(); 
-            counts[1000] = flotCounts();                                 
+            this[50]   = flotCounts();
+            this[100]  = flotCounts(); 
+            this[1000] = flotCounts();                                 
         }
         
+        counts.getPlots = function() {            
+            return [ 
+                { label: "after 50 flips",   data: this[50].getPlot()   },
+                { label: "after 100 flips",  data: this[100].getPlot()  },
+                { label: "after 1000 flips", data: this[1000].getPlot() },
+            ];
+        }
         
         function doOneWalk() {            
             var HEAD = +1;
@@ -196,14 +203,6 @@
             }
             return walk;
         }       
-
-        function getCountPlots() {            
-            return [ 
-                { label: "after 50 flips",   data: counts[50].getPlot()   },
-                { label: "after 100 flips",  data: counts[100].getPlot()  },
-                { label: "after 1000 flips", data: counts[1000].getPlot() },
-            ];
-        }
         
         var plotOptions = {
             forCounts: function() {                            
@@ -243,7 +242,7 @@
         };
                                 
         function display(n,walk) {
-            var plot = getCountPlots();
+            var plot = counts.getPlots();
             var data_50 = plot[0].data;
             var data_100 = plot[1].data;
             var data_1000 = plot[2].data;
