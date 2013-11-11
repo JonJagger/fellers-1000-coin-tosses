@@ -14,12 +14,7 @@
 
         // Code to investigate Feller's walk
         //
-        // Image you have a fair coin, and you flip it 1000 times,
-        // adding 1 or subtracting 1 each time you flip either a head
-        // or a tail respectively. How do you think the cumulative total
-        // will behave as the number of coin flips progresses from 1 to 1000?
-        //
-        // For the code below it is important to understand that...
+        // It is important to understand (see below) that...
         // *** if the number of steps is even the total is always even.
         // *** if the number of steps is odd  the total is always odd.
         //
@@ -121,9 +116,15 @@
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Counts of cumulative total after 
         // N coin flips where N=50,100,500
-        var counts_50    = flotCounts(); 
-        var counts_100   = flotCounts(); 
-        var counts_1000  = flotCounts();         
+        var counts_50    = undefined;
+        var counts_100   = undefined;
+        var counts_1000  = undefined;
+        
+        function resetCounts() {
+            counts_50    = flotCounts(); 
+            counts_100   = flotCounts(); 
+            counts_1000  = flotCounts();                     
+        }
         
         function doOneWalk() {            
             var HEAD = +1;
@@ -270,7 +271,7 @@
         function rangeOfTotals(array) {
             var min = array[0][0];
             var max = array[array.length-1][0];
-            return '[' + min + ',' + max + ']';
+            return min + ',' + max;
         }
         
         function stdDev(plots) {
@@ -334,19 +335,19 @@
                 '<table>' +
                   '<tr>' +
                     '<td>' +
-                      '<label>Feedback every</label>' +
+                      '<label>Nudge towards zero every</label>' +
                     '</td>' +
                     '<td>' +  
                       '<input type="text"' +
-                             'style="width:5em;"' +
+                             'style="width:3em;"' +
                              'value="' + FEEDBACK + '"' +
                              'id="feedback">' +
-                       'th flip' +
+                       '&nbsp;th flip (0 for never)' +
                     '</td>' +
                   '</tr>' +
                   '<tr>' +
                     '<td>' +
-                      '<label>Number of Walks</label>' +
+                      '<label>Number of Walks&nbsp;</label>' +
                     '</td>' +
                     '<td>' +
                       '<input type="text"' +
@@ -364,17 +365,59 @@
             NUMBER_OF_WALKS = parseInt($('#no_of_walks',html).val());            
         }
         
-        function setupAndRunSimulation() {
+        function makeHelpHtml() {            
+            return '' +
+                '<div>' +
+                  'Image you have a fair coin, and you flip it 1000 times, ' +
+                  'adding one or subtracting one each time you flip either ' +
+                  'a head or a tail respectively. ' +
+                  '<br><br>' +
+                  'How will the cumulative total behave as ' +
+                  'the number of coin flips progresses from 1 to 1000 ?' +
+                  '<br><br>' +
+                  'Suppose you occasionally nudge the total back towards zero. ' +
+                  'How effective are these nudges? ' +
+                  '<br><br>' +
+                  'The top graph shows individual walks in green, rising as ' +
+                  'the total increases, dropping as the total decreases.' +
+                  '<br><br>' +
+                  'The bottom graph shows how often each total has occurred. ' +
+                  'For example, the blue line plots the total 100 coin flips ' +
+                  'into a walk. A point x=5, y=300 on the blue line means that ' +
+                  '300 of the walks had a total of 5 after 100 flips. ' +
+                '</div>';
+        }
+        
+        function showHelp() {
+            var html = $(makeHelpHtml());
+            var help = html.dialog({	  
+                title: "help",
+                autoOpen: false,
+                width: 750,
+                modal: true,
+                buttons: {
+                  ok: function() {
+                    $(this).dialog('close');
+                  }
+                }
+              });
+            help.dialog('open');            
+        }
+        
+        function reRunSimulation() {
             var html = $(makeDialogHtml());
             var setup = html.dialog({	  
-                title: "Feller's 1000 coin-flip walk",
+                title: "Feller's walk",
                 autoOpen: false,
-                width: 500,
+                width: 550,
                 modal: true,
                 buttons: {
                   ok: function() {
                     setParameters(html);
                     runSimulation();
+                    $(this).dialog('close');
+                  },
+                  cancel: function() {
                     $(this).dialog('close');
                   }
                 }
@@ -385,10 +428,11 @@
         var fid = undefined;
         
         function runSimulation() {
-            $('#fellers-walk, #fellers-counts').show();            
-            $('.stats, .feedback, #run_again').show();            
-            // Can't use for-loop (the plots don't appear?!)
             var n = 0;
+            clearInterval(fid);            
+            resetCounts();
+            actualFeedbackCount = 0;            
+            // Can't use for-loop (the plots don't appear?!)            
             fid = setInterval(
                 function() {
                     if (n++ === NUMBER_OF_WALKS) {
@@ -402,21 +446,17 @@
                 },
                 0);            
         }
-                   
-        function runAgain() {
-            clearInterval(fid);
-            $('#fellers-walk, #fellers-counts').hide();
-            $('.stats, .feedback, #run_again').hide();
-            actualFeedbackCount = 0;
-            setupAndRunSimulation();            
-        }
-        
+                           
         $(document).ready(function () {
             $('#run_again').click(function() {
-                runAgain();
+                reRunSimulation();
+            });
+            $('#help').click(function() {
+                showHelp();
             });
             setFeedback(0);
-            runAgain();
+            runSimulation();
+            showHelp();
         });
         
     </script>
@@ -437,10 +477,9 @@
     .feedback caption {
         font-weight: bold;
     }
-    #run_again {
-        font-size: 2em;
-        display: inline-block;
-    }
+    .ui-dialog {
+          opacity: 0.8;
+    }    
     </style>      
 </head>
 <body>                
@@ -453,12 +492,29 @@
         </tr>
     </table>
     
+<table>
+    <tr>
+        <td>
+    <table>
+        <tr>
+            <td>
+                <input type="button" id="run_again" value="run again">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="button" id="help" value="help">
+            </td>
+        </tr>
+    </table>
+        </td>
+        <td>    
     <table class="stats">
         <tr>
             <th>flips</th>
-            <th>count<br>[total=0]</th>
+            <th>count[0]</th>
             <th>range</th>
-            <th>std-dev</th>
+            <th>std.dev</th>
         </tr>
         <tr id="flips_50">
             <th>50</th>
@@ -479,9 +535,10 @@
             <td id="std_dev"></td>            
         </tr>
     </table>
-
+        </td>
+        <td>
     <table class="feedback">
-        <caption>throws / feedback</caption>
+        <caption>throws / nudge</caption>
         <tr>
             <td>expected</td>
             <td id="expected"></td>
@@ -491,8 +548,9 @@
             <td id="actual"></td>
         </tr>
     </table>
-    
-    <input type="button" id="run_again" value="run again">
+        </td>
+    </tr>
+</table>
     
 </body>
 </html>
