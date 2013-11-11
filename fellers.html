@@ -116,18 +116,22 @@
                 var flot = [ [/*NEG*/], [/*POS*/] ];
                 //   eg array[NEG][35] => [-35,455] 
                 //   eg array[POS][12] => [12,623]
+                
                 flot.reset = function() {
                     this[NEG].length = 0;
                     this[POS].length = 0;
                 }
                 
-                flot.record = function(total) {            
+                flot.record = function(total) {
                     var np = (total < 0) ? NEG : POS;
                     var absTotal = Math.abs(total);
-                    if (this[np][absTotal] === undefined) {
-                        this[np][absTotal] = [total,0];
+                    var element = this[np][absTotal];
+                    if (element === undefined) {
+                        element = this[np][absTotal] = [ ];
+                        element[TOTAL] = total;
+                        element[COUNT] = 0;
                     }
-                    this[np][absTotal][COUNT] += 1;            
+                    element[COUNT] += 1;            
                 }
                                 
                 flot.makePlot = function() {
