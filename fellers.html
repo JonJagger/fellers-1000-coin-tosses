@@ -13,6 +13,7 @@
     <script type="text/javascript">
 
         // Code to investigate Feller's walk
+        // http://jonjagger.blogspot.co.uk/2013/01/fellers-walk.html        
         //
         // It is important to understand (see below) that...
         // *** if the number of steps is even the total is always even.
@@ -32,8 +33,6 @@
         //     3H 2T == 3-2 == +1
         //     4H 1T == 4-1 == +3
         //     5H 0T == 5-0 == +5
-        //        
-        // http://jonjagger.blogspot.co.uk/2013/01/fellers-walk.html
         
         var NUMBER_OF_WALKS = 5000;
         var FLIPS_PER_WALK = 1000;
@@ -42,7 +41,7 @@
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // What are the effects of adding feedback, of nudging
         // the total back towards zero every so often...?
-        // To get a feedback nudge every Nth throw (on average).
+        // To get a feedback nudge every Nth throw (on average)
         // set FEEDBACK to N. To get no feedback set N to zero.
         
         var FEEDBACK = undefined;
@@ -110,41 +109,41 @@
                 // flot.js requires an array of data-points
                 // But javascript cannot use negative array indexes
                 // So I use one array for -ve x-values and
-                // one array for +ve x-values and convert them
-                // back using getPlot()
-                var array = [ ];
-                array[NEG] = [ ];
-                array[POS] = [ ];
-                
-                array.record = function(total) {            
-                    var NP = (total < 0) ? NEG : POS;
+                // one array for +ve x-values and merge them
+                // back using getPlot() @@@
+                var flot = [ [/*NEG*/], [/*POS*/] ];
+                //   eg array[NEG][35] => [-35,455] 
+                //   eg array[POS][12] => [12,623]                
+                flot.record = function(total) {            
+                    var np = (total < 0) ? NEG : POS;
                     var absTotal = Math.abs(total);
-                    if (this[NP][absTotal] === undefined) {
-                        this[NP][absTotal] = [total,0];
+                    if (this[np][absTotal] === undefined) {
+                        this[np][absTotal] = [total,0];
                     }
-                    this[NP][absTotal][1] += 1;            
+                    this[np][absTotal][1] += 1;            
                 }
                                 
-                array.getPlot = function() {            
+                flot.makePlot = function() {
                     var plot = [ ];
-                    function xfer(to,from) {
-                        for (var at in from) {
-                            if (from[at] !== undefined) {
-                                to[at] = from[at];
-                            }
-                        }                
-                    }            
-                    var probs = [ [ ], [ ] ];
-                    xfer(probs[NEG], this[NEG]);
-                    xfer(probs[POS], this[POS]);                
-                    var all = probs[NEG].reverse().concat(probs[POS]);
-                    // all has lots of null entries because the array indexes
-                    // are not contiguous. plot cannot handle nulls
-                    for (var at = 0; at !== all.length; at++) {
-                        if (all[at] !== undefined) {
-                            plot.push(all[at]);
+                    var neg = this[NEG];
+                    for (var at = neg.length - 1; at >= 0; at--) {
+                        var element = neg[at];
+                        if (element !== undefined) {
+                            plot.push(element);
                         }
                     }
+                    var pos = this[POS];
+                    for (var at = 0; at < pos.length; at++) {
+                        var element = pos[at];
+                        if (element !== undefined) {
+                            plot.push(element);
+                        }
+                    }
+                    return plot;
+                }
+                
+                flot.getPlot = function() {
+                    var plot = this.makePlot();
                     
                     plot.rangeOfTotals = function() {
                         var min = this[0][0];
@@ -153,10 +152,10 @@
                     }
                     
                     plot.countAtTotalZero = function() {
-                        var count;
                         for (var at = 0; at !== this.length; at++) {
-                            if (this[at][0] === 0) {
-                                return this[at][1];
+                            var element = this[at];
+                            if (element[0] === 0) {
+                                return element[1];
                             }
                         }
                         return '?';
@@ -166,6 +165,10 @@
                         // For a normal distribution
                         //    68.27%, 95.45%, 99.73% of the data set
                         // lies within 1,2,3 standard deviations
+                        // Eg [ [45,3] ] ==> [ [45] [45] [45] ]
+                        // There's probably a faster way of calculating
+                        // std.dev when data is in this format but this
+                        // brute force approach is good enough.
                         var raw = [ ];
                         for (var at = 0; at !== this.length; at++) {
                             if (this[at] !== undefined) {
@@ -177,12 +180,10 @@
                             }
                         }
                         return jStat.stdev(raw).toFixed(2);
-                    }
-                    
+                    }                    
                     return plot;
-                }            
-                
-                return array;
+                }                            
+                return flot;
             }
             this[50]   = flotCounts();
             this[100]  = flotCounts(); 
@@ -251,6 +252,8 @@
             return walk;
         }       
         
+        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // UI code from here
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
         var plotOptions = {
