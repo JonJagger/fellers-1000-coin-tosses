@@ -209,12 +209,34 @@
                     // This will alter the final total to be odd when
                     // its normally even (or vice versa). See ***
                     // Thus I will get an outlier in the data set.
+                    //
+                    // Consider what happens to the total
+                    // when a feedback nudge happens...
+                    //   50% of the time it would have gone towards zero
+                    //     in this case the nudge has no effect
+                    //   50% of the time it would have gone away from zero
+                    //     in this case the nudge has a net effect of +-2
+                    // so
+                    //   the net effect is +-1 (towards zero) per nudge
+                    //   thus the odd/even-ness is preserved.
+                    //
+                    // Consider also, if the code did this...
+                    //   var toss = (total < 0) ? HEAD : TAIL;
+                    //   total += toss;
+                    //   if (feedback()) {
+                    //     total -= toss; 
+                    //   }
+                    // In this case a nudge would have no net effect on the
+                    // total and the odd/even-ness would not be preserved.
+                    
                     actualFeedbackCount += 1;                    
                     total += (total < 0) ? HEAD : TAIL;
                 } else {
                     total += (Math.random() < 0.5) ? HEAD : TAIL;
                 }
-                walk.push([flip,total]);
+                if (flip % 5 === 0) {
+                    walk.push([flip,total]);
+                }
                 
                 // To get a smooth plot with values for both 
                 // odd and even totals I need totals for walks
@@ -256,7 +278,7 @@
                         axisLabel: "total&uarr; flip&rarr;", 
                         position: "bottom",
                         min: 0,
-                        max: walk.length
+                        max: FLIPS_PER_WALK
                     },
                     yaxis: {
                         tickDecimals: 0,
@@ -533,7 +555,7 @@
         </td>
         <td>
             <table class="feedback">
-                <caption>throws / nudge</caption>
+                <caption>flips / nudge</caption>
                 <tr>
                     <td>expected</td>
                     <td id="expected"></td>
