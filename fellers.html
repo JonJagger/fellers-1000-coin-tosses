@@ -42,7 +42,7 @@
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // What are the effects of adding feedback, of nudging
         // the total back towards zero every so often...?
-        // To get a feedback nudge every Nth throw (on average)
+        // To get a feedback nudge every Nth throw (on average).
         // set FEEDBACK to N. To get no feedback set N to zero.
         
         var FEEDBACK = undefined;
@@ -101,18 +101,6 @@
         var NEG = 0;
         var POS = 1;
         
-        var flotCounts = function() {
-            // flot.js requires an array of data-points
-            // But javascript cannot use negative array indexes
-            // So I use one array for -ve x-values and
-            // one array for +ve x-values and convert them
-            // back using countPlots()
-            var array =  [ ];
-            array[NEG] = [ ];
-            array[POS] = [ ];
-            return array;
-        };
-        
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Counts of cumulative total after 
         // N coin flips where N=50,100,500
@@ -120,7 +108,18 @@
         var counts_100   = undefined;
         var counts_1000  = undefined;
         
-        function resetCounts() {
+        function resetCounts() {            
+            var flotCounts = function() {
+                // flot.js requires an array of data-points
+                // But javascript cannot use negative array indexes
+                // So I use one array for -ve x-values and
+                // one array for +ve x-values and convert them
+                // back using countPlots()
+                var array =  [ ];
+                array[NEG] = [ ];
+                array[POS] = [ ];
+                return array;
+            };            
             counts_50    = flotCounts(); 
             counts_100   = flotCounts(); 
             counts_1000  = flotCounts();                     
@@ -142,7 +141,7 @@
                     // I will _not_ do a head+1 or a tail-1 at all.
                     // This will alter the final total to be odd when
                     // its normally even (or vice versa). See ***
-                    // Thus I will get an outlier in the series data.
+                    // Thus I will get an outlier in the data set.
                     actualFeedbackCount += 1;                    
                     total += (total < 0) ? HEAD : TAIL;
                 } else {
@@ -210,54 +209,43 @@
             return plot;
         }
 
-        function getCountPlotOptions() {                            
-            return {
-                legend: {
-                    position: "nw"
-                },                                
-                xaxis: {
-                    axisLabel: "count&uarr; &larr;total&rarr;",
-                    position: "bottom",
-                },
-                series: {
-                    lines: {
-                        show: true
+        var plotOptions = {
+            forCounts: function() {                            
+                return {
+                    legend: { position: "nw" },                                
+                    xaxis: {
+                        axisLabel: "count&uarr; &larr;total&rarr;",
+                        position: "bottom",
                     },
-                    points: {
-                        show: false,
+                    series: {
+                        lines: { show: true },
+                        points: { show: false }
                     }
-                }
-            };                        
-        }
-        
-        function getWalkPlotOptions(walk) {
-            return {
-                legend: {
-                    position: "nw"
-                },                                
-                xaxis: {
-                    axisLabel: "total&uarr; flip&rarr;", 
-                    position: "bottom",
-                    min: 0,
-                    max: walk.length
-                },
-                yaxis: {
-                    tickDecimals: 0,
-                    min: -50,
-                    max: 50                    
-                },
-                series: {
-                    color: "green",
-                    lines: {
-                        show: true
+                };                        
+            },
+            forWalk: function(walk) {
+                return {
+                    legend: { position: "nw" },                                
+                    xaxis: {
+                        axisLabel: "total&uarr; flip&rarr;", 
+                        position: "bottom",
+                        min: 0,
+                        max: walk.length
                     },
-                    points: {
-                        show: false,
+                    yaxis: {
+                        tickDecimals: 0,
+                        min: -50,
+                        max: 50                    
+                    },
+                    series: {
+                        color: "green",
+                        lines: { show: true },
+                        points: { show: false }
                     }
-                }
-            };            
-        }
-        
+                };            
+            }            
+        };
+                
         function countAtTotalZero(array) {
             var count;
             for (var i=0; i != array.length; i++) {
@@ -308,11 +296,11 @@
             
             $.plot($("#fellers-walk"),
                    [ { label: walkLabel(n), data: walk } ],
-                   getWalkPlotOptions(walk));
+                   plotOptions.forWalk(walk));
             
             $.plot($("#fellers-counts"),
                    plot,
-                   getCountPlotOptions());
+                   plotOptions.forCounts());
             
             $('.stats #flips_50 #total').html(countAtTotalZero(data_50));
             $('.stats #flips_100 #total').html(countAtTotalZero(data_100));
