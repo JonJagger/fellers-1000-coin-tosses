@@ -106,42 +106,38 @@
         // N coin flips where N=50,100,500
         var counts = [ ];
         
-        //var counts_50    = undefined;
-        var counts_100   = undefined;
-        var counts_1000  = undefined;
-        
-        function resetCounts() {            
+        counts.reset = function() {
             function flotCounts() {
                 // flot.js requires an array of data-points
                 // But javascript cannot use negative array indexes
                 // So I use one array for -ve x-values and
                 // one array for +ve x-values and convert them
                 // back using countPlots()
-                var array =  [ ];
-                array[NEG] = [ ];
-                array[POS] = [ ];
+                var array = [ [/*-ve*/], [/*+ve*/] ];
+                
+                array.record = function (total) {            
+                    var NP = (total < 0) ? NEG : POS;
+                    var absTotal = Math.abs(total);
+                    if (this[NP][absTotal] === undefined) {
+                        this[NP][absTotal] = [total,0];
+                    }
+                    this[NP][absTotal][1] += 1;            
+                }
+                
                 return array;
             }
             counts[50]   = flotCounts();
             counts[100]  = flotCounts(); 
-            counts[1000] = flotCounts();                     
+            counts[1000] = flotCounts();                                 
         }
+        
         
         function doOneWalk() {            
             var HEAD = +1;
             var TAIL = -1;
             var walk = [ ];
             var total = 0;
-            
-            function recordTotal(array, total) {            
-                var NP = (total < 0) ? NEG : POS;
-                var absTotal = Math.abs(total);
-                if (array[NP][absTotal] === undefined) {
-                    array[NP][absTotal] = [total,0];
-                }
-                array[NP][absTotal][1] += 1;            
-            }
-            
+                        
             for (var flip = 1; flip !== FLIPS_PER_WALK+1; flip++) {
                 if (feedback()) {
                     // I must _not_ tweak the feedback like this:
@@ -166,13 +162,13 @@
                 // whose length are both odd and even. See ***
                 
                 if (flip === 49 || flip === 50) {
-                    recordTotal(counts[50], total);
+                    counts[50].record(total);
                 }
                 if (flip === 99 || flip === 100) {
-                    recordTotal(counts[100], total);
+                    counts[100].record(total);
                 }
                 if (flip === 999 || flip === 1000) {
-                    recordTotal(counts[1000], total);
+                    counts[1000].record(total);
                 }
             }
             return walk;
@@ -419,7 +415,7 @@
         function runSimulation() {
             var n = 0;
             clearInterval(fid);            
-            resetCounts();
+            counts.reset();
             actualFeedbackCount = 0;            
             // Can't use for-loop (the plots don't appear?!)            
             fid = setInterval(
