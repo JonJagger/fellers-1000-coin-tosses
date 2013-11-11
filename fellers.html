@@ -245,54 +245,54 @@
                 };            
             }            
         };
-                
-        function countAtTotalZero(array) {
-            var count;
-            for (var i=0; i != array.length; i++) {
-                if (array[i][0] === 0) {
-                    return array[i][1];
-                }
-            }
-            return '?';
-        }
-        
-        function rangeOfTotals(array) {
-            var min = array[0][0];
-            var max = array[array.length-1][0];
-            return min + ',' + max;
-        }
-        
-        function stdDev(plots) {
-            // standard deviation is a measure of how much
-            // variation there is in the data set from its average.
-            // For a normal distribution
-            //    68.27% of the data set lies within 1 standard deviation
-            //    95.45% of the data set lies within 2 standard deviations
-            //    99.73% of the data set lies within 3 standard deviations
-            // http://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule
-            var raw = [ ];
-            for (var at = 0; at < plots.length; at++) {
-                if (plots[at] != undefined) {
-                    var total = plots[at][0];
-                    var count = plots[at][1];
-                    for (var i = 0; i < count; i++) {
-                        raw.push(total);
-                    }
-                }
-            }
-            return jStat.stdev(raw).toFixed(2);
-        }
-        
-        function walkLabel(n) {
-            var percentDone = (n / NUMBER_OF_WALKS * 100).toFixed(0);
-            return n+"th Walk (" + percentDone + "%)";
-        }
-        
+                                
         function display(n,walk) {
             var plot = getCountPlots();
             var data_50 = plot[0].data;
             var data_100 = plot[1].data;
             var data_1000 = plot[2].data;
+            
+            function walkLabel(n) {
+                var percentDone = (n / NUMBER_OF_WALKS * 100).toFixed(0);
+                return n+"th Walk (" + percentDone + "%)";
+            }
+            
+            function countAtTotalZero(array) {
+                var count;
+                for (var i=0; i != array.length; i++) {
+                    if (array[i][0] === 0) {
+                        return array[i][1];
+                    }
+                }
+                return '?';
+            }
+            
+            function rangeOfTotals(array) {
+                var min = array[0][0];
+                var max = array[array.length-1][0];
+                return min + ',' + max;
+            }
+            
+            function stdDev(plots) {
+                // standard deviation is a measure of how much
+                // variation there is in the data set from its average.
+                // For a normal distribution
+                //    68.27% of the data set lies within 1 standard deviation
+                //    95.45% of the data set lies within 2 standard deviations
+                //    99.73% of the data set lies within 3 standard deviations
+                // http://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule
+                var raw = [ ];
+                for (var at = 0; at < plots.length; at++) {
+                    if (plots[at] != undefined) {
+                        var total = plots[at][0];
+                        var count = plots[at][1];
+                        for (var i = 0; i < count; i++) {
+                            raw.push(total);
+                        }
+                    }
+                }
+                return jStat.stdev(raw).toFixed(2);
+            }
             
             $.plot($("#fellers-walk"),
                    [ { label: walkLabel(n), data: walk } ],
@@ -317,6 +317,8 @@
             $('.feedback #expected').html(expectedFeedback());
             $('.feedback #actual').html(actualFeedback(n));
         }
+        
+        //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
         function makeDialogHtml() {
             return '' +
@@ -346,13 +348,7 @@
                   '</tr>' +                      
                 '</table>';            
         }
-        
-        function setParameters(html) {
-            //TODO: check input
-            setFeedback(parseInt($('#feedback',html).val()));
-            NUMBER_OF_WALKS = parseInt($('#no_of_walks',html).val());            
-        }
-        
+                
         function makeHelpHtml() {            
             return '' +
                 '<div>' +
@@ -402,7 +398,9 @@
                 modal: true,
                 buttons: {
                   ok: function() {
-                    setParameters(html);
+                    //TODO: check input
+                    setFeedback(parseInt($('#feedback',html).val()));
+                    NUMBER_OF_WALKS = parseInt($('#no_of_walks',html).val());                                
                     runSimulation();
                     $(this).dialog('close');
                   },
