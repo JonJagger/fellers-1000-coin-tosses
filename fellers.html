@@ -102,9 +102,11 @@
         // N coin flips where N=50,100,500
         var counts = [ ];
         
-        counts.reset = function() {
+        counts.setup = function() {
             var NEG = 0;
             var POS = 1;
+            var TOTAL = 0;
+            var COUNT = 1;
             function flotCounts() {
                 // flot.js requires an array of data-points
                 // But javascript cannot use negative array indexes
@@ -113,28 +115,34 @@
                 // back using getPlot() @@@
                 var flot = [ [/*NEG*/], [/*POS*/] ];
                 //   eg array[NEG][35] => [-35,455] 
-                //   eg array[POS][12] => [12,623]                
+                //   eg array[POS][12] => [12,623]
+                flot.reset = function() {
+                    this[NEG].length = 0;
+                    this[POS].length = 0;
+                }
+                
                 flot.record = function(total) {            
                     var np = (total < 0) ? NEG : POS;
                     var absTotal = Math.abs(total);
                     if (this[np][absTotal] === undefined) {
                         this[np][absTotal] = [total,0];
                     }
-                    this[np][absTotal][1] += 1;            
+                    this[np][absTotal][COUNT] += 1;            
                 }
                                 
                 flot.makePlot = function() {
+                    var element;
                     var plot = [ ];
                     var neg = this[NEG];
                     for (var at = neg.length - 1; at >= 0; at--) {
-                        var element = neg[at];
+                        element = neg[at];
                         if (element !== undefined) {
                             plot.push(element);
                         }
                     }
                     var pos = this[POS];
                     for (var at = 0; at < pos.length; at++) {
-                        var element = pos[at];
+                        element = pos[at];
                         if (element !== undefined) {
                             plot.push(element);
                         }
@@ -146,22 +154,25 @@
                     var plot = this.makePlot();
                     
                     plot.rangeOfTotals = function() {
-                        var min = this[0][0];
-                        var max = this[this.length - 1][0];
+                        var min = this[0][TOTAL];
+                        var max = this[this.length - 1][TOTAL];
                         return min + ',' + max;
                     }
                     
                     plot.countAtTotalZero = function() {
+                        var element;
                         for (var at = 0; at !== this.length; at++) {
-                            var element = this[at];
-                            if (element[0] === 0) {
-                                return element[1];
+                            element = this[at];
+                            if (element[TOTAL] === 0) {
+                                return element[COUNT];
                             }
                         }
                         return '?';
                     }
                     
                     plot.stdDev = function() {
+                        var element, total, count;
+                        var raw = [ ];
                         // For a normal distribution
                         //    68.27%, 95.45%, 99.73% of the data set
                         // lies within 1,2,3 standard deviations
@@ -169,11 +180,11 @@
                         // There's probably a faster way of calculating
                         // std.dev when data is in this format but this
                         // brute force approach is good enough.
-                        var raw = [ ];
                         for (var at = 0; at !== this.length; at++) {
-                            if (this[at] !== undefined) {
-                                var total = this[at][0];
-                                var count = this[at][1];
+                            element = this[at];
+                            if (element !== undefined) {
+                                total = element[TOTAL];
+                                count = element[COUNT];
                                 for (var i = 0; i !== count; i++) {
                                     raw.push(total);
                                 }
@@ -188,6 +199,12 @@
             this[50]   = flotCounts();
             this[100]  = flotCounts(); 
             this[1000] = flotCounts();                                 
+        }
+        
+        counts.reset = function() {
+            this[50].reset();
+            this[100].reset();
+            this[1000].reset();
         }
         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -469,6 +486,7 @@
             $('#help').click(function() {
                 showHelp();
             });
+            counts.setup();
             setFeedback(0);
             runSimulation();
             showHelp();
