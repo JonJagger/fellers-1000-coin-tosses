@@ -97,16 +97,15 @@
         }
         
         var ordinals = undefined;
-                
-        var NEG = 0;
-        var POS = 1;
-        
+                        
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Counts of cumulative total after 
         // N coin flips where N=50,100,500
         var counts = [ ];
         
         counts.reset = function() {
+            var NEG = 0;
+            var POS = 1;
             function flotCounts() {
                 // flot.js requires an array of data-points
                 // But javascript cannot use negative array indexes
@@ -123,7 +122,7 @@
                     }
                     this[NP][absTotal][1] += 1;            
                 }
-                
+                                
                 array.getPlot = function() {            
                     function xfer(to,from) {
                         for (var at in from) {
@@ -161,6 +160,8 @@
                 { label: "after 1000 flips", data: this[1000].getPlot() },
             ];
         }
+        
+        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
         function doOneWalk() {            
             var HEAD = +1;
