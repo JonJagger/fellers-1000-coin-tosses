@@ -83,13 +83,13 @@
                 
         function expectedFeedback() {
             return (FEEDBACK === 0)
-                ? 'none'
-                : FEEDBACK + 'th throws';            
+                ? 'never'
+                : FEEDBACK;            
         }
         
         function actualFeedback(n) {
             return (actualFeedbackCount === 0)
-                ? 'none'
+                ? 'never'
                 : (1 / (actualFeedbackCount / (FLIPS_PER_WALK * n))).toFixed(2);                
         }
         
@@ -177,9 +177,9 @@
 
         function getCountPlots() {
             return [ 
-                { label: "after ~50 flips",   data: countPlot(counts_50)   },
-                { label: "after ~100 flips",  data: countPlot(counts_100)  },
-                { label: "after ~1000 flips", data: countPlot(counts_1000) },
+                { label: "after 50 flips",   data: countPlot(counts_50)   },
+                { label: "after 100 flips",  data: countPlot(counts_100)  },
+                { label: "after 1000 flips", data: countPlot(counts_1000) },
             ];
         }
         
@@ -274,6 +274,7 @@
         }
         
         function stdDev(array) {
+            //TODO:
             return jStat.stdev([1,2,3,4]).toFixed(2);
         }
         
@@ -283,28 +284,33 @@
         }
         
         function display(n,walk) {
-            var plot;
+            var plot = getCountPlots();
+            var data_50 = plot[0].data;
+            var data_100 = plot[1].data;
+            var data_1000 = plot[2].data;
+            
             $.plot($("#fellers-walk"),
                    [ { label: walkLabel(n), data: walk } ],
-                   getWalkPlotOptions(walk));                                                        
+                   getWalkPlotOptions(walk));
+            
             $.plot($("#fellers-counts"),
-                   plot = getCountPlots(),
+                   plot,
                    getCountPlotOptions());
+            
+            $('.stats #flips_50 #total').html(countAtTotalZero(data_50));
+            $('.stats #flips_100 #total').html(countAtTotalZero(data_100));
+            $('.stats #flips_1000 #total').html(countAtTotalZero(data_1000));
+            
+            $('.stats #flips_50 #range').html(rangeOfTotals(data_50));
+            $('.stats #flips_100 #range').html(rangeOfTotals(data_100));
+            $('.stats #flips_1000 #range').html(rangeOfTotals(data_1000));
+            
+            $('.stats #flips_50 #std_dev').html(stdDev(data_50));            
+            $('.stats #flips_100 #std_dev').html(stdDev(data_100));            
+            $('.stats #flips_1000 #std_dev').html(stdDev(data_1000));
             
             $('.feedback #expected').html(expectedFeedback());
             $('.feedback #actual').html(actualFeedback(n));
-            
-            $('.stats #flips_50 #total').html(countAtTotalZero(plot[0].data));
-            $('.stats #flips_100 #total').html(countAtTotalZero(plot[1].data));
-            $('.stats #flips_1000 #total').html(countAtTotalZero(plot[2].data));
-            
-            $('.stats #flips_50 #range').html(rangeOfTotals(plot[0].data));
-            $('.stats #flips_100 #range').html(rangeOfTotals(plot[1].data));
-            $('.stats #flips_1000 #range').html(rangeOfTotals(plot[2].data));
-            
-            $('.stats #flips_50 #std_dev').html(stdDev(plot[0].data));            
-            $('.stats #flips_100 #std_dev').html(stdDev(plot[1].data));            
-            $('.stats #flips_1000 #std_dev').html(stdDev(plot[2].data));            
         }
         
         function makeDialogHtml() {
@@ -360,11 +366,14 @@
             setup.dialog('open');
         }
         
+        var fid = undefined;
+        
         function runSimulation() {
-            $('.stats').show();            
+            $('#fellers-walk, #fellers-counts').show();            
+            $('.stats, .feedback, #run_again').show();            
             // Can't use for-loop (the plots don't appear?!)
             var n = 0;
-            var fid = setInterval(
+            fid = setInterval(
                 function() {
                     if (n++ === NUMBER_OF_WALKS) {
                         clearInterval(fid);
@@ -377,13 +386,20 @@
                 },
                 0);            
         }
+                   
+        function runAgain() {
+            clearInterval(fid);
+            $('#fellers-walk, #fellers-counts').hide();
+            $('.stats, .feedback, #run_again').hide();
+            setupAndRunSimulation();            
+        }
         
         $(document).ready(function () {
-            //TODO: add button to run again
-            //TODO: calc and show variance's
+            $('#run_again').click(function() {
+                runAgain();
+            });
             setFeedback(0);
-            $('.stats').hide();
-            setupAndRunSimulation();
+            runAgain();
         });
         
     </script>
@@ -401,6 +417,13 @@
         border: solid 1px black;
         padding: 0.25em;
     }
+    .feedback caption {
+        font-weight: bold;
+    }
+    #run_again {
+        font-size: 2em;
+        display: inline-block;
+    }
     </style>      
 </head>
 <body>                
@@ -415,42 +438,44 @@
     
     <table class="stats">
         <tr>
-            <th>~flips</th>
-            <th>count[total=0]</th>
+            <th>flips</th>
+            <th>count<br>[total=0]</th>
             <th>range</th>
             <th>std-dev</th>
         </tr>
         <tr id="flips_50">
             <th>50</th>
-            <td><span id="total"></span></td>
-            <td><span id="range"></span></td>
-            <td><span id="std_dev"></span></td>
+            <td id="total"></td>
+            <td id="range"></td>
+            <td id="std_dev"></td>
         </tr>
         <tr id="flips_100">
             <th>100</th>
-            <td><span id="total"></span></td>
-            <td><span id="range"></span></td>
-            <td><span id="std_dev"></span></td>
+            <td id="total"></td>
+            <td id="range"></td>
+            <td id="std_dev"></td>
         </tr>
         <tr id="flips_1000">
             <th>1000</th>
-            <td><span id="total"></span></td>
-            <td><span id="range"></span></td>
-            <td><span id="std_dev"></span></td>            
+            <td id="total"></td>
+            <td id="range"></td>
+            <td id="std_dev"></td>            
         </tr>
     </table>
 
     <table class="feedback">
-        <caption><b>feedback</b></caption>
+        <caption>throws / feedback</caption>
         <tr>
             <td>expected</td>
-            <td><span id="expected"></span></td>
+            <td id="expected"></td>
         </tr>
         <tr>
             <td>actual</td>
-            <td><span id="actual"></span></td>
+            <td id="actual"></td>
         </tr>
     </table>
+    
+    <input type="button" id="run_again" value="run again">
     
 </body>
 </html>
