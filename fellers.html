@@ -406,6 +406,7 @@
         
         function reRunSimulation() {
             var html = $(makeDialogHtml());
+            //TODO: hit enter on feedback input to ok the dialog
             var setup = html.dialog({	  
                 title: "Feller's walk",
                 autoOpen: false,
@@ -495,59 +496,59 @@
 <table>
     <tr>
         <td>
-    <table>
-        <tr>
-            <td>
-                <input type="button" id="run_again" value="run again">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="button" id="help" value="help">
-            </td>
-        </tr>
-    </table>
+            <table>
+                <tr>
+                    <td>
+                        <input type="button" id="run_again" value="run again">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" id="help" value="help">
+                    </td>
+                </tr>
+            </table>
         </td>
         <td>    
-    <table class="stats">
-        <tr>
-            <th>flips</th>
-            <th>count[0]</th>
-            <th>range</th>
-            <th>std.dev</th>
-        </tr>
-        <tr id="flips_50">
-            <th>50</th>
-            <td id="total"></td>
-            <td id="range"></td>
-            <td id="std_dev"></td>
-        </tr>
-        <tr id="flips_100">
-            <th>100</th>
-            <td id="total"></td>
-            <td id="range"></td>
-            <td id="std_dev"></td>
-        </tr>
-        <tr id="flips_1000">
-            <th>1000</th>
-            <td id="total"></td>
-            <td id="range"></td>
-            <td id="std_dev"></td>            
-        </tr>
-    </table>
+            <table class="stats">
+                <tr>
+                    <th>flips</th>
+                    <th>count[0]</th>
+                    <th>range</th>
+                    <th>std.dev</th>
+                </tr>
+                <tr id="flips_50">
+                    <th>50</th>
+                    <td id="total"></td>
+                    <td id="range"></td>
+                    <td id="std_dev"></td>
+                </tr>
+                <tr id="flips_100">
+                    <th>100</th>
+                    <td id="total"></td>
+                    <td id="range"></td>
+                    <td id="std_dev"></td>
+                </tr>
+                <tr id="flips_1000">
+                    <th>1000</th>
+                    <td id="total"></td>
+                    <td id="range"></td>
+                    <td id="std_dev"></td>            
+                </tr>
+            </table>
         </td>
         <td>
-    <table class="feedback">
-        <caption>throws / nudge</caption>
-        <tr>
-            <td>expected</td>
-            <td id="expected"></td>
-        </tr>
-        <tr>
-            <td>actual</td>
-            <td id="actual"></td>
-        </tr>
-    </table>
+            <table class="feedback">
+                <caption>throws / nudge</caption>
+                <tr>
+                    <td>expected</td>
+                    <td id="expected"></td>
+                </tr>
+                <tr>
+                    <td>actual</td>
+                    <td id="actual"></td>
+                </tr>
+            </table>
         </td>
     </tr>
 </table>
