@@ -59,8 +59,8 @@
             if (i === 0) {
                 return this;
             }
-            while ( --i ) {
-               j = Math.floor( Math.random() * ( i + 1 ) );
+            while (--i) {
+               j = Math.floor(Math.random() * (i + 1));
                temp = this[i];
                this[i] = this[j];
                this[j] = temp;
@@ -90,8 +90,8 @@
         
         function makeOrdinals(n) {
             var array = [ ];
-            for (var i = 0; i < n; i++) {
-                array.push(i);
+            for (var at = 0; at !== n; at++) {
+                array.push(at);
             }
             return array;            
         }
@@ -140,7 +140,7 @@
                 array[NP][absTotal][1] += 1;            
             }
             
-            for (var flip = 1; flip < FLIPS_PER_WALK+1; flip++) {
+            for (var flip = 1; flip !== FLIPS_PER_WALK+1; flip++) {
                 if (feedback()) {
                     // I must _not_ tweak the feedback like this:
                     //    if (total < 0)
@@ -181,13 +181,13 @@
                 var probs = [ [ ], [ ] ];
                 var neg = counts[NEG];
                 for (var at in neg) {
-                    if (neg[at] != undefined) {
+                    if (neg[at] !== undefined) {
                         probs[NEG][at] = neg[at];
                     }
                 }
                 var pos = counts[POS];
                 for (var at in pos) {
-                    if (pos[at] != undefined) {
+                    if (pos[at] !== undefined) {
                         probs[POS][at] = pos[at];
                     }
                 }
@@ -195,8 +195,8 @@
                 // all has lots of null entries because the array indexes
                 // are not contiguous. plot cannot handle nulls
                 var plot = [ ];
-                for (var at = 0; at < all.length; at++) {
-                    if (all[at] != undefined) {
+                for (var at = 0; at !== all.length; at++) {
+                    if (all[at] !== undefined) {
                         plot.push(all[at]);
                     }
                 }            
@@ -254,14 +254,14 @@
             
             function walkLabel(n) {
                 var percentDone = (n / NUMBER_OF_WALKS * 100).toFixed(0);
-                return n+"th Walk (" + percentDone + "%)";
+                return n + "th Walk (" + percentDone + "%)";
             }
             
             function countAtTotalZero(array) {
                 var count;
-                for (var i=0; i != array.length; i++) {
-                    if (array[i][0] === 0) {
-                        return array[i][1];
+                for (var at = 0; at !== array.length; at++) {
+                    if (array[at][0] === 0) {
+                        return array[at][1];
                     }
                 }
                 return '?';
@@ -269,7 +269,7 @@
             
             function rangeOfTotals(array) {
                 var min = array[0][0];
-                var max = array[array.length-1][0];
+                var max = array[array.length - 1][0];
                 return min + ',' + max;
             }
             
@@ -282,11 +282,11 @@
                 //    99.73% of the data set lies within 3 standard deviations
                 // http://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule
                 var raw = [ ];
-                for (var at = 0; at < plots.length; at++) {
-                    if (plots[at] != undefined) {
+                for (var at = 0; at !== plots.length; at++) {
+                    if (plots[at] !== undefined) {
                         var total = plots[at][0];
                         var count = plots[at][1];
-                        for (var i = 0; i < count; i++) {
+                        for (var i = 0; i !== count; i++) {
                             raw.push(total);
                         }
                     }
