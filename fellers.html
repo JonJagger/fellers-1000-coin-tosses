@@ -111,7 +111,7 @@
                 // But javascript cannot use negative array indexes
                 // So I use one array for -ve x-values and
                 // one array for +ve x-values and convert them
-                // back using countPlots()
+                // back using getPlot()
                 var array = [ ];
                 array[NEG] = [ ];
                 array[POS] = [ ];
@@ -163,13 +163,9 @@
                     }
                     
                     plot.stdDev = function() {
-                        // standard deviation is a measure of how much
-                        // variation there is in the data set from its average.
                         // For a normal distribution
-                        //    68.27% of the data set lies within 1 standard deviation
-                        //    95.45% of the data set lies within 2 standard deviations
-                        //    99.73% of the data set lies within 3 standard deviations
-                        // http://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule
+                        //    68.27%, 95.45%, 99.73% of the data set
+                        // lies within 1,2,3 standard deviations
                         var raw = [ ];
                         for (var at = 0; at !== this.length; at++) {
                             if (this[at] !== undefined) {
@@ -237,6 +233,8 @@
             return walk;
         }       
         
+        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        
         var plotOptions = {
             forCounts: function() {                            
                 return {
@@ -273,6 +271,8 @@
                 };            
             }            
         };
+                          
+        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                                 
         function display(n,walk) {
             var data_50 = counts[50].getPlot();
@@ -346,6 +346,8 @@
                 '</table>';            
         }
                 
+        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                
         function makeHelpHtml() {            
             return '' +
                 '<div>' +
@@ -369,6 +371,8 @@
                 '</div>';
         }
         
+        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        
         function showHelp() {
             var html = $(makeHelpHtml());
             var help = html.dialog({	  
@@ -385,6 +389,8 @@
             help.dialog('open');            
         }
         
+        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
         function reRunSimulation() {
             var html = $(makeDialogHtml());
             //TODO: hit enter on feedback input to ok the dialog
@@ -409,6 +415,8 @@
             setup.dialog('open');
         }
         
+        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        
         var fid = undefined;
         
         function runSimulation() {
@@ -430,8 +438,10 @@
                 },
                 0);            
         }
+                     
+        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                            
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#run_again').click(function() {
                 reRunSimulation();
             });
@@ -466,15 +476,16 @@
     }    
     </style>      
 </head>
-<body>                
-    <table>
-        <tr>
-            <td><div id="fellers-walk"></div></td>
-        </tr>
-        <tr>
-            <td><div id="fellers-counts"></div></td>
-        </tr>
-    </table>
+<body>
+    
+<table>
+    <tr>
+        <td><div id="fellers-walk"></div></td>
+    </tr>
+    <tr>
+        <td><div id="fellers-counts"></div></td>
+    </tr>
+</table>
     
 <table>
     <tr>
