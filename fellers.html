@@ -115,7 +115,7 @@
                 // back using countPlots()
                 var array = [ [/*-ve*/], [/*+ve*/] ];
                 
-                array.record = function (total) {            
+                array.record = function(total) {            
                     var NP = (total < 0) ? NEG : POS;
                     var absTotal = Math.abs(total);
                     if (this[NP][absTotal] === undefined) {
@@ -123,6 +123,29 @@
                     }
                     this[NP][absTotal][1] += 1;            
                 }
+                
+                array.getPlot = function() {            
+                    function xfer(to,from) {
+                        for (var at in from) {
+                            if (from[at] !== undefined) {
+                                to[at] = from[at];
+                            }
+                        }                
+                    }            
+                    var probs = [ [ ], [ ] ];
+                    xfer(probs[NEG], this[NEG]);
+                    xfer(probs[POS], this[POS]);                
+                    var all = probs[NEG].reverse().concat(probs[POS]);
+                    // all has lots of null entries because the array indexes
+                    // are not contiguous. plot cannot handle nulls
+                    var plot = [ ];
+                    for (var at = 0; at !== all.length; at++) {
+                        if (all[at] !== undefined) {
+                            plot.push(all[at]);
+                        }
+                    }            
+                    return plot;
+                }            
                 
                 return array;
             }
@@ -174,36 +197,11 @@
             return walk;
         }       
 
-        function getCountPlots() {
-            function countPlot(counts) {            
-                var probs = [ [ ], [ ] ];
-                var neg = counts[NEG];
-                for (var at in neg) {
-                    if (neg[at] !== undefined) {
-                        probs[NEG][at] = neg[at];
-                    }
-                }
-                var pos = counts[POS];
-                for (var at in pos) {
-                    if (pos[at] !== undefined) {
-                        probs[POS][at] = pos[at];
-                    }
-                }
-                var all = probs[NEG].reverse().concat(probs[POS]);
-                // all has lots of null entries because the array indexes
-                // are not contiguous. plot cannot handle nulls
-                var plot = [ ];
-                for (var at = 0; at !== all.length; at++) {
-                    if (all[at] !== undefined) {
-                        plot.push(all[at]);
-                    }
-                }            
-                return plot;
-            }            
+        function getCountPlots() {            
             return [ 
-                { label: "after 50 flips",   data: countPlot(counts[50])   },
-                { label: "after 100 flips",  data: countPlot(counts[100])  },
-                { label: "after 1000 flips", data: countPlot(counts[1000]) },
+                { label: "after 50 flips",   data: counts[50].getPlot()   },
+                { label: "after 100 flips",  data: counts[100].getPlot()  },
+                { label: "after 1000 flips", data: counts[1000].getPlot() },
             ];
         }
         
