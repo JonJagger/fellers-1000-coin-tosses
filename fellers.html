@@ -63,15 +63,12 @@
             }
             return this;
         }
+        
         var actualFeedbackCount = 0;
         
         function feedback() {
             ordinals.shuffle();
-            var result = (ordinals !== [ ] && ordinals[0] === 0);
-            if (result) {
-                actualFeedbackCount += 1;
-            }
-            return result;
+            return (ordinals !== [ ] && ordinals[0] === 0);
         }
                 
         function expectedFeedback() {
@@ -83,8 +80,7 @@
         function actualFeedback(n) {
             return (actualFeedbackCount === 0)
                 ? 'none'
-                : (1 / (actualFeedbackCount / (FLIPS_PER_WALK * n))).toFixed(2);
-                
+                : (1 / (actualFeedbackCount / (FLIPS_PER_WALK * n))).toFixed(2);                
         }
         
         var ordinals = function() {
@@ -134,6 +130,7 @@
                     // This will alter the final total to be odd when
                     // its normally even (or vice versa). See ***
                     // Thus I will get an outlier in the series data.
+                    actualFeedbackCount += 1;                    
                     total += (total < 0) ? HEAD : TAIL;
                 } else {
                     total += (Math.random() < 0.5) ? HEAD : TAIL;
