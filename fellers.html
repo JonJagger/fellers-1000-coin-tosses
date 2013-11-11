@@ -317,7 +317,7 @@
         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
-        function makeDialogHtml() {
+        function makeReRunDialogHtml() {
             return '' +
                 '<table>' +
                   '<tr>' +
@@ -392,7 +392,7 @@
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         function reRunSimulation() {
-            var html = $(makeDialogHtml());
+            var html = $(makeReRunDialogHtml());
             //TODO: hit enter on feedback input to ok the dialog
             var setup = html.dialog({	  
                 title: "Feller's walk",
