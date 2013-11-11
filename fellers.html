@@ -378,13 +378,13 @@
                   'Suppose you occasionally nudge the total back towards zero. ' +
                   'How effective are these nudges? ' +
                   '<br><br>' +
-                  'The top graph shows individual walks in green, rising as ' +
+                  'The top graph shows individual walks, in green, rising as ' +
                   'the total increases, dropping as the total decreases.' +
                   '<br><br>' +
                   'The bottom graph shows how often each total has occurred. ' +
                   'For example, the blue line plots the total 100 coin flips ' +
                   'into a walk. A point x=5, y=300 on the blue line means that ' +
-                  '300 of the walks had a total of 5 after 100 flips. ' +
+                  '300 of the walks had a total of 5 after 100 coin flips. ' +
                 '</div>';
         }
         
@@ -393,7 +393,7 @@
             var help = html.dialog({	  
                 title: "help",
                 autoOpen: false,
-                width: 750,
+                width: 700,
                 modal: true,
                 buttons: {
                   ok: function() {
@@ -478,7 +478,7 @@
         font-weight: bold;
     }
     .ui-dialog {
-          opacity: 0.8;
+          opacity: 0.75;
     }    
     </style>      
 </head>
