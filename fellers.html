@@ -194,7 +194,7 @@
         function doOneWalk() {            
             var HEAD = +1;
             var TAIL = -1;
-            var walk = [ ];
+            var walk = [ [0,0] ];
             var total = 0;
                         
             for (var flip = 1; flip !== FLIPS_PER_WALK+1; flip++) {
@@ -238,17 +238,13 @@
                     walk.push([flip,total]);
                 }
                 
-                // To get a smooth plot with values for both 
-                // odd and even totals I need totals for walks
-                // whose length are both odd and even. See ***
-                
-                if (flip === 49 || flip === 50) {
+                if (flip === 50) { 
                     counts[50].record(total);
                 }
-                if (flip === 99 || flip === 100) {
+                if (flip === 100) { 
                     counts[100].record(total);
                 }
-                if (flip === 999 || flip === 1000) {
+                if (flip === 1000) { 
                     counts[1000].record(total);
                 }
             }
