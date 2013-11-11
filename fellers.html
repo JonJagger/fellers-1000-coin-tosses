@@ -275,24 +275,24 @@
         };
                                 
         function display(n,walk) {
+            var data_50 = counts[50].getPlot();
+            var data_100 = counts[100].getPlot();
+            var data_1000 = counts[1000].getPlot();
+
             var plots =
                 [ 
-                    { label: "after 50 flips",   data: counts[50].getPlot()   },
-                    { label: "after 100 flips",  data: counts[100].getPlot()  },
-                    { label: "after 1000 flips", data: counts[1000].getPlot() },
+                    { label: "after 50 flips",   data: data_50   },
+                    { label: "after 100 flips",  data: data_100  },
+                    { label: "after 1000 flips", data: data_1000 },
                 ];
-            
-            var data_50 = plots[0].data;
-            var data_100 = plots[1].data;
-            var data_1000 = plots[2].data;
-            
-            function walkLabel(n) {
+                        
+            function walkLabel() {
                 var percentDone = (n / NUMBER_OF_WALKS * 100).toFixed(0);
                 return n + "th Walk (" + percentDone + "%)";
             }
                         
             $.plot($("#fellers-walk"),
-                   [ { label: walkLabel(n), data: walk } ],
+                   [ { label: walkLabel(), data: walk } ],
                    plotOptions.forWalk(walk));
             
             $.plot($("#fellers-counts"),
