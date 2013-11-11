@@ -162,6 +162,27 @@
                         return '?';
                     }
                     
+                    plot.stdDev = function() {
+                        // standard deviation is a measure of how much
+                        // variation there is in the data set from its average.
+                        // For a normal distribution
+                        //    68.27% of the data set lies within 1 standard deviation
+                        //    95.45% of the data set lies within 2 standard deviations
+                        //    99.73% of the data set lies within 3 standard deviations
+                        // http://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule
+                        var raw = [ ];
+                        for (var at = 0; at !== this.length; at++) {
+                            if (this[at] !== undefined) {
+                                var total = this[at][0];
+                                var count = this[at][1];
+                                for (var i = 0; i !== count; i++) {
+                                    raw.push(total);
+                                }
+                            }
+                        }
+                        return jStat.stdev(raw).toFixed(2);
+                    }
+                    
                     return plot;
                 }            
                 
@@ -170,14 +191,6 @@
             this[50]   = flotCounts();
             this[100]  = flotCounts(); 
             this[1000] = flotCounts();                                 
-        }
-        
-        counts.getPlots = function() {            
-            return [ 
-                { label: "after 50 flips",   data: this[50].getPlot()   },
-                { label: "after 100 flips",  data: this[100].getPlot()  },
-                { label: "after 1000 flips", data: this[1000].getPlot() },
-            ];
         }
         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -262,43 +275,28 @@
         };
                                 
         function display(n,walk) {
-            var plot = counts.getPlots();
-            var data_50 = plot[0].data;
-            var data_100 = plot[1].data;
-            var data_1000 = plot[2].data;
+            var plots =
+                [ 
+                    { label: "after 50 flips",   data: counts[50].getPlot()   },
+                    { label: "after 100 flips",  data: counts[100].getPlot()  },
+                    { label: "after 1000 flips", data: counts[1000].getPlot() },
+                ];
+            
+            var data_50 = plots[0].data;
+            var data_100 = plots[1].data;
+            var data_1000 = plots[2].data;
             
             function walkLabel(n) {
                 var percentDone = (n / NUMBER_OF_WALKS * 100).toFixed(0);
                 return n + "th Walk (" + percentDone + "%)";
             }
-            
-            function stdDev(plots) {
-                // standard deviation is a measure of how much
-                // variation there is in the data set from its average.
-                // For a normal distribution
-                //    68.27% of the data set lies within 1 standard deviation
-                //    95.45% of the data set lies within 2 standard deviations
-                //    99.73% of the data set lies within 3 standard deviations
-                // http://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule
-                var raw = [ ];
-                for (var at = 0; at !== plots.length; at++) {
-                    if (plots[at] !== undefined) {
-                        var total = plots[at][0];
-                        var count = plots[at][1];
-                        for (var i = 0; i !== count; i++) {
-                            raw.push(total);
-                        }
-                    }
-                }
-                return jStat.stdev(raw).toFixed(2);
-            }
-            
+                        
             $.plot($("#fellers-walk"),
                    [ { label: walkLabel(n), data: walk } ],
                    plotOptions.forWalk(walk));
             
             $.plot($("#fellers-counts"),
-                   plot,
+                   plots,
                    plotOptions.forCounts());
             
             $('.stats #flips_50 #total').html(data_50.countAtTotalZero());
@@ -309,9 +307,9 @@
             $('.stats #flips_100 #range').html(data_100.rangeOfTotals());
             $('.stats #flips_1000 #range').html(data_1000.rangeOfTotals());
             
-            $('.stats #flips_50 #std_dev').html(stdDev(data_50));            
-            $('.stats #flips_100 #std_dev').html(stdDev(data_100));            
-            $('.stats #flips_1000 #std_dev').html(stdDev(data_1000));
+            $('.stats #flips_50 #std_dev').html(data_50.stdDev());            
+            $('.stats #flips_100 #std_dev').html(data_100.stdDev());            
+            $('.stats #flips_1000 #std_dev').html(data_1000.stdDev());
             
             $('.feedback #expected').html(expectedFeedback());
             $('.feedback #actual').html(actualFeedback(n));
