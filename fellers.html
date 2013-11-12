@@ -73,6 +73,7 @@
         }
         
         feedback.reset = function(n) {
+            feedback.actualCount = 0;
             feedback.expectedCount = n;
             feedback.ordinals = feedback.makeOrdinals(n);
         }
@@ -465,7 +466,6 @@
             var n = 0;
             clearInterval(fid);            
             counts.reset();
-            feedback.actualCount = 0;            
             // Can't use for-loop (the plots don't appear?!)            
             fid = setInterval(
                 function() {
