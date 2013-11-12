@@ -178,7 +178,7 @@
         
         var counts = [ ];
         
-        counts.points = [ 50,100,FLIPS_PER_WALK ]; // when total is recorded
+        counts.points = [ 10,100,FLIPS_PER_WALK ]; // when total is recorded
         
         counts.getPoint = function(n) {
             return counts.points[n];
@@ -339,6 +339,8 @@
                     xaxis: {
                         axisLabel: "freq&uarr; &larr;total&rarr;",
                         position: "bottom",
+                        min: -50,
+                        max: 50                                            
                     },
                     series: {
                         lines: { show: true },
@@ -525,7 +527,7 @@
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                            
         $(document).ready(function() {
-            $('#run_again').click(function() {
+            $('#re_run').click(function() {
                 reRunSimulation();
             });
             $('#help').click(function() {
@@ -581,7 +583,7 @@
             <table>
                 <tr>
                     <td>
-                        <input type="button" id="run_again" value="run again">
+                        <input type="button" id="re_run" value="re-run">
                     </td>
                 </tr>
                 <tr>
