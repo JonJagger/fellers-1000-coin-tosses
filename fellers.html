@@ -322,6 +322,7 @@
                    plotOptions.forCounts());
             
             for (var at = 0; at !== countPlots.length; at++) {
+                $('.stats #flips_'+at+' th').html(counts.getPoint(at));
                 stat('total',  at).html(countPlots[at].data.countAtTotalZero());
                 stat('range',  at).html(countPlots[at].data.rangeOfTotals());
                 stat('std_dev',at).html(countPlots[at].data.stdDev());                            
@@ -584,19 +585,19 @@
                     <th>std.dev</th>
                 </tr>
                 <tr id="flips_0">
-                    <th>50</th>
+                    <th></th>
                     <td id="total"></td>
                     <td id="range"></td>
                     <td id="std_dev"></td>
                 </tr>
                 <tr id="flips_1">
-                    <th>100</th>
+                    <th></th>
                     <td id="total"></td>
                     <td id="range"></td>
                     <td id="std_dev"></td>
                 </tr>
                 <tr id="flips_2">
-                    <th>1000</th>
+                    <th></th>
                     <td id="total"></td>
                     <td id="range"></td>
                     <td id="std_dev"></td>            
