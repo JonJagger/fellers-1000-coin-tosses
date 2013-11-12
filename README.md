@@ -1,24 +1,23 @@
 Fellers-1000-coin-tosses
 ========================
 
-This is a simple html file using javascript to simulate lots
-of "Feller's walks" where each Feller's walk is a 1000 step walk
-as described on pages 77,78 of Don Reinersten's book
-<a href="http://jonjagger.blogspot.co.uk/2012/06/principles-of-product-development-flow.html">
-The Principles of Product Development FLOW</a>.
-
-Image you have a fair coin, and you flip it 1000 times.
-These 1000 coin flips comprise one walk.
-For each walk, you start with a total of zero, and, each time
-you flip the coin, you add 1 to your total if you get a head,
-and you subtract 1 from your total if you get a tail.
+This is a simple active web-page to simulate lots of "Feller's walks".
+Each walk is 1000 steps long, and at each step you flip a fair coin.
+As you walk you keep a running total (starting at zero), 
+adding 1 to your total if you flip a head,
+subtracting 1 from your total if you flip a tail.
 
 What will the cumulative total look like as the number of coin flips
-progresses from 1 to 1000? Most people's intuition
-is that the total will hover around zero. However, as Don explains,
-this is not true. 
+progresses from 1 to 1000? 
 
-How effective are occasional nudges back towards zero during the walk?
+Most people's intuition is that the total will hover around zero.
+Does it?
 
 Try it!
 https://rawgithub.com/JonJagger/Fellers-1000-coin-tosses/master/fellers.html
+
+How effective are occasional nudges back towards zero during the walk?
+
+I discovered Feller's walk on page 77 of Don Reinersten's book
+<a href="http://jonjagger.blogspot.co.uk/2012/06/principles-of-product-development-flow.html">
+The Principles of Product Development FLOW</a>.
