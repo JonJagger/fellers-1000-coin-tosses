@@ -296,25 +296,27 @@
         // UI code from here
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
-        function getLabelledPlot(n) {
-            return {
-                label: "after " + counts.getPoint(n) + " flips",
-                data: counts.getPlot(n)
-            }
-        }
-        
         function display(n,walk) {
+            function getLabelledPlot(n) {
+                return {
+                    label: "after " + counts.getPoint(n) + " flips",
+                    data: counts.getPlot(n)
+                }
+            }
+            function walkLabel() {
+                var percentDone = (n / NUMBER_OF_WALKS * 100).toFixed(0);
+                return n + "th Walk (" + percentDone + "%)";
+            }
+            function stat(kind,n) {
+                return $('.stats #flips_' + n + ' #' + kind);    
+            }
+            
             var plots =
                 [ 
                     getLabelledPlot(0),
                     getLabelledPlot(1),
                     getLabelledPlot(2),
                 ];
-                        
-            function walkLabel() {
-                var percentDone = (n / NUMBER_OF_WALKS * 100).toFixed(0);
-                return n + "th Walk (" + percentDone + "%)";
-            }
                         
             $.plot($("#fellers-walk"),
                    [ { label: walkLabel(), data: walk } ],
@@ -323,10 +325,6 @@
             $.plot($("#fellers-counts"),
                    plots,
                    plotOptions.forCounts());
-            
-            function stat(kind,n) {
-                return $('.stats #flips_' + n + ' #' + kind);    
-            }
             
             for (var at = 0; at !== plots.length; at++) {
                 stat('total',  at).html(plots[at].data.countAtTotalZero());
