@@ -44,62 +44,60 @@
         // To get a feedback nudge every Nth throw (on average)
         // set FEEDBACK to N. To get no feedback set N to zero.
         
-        var feedback = { };
-        
+        var feedback = {
+            expectedCount: undefined,
+            actualCount: 0,
+            ordinals: undefined
+        };
+                
         feedback.nudge = function() {
-            // Must be independent of the walk number
-            ordinals.shuffle();
-            return (ordinals !== [ ] && ordinals[0] === 0);            
+            // Deliberately independent of the walk number
+            feedback.ordinals.shuffle();
+            var result = (feedback.ordinals !== [ ] && feedback.ordinals[0] === 0);
+            if (result) {
+                feedback.actualCount += 1;
+            }
+            return result;
         }                        
         
-        feedback.reset = function(n) {
-            FEEDBACK = n;
-            ordinals = makeOrdinals(n);
+        feedback.expected = function() {
+            return (feedback.expectedCount === 0)
+                ? 'never'
+                : feedback.expectedCount;            
         }
-
-        var ordinals = undefined;
         
-        function makeOrdinals(n) {
+        feedback.actual = function(n) {
+            return (feedback.actualCount === 0)
+                ? 'never'
+                : (1 / (feedback.actualCount / (FLIPS_PER_WALK * n))).toFixed(2);                
+        }
+        
+        feedback.reset = function(n) {
+            feedback.expectedCount = n;
+            feedback.ordinals = feedback.makeOrdinals(n);
+        }
+        
+        feedback.makeOrdinals = function(n) {
             var array = [ ];
             for (var at = 0; at !== n; at++) {
                 array.push(at);
             }
+            array.shuffle = function() {
+                // Fischer-Yates shuffle (after Ronald Fisher)
+                // http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+                var i = this.length, j, temp;
+                if (i === 0) {
+                    return;
+                }
+                while (--i) {
+                   j = Math.floor(Math.random() * (i + 1));
+                   temp = this[i];
+                   this[i] = this[j];
+                   this[j] = temp;
+                }
+            }
             return array;            
         }
-        
-
-        var FEEDBACK = undefined;        
-        
-        Array.prototype.shuffle = function() {
-            // Fischer-Yates shuffle (after Ronald Fisher)
-            // http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
-            var i = this.length, j, temp;
-            if (i === 0) {
-                return this;
-            }
-            while (--i) {
-               j = Math.floor(Math.random() * (i + 1));
-               temp = this[i];
-               this[i] = this[j];
-               this[j] = temp;
-            }
-            return this;
-        }
-        
-        var actualFeedbackCount = 0;
-        
-        feedback.expected = function() {
-            return (FEEDBACK === 0)
-                ? 'never'
-                : FEEDBACK;            
-        }
-        
-        feedback.actual = function(n) {
-            return (actualFeedbackCount === 0)
-                ? 'never'
-                : (1 / (actualFeedbackCount / (FLIPS_PER_WALK * n))).toFixed(2);                
-        }
-        
                         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Counts of cumulative total after 
@@ -253,9 +251,7 @@
                     //     total -= toss; 
                     //   }
                     // In this case a nudge would have no net effect on the
-                    // total and the odd/even-ness would not be preserved.
-                    
-                    actualFeedbackCount += 1;                    
+                    // total and the odd/even-ness would not be preserved.                    
                     total += (total < 0) ? HEAD : TAIL;
                 } else {
                     total += (Math.random() < 0.5) ? HEAD : TAIL;
@@ -373,7 +369,7 @@
                     '<td>' +  
                       '<input type="text"' +
                              'style="width:3em;"' +
-                             'value="' + FEEDBACK + '"' +
+                             'value="' + feedback.expectedCount + '"' +
                              'id="feedback">' +
                        '&nbsp;th flip (0 for never)' +
                     '</td>' +
@@ -469,7 +465,7 @@
             var n = 0;
             clearInterval(fid);            
             counts.reset();
-            actualFeedbackCount = 0;            
+            feedback.actualCount = 0;            
             // Can't use for-loop (the plots don't appear?!)            
             fid = setInterval(
                 function() {
