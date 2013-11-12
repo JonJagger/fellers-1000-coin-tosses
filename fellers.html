@@ -180,6 +180,10 @@
         
         counts.points = [ 50,100,FLIPS_PER_WALK ];
         
+        counts.getPoint = function(n) {
+            return counts.points[n];
+        }
+        
         counts.getPlot = function(n) {
             return counts[counts.points[n]].getPlot();    
         }
@@ -292,18 +296,19 @@
         // UI code from here
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
+        function getLabelledPlot(n) {
+            return {
+                label: "after " + counts.getPoint(n) + " flips",
+                data: counts.getPlot(n)
+            }
+        }
+        
         function display(n,walk) {
             var plots =
                 [ 
-                    { label: "after 50 flips",
-                      data: counts.getPlot(0)
-                    },
-                    { label: "after 100 flips",
-                      data: counts.getPlot(1)
-                    },
-                    { label: "after " + FLIPS_PER_WALK + " flips",
-                      data: counts.getPlot(2)
-                    },
+                    getLabelledPlot(0),
+                    getLabelledPlot(1),
+                    getLabelledPlot(2),
                 ];
                         
             function walkLabel() {
@@ -319,17 +324,15 @@
                    plots,
                    plotOptions.forCounts());
             
-            $('.stats #flips_50 #total').html(plots[0].data.countAtTotalZero());
-            $('.stats #flips_100 #total').html(plots[1].data.countAtTotalZero());
-            $('.stats #flips_1000 #total').html(plots[2].data.countAtTotalZero());
+            function stat(kind,n) {
+                return $('.stats #flips_' + n + ' #' + kind);    
+            }
             
-            $('.stats #flips_50 #range').html(plots[0].data.rangeOfTotals());
-            $('.stats #flips_100 #range').html(plots[1].data.rangeOfTotals());
-            $('.stats #flips_1000 #range').html(plots[2].data.rangeOfTotals());
-            
-            $('.stats #flips_50 #std_dev').html(plots[0].data.stdDev());            
-            $('.stats #flips_100 #std_dev').html(plots[1].data.stdDev());            
-            $('.stats #flips_1000 #std_dev').html(plots[2].data.stdDev());
+            for (var at = 0; at !== plots.length; at++) {
+                stat('total',  at).html(plots[at].data.countAtTotalZero());
+                stat('range',  at).html(plots[at].data.rangeOfTotals());
+                stat('std_dev',at).html(plots[at].data.stdDev());                            
+            }
             
             $('.feedback #expected').html(feedback.expected());
             $('.feedback #actual').html(feedback.actual(n));
@@ -587,19 +590,19 @@
                     <th>range</th>
                     <th>std.dev</th>
                 </tr>
-                <tr id="flips_50">
+                <tr id="flips_0">
                     <th>50</th>
                     <td id="total"></td>
                     <td id="range"></td>
                     <td id="std_dev"></td>
                 </tr>
-                <tr id="flips_100">
+                <tr id="flips_1">
                     <th>100</th>
                     <td id="total"></td>
                     <td id="range"></td>
                     <td id="std_dev"></td>
                 </tr>
-                <tr id="flips_1000">
+                <tr id="flips_2">
                     <th>1000</th>
                     <td id="total"></td>
                     <td id="range"></td>
