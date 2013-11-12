@@ -44,12 +44,31 @@
         // To get a feedback nudge every Nth throw (on average)
         // set FEEDBACK to N. To get no feedback set N to zero.
         
-        var FEEDBACK = undefined;
+        var feedback = { };
         
-        function setFeedback(n) {
+        feedback.nudge = function() {
+            // Must be independent of the walk number
+            ordinals.shuffle();
+            return (ordinals !== [ ] && ordinals[0] === 0);            
+        }                        
+        
+        feedback.reset = function(n) {
             FEEDBACK = n;
             ordinals = makeOrdinals(n);
         }
+
+        var ordinals = undefined;
+        
+        function makeOrdinals(n) {
+            var array = [ ];
+            for (var at = 0; at !== n; at++) {
+                array.push(at);
+            }
+            return array;            
+        }
+        
+
+        var FEEDBACK = undefined;        
         
         Array.prototype.shuffle = function() {
             // Fischer-Yates shuffle (after Ronald Fisher)
@@ -69,33 +88,18 @@
         
         var actualFeedbackCount = 0;
         
-        function feedback() {
-            // Must be independent of the walk number
-            ordinals.shuffle();
-            return (ordinals !== [ ] && ordinals[0] === 0);
-        }
-                
-        function expectedFeedback() {
+        feedback.expected = function() {
             return (FEEDBACK === 0)
                 ? 'never'
                 : FEEDBACK;            
         }
         
-        function actualFeedback(n) {
+        feedback.actual = function(n) {
             return (actualFeedbackCount === 0)
                 ? 'never'
                 : (1 / (actualFeedbackCount / (FLIPS_PER_WALK * n))).toFixed(2);                
         }
         
-        function makeOrdinals(n) {
-            var array = [ ];
-            for (var at = 0; at !== n; at++) {
-                array.push(at);
-            }
-            return array;            
-        }
-        
-        var ordinals = undefined;
                         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Counts of cumulative total after 
@@ -220,7 +224,7 @@
             var total = 0;
                         
             for (var flip = 1; flip !== FLIPS_PER_WALK+1; flip++) {
-                if (feedback()) {
+                if (feedback.nudge()) {
                     // I must _not_ tweak the feedback like this:
                     //    if (total < 0)
                     //      total += 1;
@@ -353,8 +357,8 @@
             $('.stats #flips_100 #std_dev').html(data_100.stdDev());            
             $('.stats #flips_1000 #std_dev').html(data_1000.stdDev());
             
-            $('.feedback #expected').html(expectedFeedback());
-            $('.feedback #actual').html(actualFeedback(n));
+            $('.feedback #expected').html(feedback.expected());
+            $('.feedback #actual').html(feedback.actual(n));
         }
         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -407,9 +411,9 @@
                   'the total increases, dropping as the total decreases.' +
                   '<br><br>' +
                   'The bottom graph shows how often each total has occurred. ' +
-                  'For example, the blue line plots the total 100 coin flips ' +
-                  'into a walk. A point x=5, y=300 on the blue line means that ' +
-                  '300 of the walks had a total of 5 after 100 coin flips. ' +
+                  'For example, the blue line plots the total after 100 coin ' +
+                  'flips into a walk. A point (6,300) on the blue line means ' +
+                  '300 of the walks had a total of 6 after 100 coin flips. ' +
                 '</div>';
         }
         
@@ -444,7 +448,7 @@
                 buttons: {
                   ok: function() {
                     //TODO: check input
-                    setFeedback(parseInt($('#feedback',html).val()));
+                    feedback.reset(parseInt($('#feedback',html).val()));
                     NUMBER_OF_WALKS = parseInt($('#no_of_walks',html).val());                                
                     runSimulation();
                     $(this).dialog('close');
@@ -491,7 +495,7 @@
                 showHelp();
             });
             counts.setup();
-            setFeedback(0);
+            feedback.reset(0);
             runSimulation();
             showHelp();
         });
