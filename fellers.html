@@ -92,19 +92,16 @@
                 } else {
                     total += (Math.random() < 0.5) ? HEAD : TAIL;
                 }
+                
                 if (flip % 5 === 0) {
                     walk.push([flip,total]);
                 }
                 
-                if (flip === 50) { 
-                    counts[50].record(total);
-                }
-                if (flip === 100) { 
-                    counts[100].record(total);
-                }
-                if (flip === FLIPS_PER_WALK) { 
-                    counts[FLIPS_PER_WALK].record(total);
-                }
+                $.each(counts.points, function(_,point) {
+                    if (flip === point) {
+                        counts[point].record(total);    
+                    }
+                });
             }
             return walk;
         }       
@@ -177,11 +174,15 @@
         }
                         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // Counts of cumulative total after N coin flips where N=50,100,500
+        // Counts of cumulative total after N coin flips where N=50,100,1000
         
         var counts = [ ];
         
-        counts.points = [ 50,100,500 ];
+        counts.points = [ 50,100,FLIPS_PER_WALK ];
+        
+        counts.getPlot = function(n) {
+            return counts[counts.points[n]].getPlot();    
+        }
         
         counts.reset = function() {
             var NEG = 0;
@@ -281,14 +282,10 @@
                 }                            
                 return flot;
             }
-            /*for (var at = 0; at !== this.points.length; at++) {
-                var point = this.points[at];
-                console.log(point);
-                this[point] = this.flotCounts();
-            }*/
-            this[50]   = this.flotCounts();
-            this[100]  = this.flotCounts(); 
-            this[FLIPS_PER_WALK] = this.flotCounts();                                             
+            counts.length = 0;
+            $.each(counts.points, function(_,point) {
+                counts[point] = counts.flotCounts();
+            });
         }
                 
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -296,20 +293,16 @@
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
         function display(n,walk) {
-            var data_50 = counts[50].getPlot();
-            var data_100 = counts[100].getPlot();
-            var data_end = counts[FLIPS_PER_WALK].getPlot();
-
             var plots =
                 [ 
                     { label: "after 50 flips",
-                      data: data_50
+                      data: counts.getPlot(0)
                     },
                     { label: "after 100 flips",
-                      data: data_100
+                      data: counts.getPlot(1)
                     },
                     { label: "after " + FLIPS_PER_WALK + " flips",
-                      data: data_end
+                      data: counts.getPlot(2)
                     },
                 ];
                         
@@ -326,17 +319,17 @@
                    plots,
                    plotOptions.forCounts());
             
-            $('.stats #flips_50 #total').html(data_50.countAtTotalZero());
-            $('.stats #flips_100 #total').html(data_100.countAtTotalZero());
-            $('.stats #flips_1000 #total').html(data_end.countAtTotalZero());
+            $('.stats #flips_50 #total').html(plots[0].data.countAtTotalZero());
+            $('.stats #flips_100 #total').html(plots[1].data.countAtTotalZero());
+            $('.stats #flips_1000 #total').html(plots[2].data.countAtTotalZero());
             
-            $('.stats #flips_50 #range').html(data_50.rangeOfTotals());
-            $('.stats #flips_100 #range').html(data_100.rangeOfTotals());
-            $('.stats #flips_1000 #range').html(data_end.rangeOfTotals());
+            $('.stats #flips_50 #range').html(plots[0].data.rangeOfTotals());
+            $('.stats #flips_100 #range').html(plots[1].data.rangeOfTotals());
+            $('.stats #flips_1000 #range').html(plots[2].data.rangeOfTotals());
             
-            $('.stats #flips_50 #std_dev').html(data_50.stdDev());            
-            $('.stats #flips_100 #std_dev').html(data_100.stdDev());            
-            $('.stats #flips_1000 #std_dev').html(data_end.stdDev());
+            $('.stats #flips_50 #std_dev').html(plots[0].data.stdDev());            
+            $('.stats #flips_100 #std_dev').html(plots[1].data.stdDev());            
+            $('.stats #flips_1000 #std_dev').html(plots[2].data.stdDev());
             
             $('.feedback #expected').html(feedback.expected());
             $('.feedback #actual').html(feedback.actual(n));
@@ -482,6 +475,8 @@
                     feedback.reset(parseInt($('#feedback',html).val()));
                     NUMBER_OF_WALKS = parseInt($('#no_of_walks',html).val());
                     FLIPS_PER_WALK = parseInt($('#flips_per_walk',html).val());
+                    counts.points.pop();
+                    counts.points.push(FLIPS_PER_WALK);
                     runSimulation();
                     $(this).dialog('close');
                   },
