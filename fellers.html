@@ -294,45 +294,6 @@
         // UI code from here
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
-        var plotOptions = {
-            forCounts: function() {                            
-                return {
-                    legend: { position: "nw" },                                
-                    xaxis: {
-                        axisLabel: "count&uarr; &larr;total&rarr;",
-                        position: "bottom",
-                    },
-                    series: {
-                        lines: { show: true },
-                        points: { show: false }
-                    }
-                };                        
-            },
-            forWalk: function(walk) {
-                return {
-                    legend: { position: "nw" },                                
-                    xaxis: {
-                        axisLabel: "total&uarr; flip&rarr;", 
-                        position: "bottom",
-                        min: 0,
-                        max: FLIPS_PER_WALK
-                    },
-                    yaxis: {
-                        tickDecimals: 0,
-                        min: -50,
-                        max: 50                    
-                    },
-                    series: {
-                        color: "green",
-                        lines: { show: true },
-                        points: { show: false }
-                    }
-                };            
-            }            
-        };
-                          
-        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                                
         function display(n,walk) {
             var data_50 = counts[50].getPlot();
             var data_100 = counts[100].getPlot();
@@ -375,7 +336,46 @@
         }
         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        
+                
+        var plotOptions = {
+            forCounts: function() {                            
+                return {
+                    legend: { position: "nw" },                                
+                    xaxis: {
+                        axisLabel: "count&uarr; &larr;total&rarr;",
+                        position: "bottom",
+                    },
+                    series: {
+                        lines: { show: true },
+                        points: { show: false }
+                    }
+                };                        
+            },
+            forWalk: function(walk) {
+                return {
+                    legend: { position: "nw" },                                
+                    xaxis: {
+                        axisLabel: "total&uarr; flip&rarr;", 
+                        position: "bottom",
+                        min: 0,
+                        max: FLIPS_PER_WALK
+                    },
+                    yaxis: {
+                        tickDecimals: 0,
+                        min: -50,
+                        max: 50                    
+                    },
+                    series: {
+                        color: "green",
+                        lines: { show: true },
+                        points: { show: false }
+                    }
+                };            
+            }            
+        };
+                          
+        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                                
         function makeReRunDialogHtml() {
             return '' +
                 '<table>' +
