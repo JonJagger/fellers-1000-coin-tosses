@@ -193,7 +193,7 @@
             var POS = 1;
             var TOTAL = 0;
             var COUNT = 1;
-            counts.flotCounts = function() {
+            counts.flotData = function() {
                 // flot.js requires an array of data-points.
                 // My bottom graph is centered on x==zero, so half
                 // of the x values will be negative.
@@ -205,12 +205,7 @@
                 // I reverse this in flot.makePlot() 
                 
                 var flot = [ [/*NEG*/], [/*POS*/] ];
-                
-                flot.reset = function() {
-                    this[NEG].length = 0;
-                    this[POS].length = 0;
-                }
-                
+                                
                 flot.record = function(total) {
                     var np = (total < 0) ? NEG : POS;
                     var absTotal = Math.abs(total);
@@ -288,7 +283,7 @@
             }
             counts.length = 0;
             $.each(counts.points, function(_,point) {
-                counts[point] = counts.flotCounts();
+                counts[point] = counts.flotData();
             });
         }
                 
