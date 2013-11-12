@@ -300,7 +300,7 @@
             }
             function walkLabel() {
                 var percentDone = (n / NUMBER_OF_WALKS * 100).toFixed(0);
-                return n + "th Walk (" + percentDone + "%)";
+                return n + "th walk (" + percentDone + "%)";
             }
             function stat(kind,n) {
                 return $('.stats #flips_' + n + ' #' + kind);    
@@ -337,7 +337,7 @@
                 return {
                     legend: { position: "nw" },                                
                     xaxis: {
-                        axisLabel: "count&uarr; &larr;total&rarr;",
+                        axisLabel: "freq&uarr; &larr;total&rarr;",
                         position: "bottom",
                     },
                     series: {
@@ -429,9 +429,10 @@
                   'The top graph shows individual walks, in green, rising as ' +
                   'the total increases, dropping as the total decreases.' +
                   '<br><br>' +
-                  'The bottom graph shows how often each total has occurred. ' +
-                  'For example, the blue line plots the total after 100 coin ' +
-                  'flips into each walk. A point (6,300) on the blue line means ' +
+                  'The bottom graph shows the frequency of the total at various ' +
+                  'points on the walks. ' +
+                  'For example, if the blue line plots 100 coin ' +
+                  'flips into each walk, then a point (6,300) on it means ' +
                   '300 walks had a total of 6 after 100 coin flips. ' +
                 '</div>';
         }
@@ -594,7 +595,7 @@
             <table class="stats">
                 <tr>
                     <th>flips</th>
-                    <th>count[0]</th>
+                    <th>freq[0]</th>
                     <th>range</th>
                     <th>std.dev</th>
                 </tr>
