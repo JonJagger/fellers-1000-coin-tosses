@@ -13,20 +13,33 @@
     <script type="text/javascript">
 
         // Code to investigate Feller's walk
+        //
+        // Image you have a fair coin, and you flip it 1000 times.
+        // These 1000 coin flips comprise one walk.
+        // Each time you flip a head you add 1 to your total.
+        // Each time you flip a tail you subtract 1 from your total.
+        //
+        // What will the cumulative total look like as the number of coin
+        // flips progresses from 1 to 1000?
+        //
         // http://jonjagger.blogspot.co.uk/2013/01/fellers-walk.html        
         //
-        // It is important to understand (see below) that...
-        // *** if the number of steps is even the total is always even.
-        // *** if the number of steps is odd  the total is always odd.
+        // It is important to understand that...
+        // *** if the number of steps is even
+        //     the total is always even.
+        // *** if the number of steps is odd
+        //     the total is always odd.
         //
-        // Suppose the number of steps in a walk == 4. Possibilities are:
+        // Suppose the number of steps in a walk == 4.
+        // Possibilities are:
         //     0H 4T == 0-4 == -4
         //     1H 3T == 1-3 == -2
         //     2H 2T == 2-2 ==  0
         //     3H 1T == 3-1 == +2
         //     4H 0T == 4-0 == +4
         //
-        // Suppose the number of steps in a walk == 5. Possibilities are:
+        // Suppose the number of steps in a walk == 5.
+        // Possibilities are:
         //     0H 5T == 0-5 == -5
         //     1H 4T == 1-4 == -3
         //     2H 3T == 2-3 == -1
@@ -38,44 +51,107 @@
         var FLIPS_PER_WALK = 1000;
         var WALKS_PER_PLOT = 100;
         
+        function doOneWalk() {            
+            var HEAD = +1;
+            var TAIL = -1;
+            var walk = [ [0,0] ];
+            var total = 0;
+                        
+            for (var flip = 1; flip !== FLIPS_PER_WALK+1; flip++) {
+                if (feedback.nudge()) {
+                    // I must _not_ tweak the feedback like this:
+                    //    if (total < 0)
+                    //      total += 1;
+                    //    if (total > 0)
+                    //      total -= 1;
+                    // If I do this, then for the case when total === 0
+                    // I will _not_ do a head(+1) or a tail(-1) at all.
+                    // This will alter the final total to be odd when
+                    // its normally even (or vice versa). See ***
+                    // Thus I will get an outlier in the plot data set.
+                    //
+                    // Consider what happens to the total when a feedback
+                    // nudge happens...
+                    //   50% of the time it would have gone towards zero
+                    //     in this case the nudge has no effect
+                    //   50% of the time it would have gone away from zero
+                    //     in this case the nudge has a net effect of +-2
+                    // so
+                    //   the net effect is +-1 (towards zero) per nudge
+                    //   thus the odd/even-ness is preserved.
+                    //
+                    // Consider also, if the code did this...
+                    //   var toss = (total < 0) ? HEAD : TAIL;
+                    //   total += toss;
+                    //   if (feedback()) {
+                    //     total -= toss; 
+                    //   }
+                    // In this case a nudge would have no net effect on the
+                    // total and the odd/even-ness would not be preserved.                    
+                    total += (total < 0) ? HEAD : TAIL;
+                } else {
+                    total += (Math.random() < 0.5) ? HEAD : TAIL;
+                }
+                if (flip % 5 === 0) {
+                    walk.push([flip,total]);
+                }
+                
+                if (flip === 50) { 
+                    counts[50].record(total);
+                }
+                if (flip === 100) { 
+                    counts[100].record(total);
+                }
+                if (flip === 1000) { 
+                    counts[1000].record(total);
+                }
+            }
+            return walk;
+        }       
+                
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // What are the effects of adding feedback, of nudging
         // the total back towards zero every so often...?
         // To get a feedback nudge every Nth throw (on average)
-        // set FEEDBACK to N. To get no feedback set N to zero.
+        // call feedback.reset(N). To get no feedback use N == zero.
         
         var feedback = {
             expectedCount: undefined,
             actualCount: 0,
-            ordinals: undefined
+            ordinals: undefined,
         };
                 
         feedback.nudge = function() {
             // Deliberately independent of the walk number
-            feedback.ordinals.shuffle();
-            var result = (feedback.ordinals !== [ ] && feedback.ordinals[0] === 0);
-            if (result) {
-                feedback.actualCount += 1;
+            var my = feedback;
+            my.ordinals.shuffle();
+            if (my.ordinals[0] === 0) {
+                my.actualCount += 1;
+                return true;
+            } else {
+                return false;                
             }
-            return result;
-        }                        
+        }        
         
         feedback.expected = function() {
-            return (feedback.expectedCount === 0)
+            var my = feedback;
+            return (my.expectedCount === 0)
                 ? 'never'
-                : feedback.expectedCount;            
+                : my.expectedCount;            
         }
         
         feedback.actual = function(n) {
-            return (feedback.actualCount === 0)
+            var my = feedback;
+            return (my.actualCount === 0)
                 ? 'never'
-                : (1 / (feedback.actualCount / (FLIPS_PER_WALK * n))).toFixed(2);                
+                : (1 / (my.actualCount / (FLIPS_PER_WALK * n))).toFixed(2);                
         }
         
         feedback.reset = function(n) {
-            feedback.actualCount = 0;
-            feedback.expectedCount = n;
-            feedback.ordinals = feedback.makeOrdinals(n);
+            var my = feedback;
+            my.actualCount = 0;
+            my.expectedCount = n;
+            my.ordinals = my.makeOrdinals(n);
         }
         
         feedback.makeOrdinals = function(n) {
@@ -101,8 +177,8 @@
         }
                         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // Counts of cumulative total after 
-        // N coin flips where N=50,100,500
+        // Counts of cumulative total after N coin flips where N=50,100,500
+        
         var counts = [ ];
         
         counts.setup = function() {
@@ -111,14 +187,17 @@
             var TOTAL = 0;
             var COUNT = 1;
             function flotCounts() {
-                // flot.js requires an array of data-points
-                // But javascript cannot use negative array indexes
+                // flot.js requires an array of data-points.
+                // My bottom graph is centered on x==zero, so half
+                // of the x values will be negative.
+                // But javascript cannot use negative array indexes.
                 // So I use one array for -ve x-values and
-                // one array for +ve x-values and merge them
-                // back using getPlot() @@@
+                // one array for +ve x-values.
+                //   eg flot[NEG][35] => [-35,455] 
+                //   eg flot[POS][12] => [12,623]
+                // I reverse this in flot.makePlot() 
+                
                 var flot = [ [/*NEG*/], [/*POS*/] ];
-                //   eg array[NEG][35] => [-35,455] 
-                //   eg array[POS][12] => [12,623]
                 
                 flot.reset = function() {
                     this[NEG].length = 0;
@@ -180,12 +259,9 @@
                     plot.stdDev = function() {
                         var element, total, count;
                         var raw = [ ];
-                        // For a normal distribution
-                        //    68.27%, 95.45%, 99.73% of the data set
-                        // lies within 1,2,3 standard deviations
-                        // Eg [ [45,3] ] ==> [ [45] [45] [45] ]
+                        // Eg [...[45,3]...] ==> [...[45] [45] [45]...]
                         // There's probably a faster way of calculating
-                        // std.dev when data is in this format but this
+                        // std.dev with data in this format but this
                         // brute force approach is good enough.
                         for (var at = 0; at !== this.length; at++) {
                             element = this[at];
@@ -213,66 +289,6 @@
             this[100].reset();
             this[1000].reset();
         }
-        
-        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        
-        function doOneWalk() {            
-            var HEAD = +1;
-            var TAIL = -1;
-            var walk = [ [0,0] ];
-            var total = 0;
-                        
-            for (var flip = 1; flip !== FLIPS_PER_WALK+1; flip++) {
-                if (feedback.nudge()) {
-                    // I must _not_ tweak the feedback like this:
-                    //    if (total < 0)
-                    //      total += 1;
-                    //    if (total > 0)
-                    //      total -= 1;
-                    // If I do this, then for the case when total === 0
-                    // I will _not_ do a head+1 or a tail-1 at all.
-                    // This will alter the final total to be odd when
-                    // its normally even (or vice versa). See ***
-                    // Thus I will get an outlier in the data set.
-                    //
-                    // Consider what happens to the total
-                    // when a feedback nudge happens...
-                    //   50% of the time it would have gone towards zero
-                    //     in this case the nudge has no effect
-                    //   50% of the time it would have gone away from zero
-                    //     in this case the nudge has a net effect of +-2
-                    // so
-                    //   the net effect is +-1 (towards zero) per nudge
-                    //   thus the odd/even-ness is preserved.
-                    //
-                    // Consider also, if the code did this...
-                    //   var toss = (total < 0) ? HEAD : TAIL;
-                    //   total += toss;
-                    //   if (feedback()) {
-                    //     total -= toss; 
-                    //   }
-                    // In this case a nudge would have no net effect on the
-                    // total and the odd/even-ness would not be preserved.                    
-                    total += (total < 0) ? HEAD : TAIL;
-                } else {
-                    total += (Math.random() < 0.5) ? HEAD : TAIL;
-                }
-                if (flip % 5 === 0) {
-                    walk.push([flip,total]);
-                }
-                
-                if (flip === 50) { 
-                    counts[50].record(total);
-                }
-                if (flip === 100) { 
-                    counts[100].record(total);
-                }
-                if (flip === 1000) { 
-                    counts[1000].record(total);
-                }
-            }
-            return walk;
-        }       
         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // UI code from here
