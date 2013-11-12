@@ -174,11 +174,11 @@
         }
                         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // Counts of cumulative total after N coin flips where N=50,100,1000
+        // Counts of cumulative totals
         
         var counts = [ ];
         
-        counts.points = [ 50,100,FLIPS_PER_WALK ];
+        counts.points = [ 50,100,FLIPS_PER_WALK ]; // when total is recorded
         
         counts.getPoint = function(n) {
             return counts.points[n];
@@ -306,12 +306,10 @@
                 return $('.stats #flips_' + n + ' #' + kind);    
             }
             
-            var countPlots =
-                [ 
-                    labeledCountPlot(0),
-                    labeledCountPlot(1),
-                    labeledCountPlot(2),
-                ];
+            var countPlots = [ ];
+            for (var at = 0; at !== counts.points.length; at++) {
+                countPlots.push(labeledCountPlot(at));
+            }
                         
             $.plot($("#fellers-walk"),
                    [ { label: walkLabel(), data: walk } ],
@@ -458,6 +456,21 @@
         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+        function addStatsPlaceHolders() {
+            for (var at = 0; at !== counts.points.length; at++) {
+                var tr = '' +
+                    '<tr id="flips_'+ at + '">' +
+                        '<th></th>' +
+                        '<td id="total"></td>' +
+                        '<td id="range"></td>' +
+                        '<td id="std_dev"></td>' +
+                    '</tr>';
+                $('.stats').append(tr);
+            }
+        }
+        
+        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        
         function reRunSimulation() {
             var html = $(makeReRunDialogHtml());
             //TODO: hit enter on feedback input to ok the dialog
@@ -517,6 +530,7 @@
             $('#help').click(function() {
                 showHelp();
             });
+            addStatsPlaceHolders();
             feedback.reset(0);
             runSimulation();
             showHelp();
@@ -583,24 +597,6 @@
                     <th>count[0]</th>
                     <th>range</th>
                     <th>std.dev</th>
-                </tr>
-                <tr id="flips_0">
-                    <th></th>
-                    <td id="total"></td>
-                    <td id="range"></td>
-                    <td id="std_dev"></td>
-                </tr>
-                <tr id="flips_1">
-                    <th></th>
-                    <td id="total"></td>
-                    <td id="range"></td>
-                    <td id="std_dev"></td>
-                </tr>
-                <tr id="flips_2">
-                    <th></th>
-                    <td id="total"></td>
-                    <td id="range"></td>
-                    <td id="std_dev"></td>            
                 </tr>
             </table>
         </td>
