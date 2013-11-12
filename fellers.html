@@ -102,8 +102,8 @@
                 if (flip === 100) { 
                     counts[100].record(total);
                 }
-                if (flip === 1000) { 
-                    counts[1000].record(total);
+                if (flip === FLIPS_PER_WALK) { 
+                    counts[FLIPS_PER_WALK].record(total);
                 }
             }
             return walk;
@@ -181,12 +181,14 @@
         
         var counts = [ ];
         
-        counts.setup = function() {
+        counts.points = [ 50,100,500 ];
+        
+        counts.reset = function() {
             var NEG = 0;
             var POS = 1;
             var TOTAL = 0;
             var COUNT = 1;
-            function flotCounts() {
+            counts.flotCounts = function() {
                 // flot.js requires an array of data-points.
                 // My bottom graph is centered on x==zero, so half
                 // of the x values will be negative.
@@ -279,17 +281,16 @@
                 }                            
                 return flot;
             }
-            this[50]   = flotCounts();
-            this[100]  = flotCounts(); 
-            this[1000] = flotCounts();                                 
+            /*for (var at = 0; at !== this.points.length; at++) {
+                var point = this.points[at];
+                console.log(point);
+                this[point] = this.flotCounts();
+            }*/
+            this[50]   = this.flotCounts();
+            this[100]  = this.flotCounts(); 
+            this[FLIPS_PER_WALK] = this.flotCounts();                                             
         }
-        
-        counts.reset = function() {
-            this[50].reset();
-            this[100].reset();
-            this[1000].reset();
-        }
-        
+                
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // UI code from here
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -297,13 +298,19 @@
         function display(n,walk) {
             var data_50 = counts[50].getPlot();
             var data_100 = counts[100].getPlot();
-            var data_1000 = counts[1000].getPlot();
+            var data_end = counts[FLIPS_PER_WALK].getPlot();
 
             var plots =
                 [ 
-                    { label: "after 50 flips",   data: data_50   },
-                    { label: "after 100 flips",  data: data_100  },
-                    { label: "after 1000 flips", data: data_1000 },
+                    { label: "after 50 flips",
+                      data: data_50
+                    },
+                    { label: "after 100 flips",
+                      data: data_100
+                    },
+                    { label: "after " + FLIPS_PER_WALK + " flips",
+                      data: data_end
+                    },
                 ];
                         
             function walkLabel() {
@@ -321,15 +328,15 @@
             
             $('.stats #flips_50 #total').html(data_50.countAtTotalZero());
             $('.stats #flips_100 #total').html(data_100.countAtTotalZero());
-            $('.stats #flips_1000 #total').html(data_1000.countAtTotalZero());
+            $('.stats #flips_1000 #total').html(data_end.countAtTotalZero());
             
             $('.stats #flips_50 #range').html(data_50.rangeOfTotals());
             $('.stats #flips_100 #range').html(data_100.rangeOfTotals());
-            $('.stats #flips_1000 #range').html(data_1000.rangeOfTotals());
+            $('.stats #flips_1000 #range').html(data_end.rangeOfTotals());
             
             $('.stats #flips_50 #std_dev').html(data_50.stdDev());            
             $('.stats #flips_100 #std_dev').html(data_100.stdDev());            
-            $('.stats #flips_1000 #std_dev').html(data_1000.stdDev());
+            $('.stats #flips_1000 #std_dev').html(data_end.stdDev());
             
             $('.feedback #expected').html(feedback.expected());
             $('.feedback #actual').html(feedback.actual(n));
@@ -381,7 +388,7 @@
                 '<table>' +
                   '<tr>' +
                     '<td>' +
-                      '<label>Nudge towards zero every</label>' +
+                      '<label>nudge towards zero every</label>' +
                     '</td>' +
                     '<td>' +  
                       '<input type="text"' +
@@ -393,13 +400,24 @@
                   '</tr>' +
                   '<tr>' +
                     '<td>' +
-                      '<label>Number of Walks&nbsp;</label>' +
+                      '<label>number of walks&nbsp;</label>' +
                     '</td>' +
                     '<td>' +
                       '<input type="text"' +
                              'style="width:5em;"' +
                              'value="' + NUMBER_OF_WALKS + '"' +
                              'id="no_of_walks">' +
+                    '</td>' +
+                  '</tr>' +                      
+                  '<tr>' +
+                    '<td>' +
+                      '<label>flips per walk&nbsp;</label>' +
+                    '</td>' +
+                    '<td>' +
+                      '<input type="text"' +
+                             'style="width:5em;"' +
+                             'value="' + FLIPS_PER_WALK + '"' +
+                             'id="flips_per_walk">' +
                     '</td>' +
                   '</tr>' +                      
                 '</table>';            
@@ -462,7 +480,8 @@
                   ok: function() {
                     //TODO: check input
                     feedback.reset(parseInt($('#feedback',html).val()));
-                    NUMBER_OF_WALKS = parseInt($('#no_of_walks',html).val());                                
+                    NUMBER_OF_WALKS = parseInt($('#no_of_walks',html).val());
+                    FLIPS_PER_WALK = parseInt($('#flips_per_walk',html).val());
                     runSimulation();
                     $(this).dialog('close');
                   },
@@ -506,7 +525,6 @@
             $('#help').click(function() {
                 showHelp();
             });
-            counts.setup();
             feedback.reset(0);
             runSimulation();
             showHelp();
