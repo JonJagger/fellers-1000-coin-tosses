@@ -12,7 +12,9 @@
 
     <script type="text/javascript">
 
+        // - - - - - - - - - - - - - - - - - - - - - - -
         // Code to investigate Feller's walk
+        // Blogged at http://jonjagger.blogspot.co.uk/2013/01/fellers-walk.html        
         //
         // Image you have a fair coin, and you flip it 1000 times.
         // These 1000 coin flips comprise one walk.
@@ -22,15 +24,46 @@
         // What will the cumulative total look like as the number of coin
         // flips progresses from 1 to 1000?
         //
-        // http://jonjagger.blogspot.co.uk/2013/01/fellers-walk.html        
+        // - - - - - - - - - - - - - - - - - - - - - - -
+        // Odd-Even Comment
+        // - - - - - - - - - - - - - - - - - - - - - - -
+        // I must _not_ tweak the feedback like this:
+        //    if (total < 0)
+        //      total += 1;
+        //    if (total > 0)
+        //      total -= 1;
+        // If I do this, then for the case when total === 0
+        // I will _not_ do a head(+1) or a tail(-1) at all.
+        // This will alter the final total to be odd when
+        // its normally even (or vice versa). See below.
+        // Thus I will get an outlier in the plot data set.
         //
-        // It is important to understand that...
-        // *** if the number of steps is even
-        //     the total is always even.
-        // *** if the number of steps is odd
-        //     the total is always odd.
+        // Consider what happens to the total when a feedback
+        // nudge happens...
+        //   50% of the time it would have gone towards zero
+        //     in this case the nudge has no effect
+        //   50% of the time it would have gone away from zero
+        //     in this case the nudge has a net effect of +-2
+        // so
+        //   the net effect is +-1 (towards zero) per nudge
+        //   thus the odd/even-ness is preserved.
         //
-        // Suppose the number of steps in a walk == 4.
+        // Consider also, if the code did this...
+        //   var toss = (total < 0) ? HEAD : TAIL;
+        //   total += toss;
+        //   if (feedback()) {
+        //     total -= toss; 
+        //   }
+        // In this case a nudge would have no net effect on the
+        // total and the odd/even-ness would again not be preserved.                    
+                
+        // It is important to understand that for a nudgless walk...
+        //   if the number of steps is even
+        //     then the total is always even.
+        //   if the number of steps is odd
+        //     then the total is always odd.
+        //
+        // E.g. Suppose the number of steps in a walk == 4.
         // Possibilities are:
         //     0H 4T == 0-4 == -4
         //     1H 3T == 1-3 == -2
@@ -38,7 +71,7 @@
         //     3H 1T == 3-1 == +2
         //     4H 0T == 4-0 == +4
         //
-        // Suppose the number of steps in a walk == 5.
+        // E.g. Suppose the number of steps in a walk == 5.
         // Possibilities are:
         //     0H 5T == 0-5 == -5
         //     1H 4T == 1-4 == -3
@@ -46,7 +79,8 @@
         //     3H 2T == 3-2 == +1
         //     4H 1T == 4-1 == +3
         //     5H 0T == 5-0 == +5
-        
+        // - - - - - - - - - - - - - - - - - - - - - - -
+                
         var NUMBER_OF_WALKS = 5000;
         var FLIPS_PER_WALK = 1000;
         var WALKS_PER_PLOT = 100;
@@ -56,47 +90,15 @@
             var TAIL = -1;
             var walk = [ [0,0] ];
             var total = 0;
-                        
             for (var flip = 1; flip !== FLIPS_PER_WALK+1; flip++) {
-                if (feedback.nudge()) {
-                    // I must _not_ tweak the feedback like this:
-                    //    if (total < 0)
-                    //      total += 1;
-                    //    if (total > 0)
-                    //      total -= 1;
-                    // If I do this, then for the case when total === 0
-                    // I will _not_ do a head(+1) or a tail(-1) at all.
-                    // This will alter the final total to be odd when
-                    // its normally even (or vice versa). See ***
-                    // Thus I will get an outlier in the plot data set.
-                    //
-                    // Consider what happens to the total when a feedback
-                    // nudge happens...
-                    //   50% of the time it would have gone towards zero
-                    //     in this case the nudge has no effect
-                    //   50% of the time it would have gone away from zero
-                    //     in this case the nudge has a net effect of +-2
-                    // so
-                    //   the net effect is +-1 (towards zero) per nudge
-                    //   thus the odd/even-ness is preserved.
-                    //
-                    // Consider also, if the code did this...
-                    //   var toss = (total < 0) ? HEAD : TAIL;
-                    //   total += toss;
-                    //   if (feedback()) {
-                    //     total -= toss; 
-                    //   }
-                    // In this case a nudge would have no net effect on the
-                    // total and the odd/even-ness would not be preserved.                    
-                    total += (total < 0) ? HEAD : TAIL;
+                if (feedback.nudge()) { // See Odd-Even Comment
+                    total += (total < 0) ? HEAD : TAIL; 
                 } else {
                     total += (Math.random() < 0.5) ? HEAD : TAIL;
-                }
-                
+                }                
                 if (flip % 5 === 0) {
                     walk.push([flip,total]);
-                }
-                
+                }                
                 $.each(counts.points, function(_,point) {
                     if (flip === point) {
                         counts[point].record(total);    
@@ -195,11 +197,11 @@
             var COUNT = 1;
             counts.flotData = function() {
                 // flot.js requires an array of data-points.
-                // My bottom graph is centered on x==zero, so half
+                // My bottom graph is centered on x===zero, so half
                 // of the x values will be negative.
                 // But javascript cannot use negative array indexes.
-                // So I use one array for -ve x-values and
-                // one array for +ve x-values.
+                // So I use one array for -ve x values and
+                // one array for +ve x values.
                 //   eg flot[NEG][35] => [-35,455] 
                 //   eg flot[POS][12] => [12,623]
                 // I reverse this in flot.makePlot() 
