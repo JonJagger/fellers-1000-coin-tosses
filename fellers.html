@@ -423,39 +423,71 @@
                 
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 
-        function makeHelpHtml() {            
+        function makeWalkHelpHtml() {            
             return '' +
                 '<div>' +
-                "By default, each walk is 1000 steps long, and at each step you flip a fair coin.<br>" +
-                "As you walk you keep a running total (starting at zero):<br>" +
-                "&nbsp;&nbsp;&bull; adding 1 each time you flip a head<br>" +
-                "&nbsp;&nbsp;&bull; subtracting 1 each time you flip a tail<br>" +
-                "What will the cumulative total look like as the walk progresses?<br>" +
-                'The top graph shows individual walks, in green, rising as ' +
-                'the total increases, falling as the total decreases.' +
-                '<br><br>' +
-                "Suppose you add some feedback...<br>" +                
+                "By default, each Feller's walk is 1000 steps long, and at each " +
+                "step you flip a fair coin." +
+                "As you walk you keep a running total (starting at zero):" +
+                "<ul>" +
+                "<li>adding 1 each time you flip a head</li>" +
+                "<li>subtracting 1 each time you flip a tail</li>" +
+                "</ul>" +
+                "How will the cumulative total behave as the walk progresses?" +
+                '</div>;'
+        }
+        function makeFeedbackHelpHtml() {
+            return '' +
+                "<div>" +
                 "Every Nth step (on average), instead of flipping the coin, you look at the total and:<br>" +
-                "&nbsp;&nbsp;&bull; if the total is negative you pretend you've flipped a head, and add one to the total.<br>"+
-                "&nbsp;&nbsp;&bull; if the total is positive you pretend you've flipped a tail, and subtract one from the total.<br>"+
+                "<ul>" +
+                "<li>if the total is negative you pretend you've flipped a head, and add one to the total.</li>"+
+                "<li>if the total is positive you pretend you've flipped a tail, and subtract one from the total.</li>"+
+                "</ul>" +
                 "This increases the likelihood of the total staying nearer to zero.<br>" +
-                'How effective is this feedback?<br>' +
-                'The bottom graph shows the frequency of the total at various ' +
-                'steps along the walk. ' +
-                'For example, the blue line plots 100 steps ' +
-                'into each walk; a point (6,300) on the blue line ' +
-                'means 300 walks (out of 5000, the default) had a total of 6 after 100 steps. ' +
+                'How effective is this feedback?' +
+                "</div>";
+        }
+        function makeGraphsHelpHtml() {
+            return '' +
+                "<div>" +
+                'By default the simulation does 5000 walks, where each walk ' +
+                'is 1000 steps.' +
+                '<br><br>' +
+                'The top <span style="color:green">green</span> graph plots ' +
+                'the total (y) against the step (x) for one walk.' +
+                '<br><br>' +
+                'The bottom graph plots the frequency of the total (y) against the total (x) ' +
+                'for all 5000 walks. ' +
+                'Three lines plot the frequencies at three places on the walks:' +
+                '<ul>' +
+                '<li>at step <span style="color:#b8860b">10</span> ' +
+                '- the <span style="color:#b8860b">gold</span> line</li>' +
+                '<li>at step <span style="color:blue">100</span> ' +
+                '- the <span style="color:blue">blue</span> line</li>' +
+                '<li>at step <span style="color:red">1000</span> ' +
+                '- the <span style="color:red">red</span> line</li>' +
+                '</ul>' +
+                'For example, a point (x=2,y=400) on the ' +
+                '<span style="color:blue">blue</span> line means 400 walks ' +
+                '(out of 5000) had a total of 2 at step ' +
+                '<span style="color:blue">100</span. ' +
+                '</div>';
+        }
+        function makeStatsHelpHtml() {
+            return '' +
+                '<div>' +
+                'stats help here' +
                 '</div>';
         }
         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        
-        function showHelp() {
-            var html = $(makeHelpHtml());
-            var help = html.dialog({	  
-                title: "Feller's walk",
+
+        function showDialog(html,title) {
+            var help = $(html).dialog({	  
+                title: title+"?",
                 autoOpen: false,
-                width: 900,
+                width: 700,
                 modal: true,
                 buttons: {
                   ok: function() {
@@ -464,6 +496,19 @@
                 }
               });
             help.dialog('open');            
+        }
+        
+        function showWalkHelp() {
+            showDialog( makeWalkHelpHtml(), "walk");
+        }
+        function showFeedbackHelp() {
+            showDialog( makeFeedbackHelpHtml(), "feedback");
+        }
+        function showGraphsHelp() {
+            showDialog( makeGraphsHelpHtml(), "graphs");
+        }
+        function showStatsHelp() {
+            showDialog( makeStatsHelpHtml(), "stats");
         }
         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -536,16 +581,15 @@
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                            
         $(document).ready(function() {
-            $('#re_run').click(function() {
-                reRunSimulation();
-            });
-            $('#help').click(function() {
-                showHelp();
-            });
+            $('#walkHelp').click(function() { showWalkHelp(); });
+            $('#feedbackHelp').click(function() { showFeedbackHelp(); });
+            $('#graphsHelp').click(function() { showGraphsHelp(); });
+            $('#statsHelp').click(function() { showStatsHelp(); });            
+            $('#re_run').click(function() { reRunSimulation(); });
             addStatsPlaceHolders();
             feedback.reset(0);
             runSimulation();
-            showHelp();
+            showWalkHelp();
         });
         
     </script>
@@ -561,7 +605,7 @@
         table {
             display: inline-block;
             border-collapse: collapse;
-            border-spacing: 0;
+            border-spacing: 4;
         }
         #stats td, #stats th, #feedback td {
             border: solid 1px gray;
@@ -590,16 +634,19 @@
     <tr>
         <td>
             <table>
-                <tr>
-                    <td>
-                        <input type="button" id="re_run" value="re-run">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="button" id="help" value="help">
-                    </td>
-                </tr>
+                <td>
+                    <input type="button" id="walkHelp" value="walk?">
+                </td>
+                <td>
+                    <input type="button" id="feedbackHelp" value="feedback?">
+                </td>
+                <td>
+                    <input type="button" id="graphsHelp" value="graphs?">
+                </td>
+                <td>
+                    <input type="button" id="statsHelp" value="stats?">
+                </td>
+                </tr>                
             </table>
         </td>
         <td>    
@@ -625,6 +672,9 @@
                 </tr>
             </table>
         </td>
+        <td>
+            <input type="button" id="re_run" value="re-run">
+        </td>        
     </tr>
 </table>
     
