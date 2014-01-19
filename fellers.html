@@ -520,7 +520,7 @@
             return '<th style="font-size:1em;' +
                               'border:solid 1px gray;' +
                               'padding:0.25em;' +
-                              'font-weight:normal">' +
+                              'font-weight:bold;">' +
                    text +
                    '</th>';
         }
@@ -542,32 +542,32 @@
                 '</tr>' +
                 '<tr>' +
                   td(colour(gold,10)) +
-                  td(1204) +
-                  td(-10) +
-                  td(10) +
-                  td(0.08) +
-                  td(3.19) +
+                  td(colour(gold,1204)) +
+                  td(colour(gold,-10)) +
+                  td(colour(gold,10)) +
+                  td(colour(gold,0.08)) +
+                  td(colour(gold,3.19)) +
                 '</tr>' +
                 '<tr>' +
                   td(colour(blue,100)) +
-                  td(405) +
-                  td(-32) +
-                  td(36) +
-                  td(0.09) +
-                  td(10.15) +
+                  td(colour(blue,405)) +
+                  td(colour(blue,-32)) +
+                  td(colour(blue,36)) +
+                  td(colour(blue,0.09)) +
+                  td(colour(blue,10.15)) +
                 '</tr>' +
                 '<tr>' +
                   td(colour(red,1000)) +
-                  td(121) +
-                  td(-114) +
-                  td(140) +
-                  td(0.13) +
-                  td(31.71) +
+                  td(colour(red,121)) +
+                  td(colour(red,-114)) +
+                  td(colour(red,140)) +
+                  td(colour(red,0.13)) +
+                  td(colour(red,31.71)) +
                 '</tr>' +
                 '</table>' +
                 '<br><br>' +
                 'Means - at the ' +
-                colour(red,1000) +'th step along the 5000 walks:<br>' +
+                colour(red,1000) +'th step of the 5000 walks:<br>' +
                 '<ul>' +
                 '<li>the total was zero ' + colour(red,121) + ' times<br>' +
                      '(500 heads, 500 tails, 500-500=0, 500+500=1000)' +
@@ -576,9 +576,10 @@
                      '(443 heads, 557 tails, 443-557=-114, 443+557=1000)' +
                 '</li>' +
                 '<li>the most positive total was ' + colour(red,140) + '<br>' +
-                     '(570 heads, 430 tails, 570-430=+140, 570+430=1000)' +
+                     '(570 heads, 430 tails, 570-430=140, 570+430=1000)' +
                 '</li>' +
-                '<li>the mean was ' + colour(red,0.13) + '</li>' +
+                '<li>the mean was ' + colour(red,0.13) +
+                '</li>' +
                 '<li>the standard deviation of the total was ' + colour(red,31.71) +
                 '</li>' +
                 '</ul>' +                
