@@ -386,7 +386,7 @@
                 '<table>' +
                   '<tr>' +
                     '<td>' +
-                      '<label>nudge towards zero every</label>' +
+                      '<label>feedback towards zero every</label>' +
                     '</td>' +
                     '<td>' +  
                       '<input type="text"' +
@@ -427,11 +427,11 @@
             return '' +
                 '<div>' +
                 "By default, each Feller's walk is 1000 steps long, and at each " +
-                "step you flip a fair coin." +
+                "step you flip a fair coin. " +
                 "As you walk you keep a running total (starting at zero):" +
                 "<ul>" +
-                "<li>adding 1 each time you flip a head</li>" +
-                "<li>subtracting 1 each time you flip a tail</li>" +
+                "<li>adding one each time you flip a head</li>" +
+                "<li>subtracting one each time you flip a tail</li>" +
                 "</ul>" +
                 "How will the cumulative total behave as the walk progresses?" +
                 '</div>;'
@@ -441,8 +441,12 @@
                 "<div>" +
                 "Every Nth step (on average), instead of flipping the coin, you look at the total and:<br>" +
                 "<ul>" +
-                "<li>if the total is negative you pretend you've flipped a head, and add one to the total.</li>"+
-                "<li>if the total is positive you pretend you've flipped a tail, and subtract one from the total.</li>"+
+                "<li>if the total is negative you pretend you've flipped a head and<br>" +
+                     'add one to the total.' +
+                "</li>"+
+                "<li>if the total is positive you pretend you've flipped a tail and<br>" +
+                "subtract one from the total." +
+                "</li>"+
                 "</ul>" +
                 "This increases the likelihood of the total staying nearer to zero.<br>" +
                 'How effective is this feedback?' +
@@ -477,7 +481,47 @@
         function makeStatsHelpHtml() {
             return '' +
                 '<div>' +
-                'stats help here' +
+                '<table style="font-size:1em;border:solid 1px gray;padding:0.25em;">' +
+                  '<tr>' +
+                    '<th style="font-weight:normal">step</th>' +
+                    '<th style="font-weight:normal">freq[0]</th>' +
+                    '<th style="font-weight:normal">&nbsp;&nbsp;&nbsp;range</th>' +
+                    '<th style="font-weight:normal">std.dev</th>' +
+                '</tr>' +
+                '<tr style="color:#b8860b;">' +
+                  '<th>10</th>' +
+                  '<td style="border:solid 1px gray;padding:0.25em;">1204</td>' +
+                  '<td style="border:solid 1px gray;padding:0.25em;">[-10,+10]</td>' +
+                  '<td style="border:solid 1px gray;padding:0.25em;">3.19</td>' +
+                '</tr>' +
+                '<tr style="color:blue">' +
+                  '<th>100</th>' +
+                  '<td style="border:solid 1px gray;padding:0.25em;">405</td>' +
+                  '<td style="border:solid 1px gray;padding:0.25em;">[-32,+36]</td>' +
+                  '<td style="border:solid 1px gray;padding:0.25em;">10.15</td>' +
+                '</tr>' +
+                '<tr style="color:red;">' +
+                  '<th>1000</th>' +
+                  '<td style="border:solid 1px gray;padding:0.25em;">121</td>' +
+                  '<td style="border:solid 1px gray;padding:0.25em;">[-114,+140]</td>' +
+                  '<td style="border:solid 1px gray;padding:0.25em;">31.71</td>' +
+                '</tr>' +
+                '</table>' +
+                '<br><br>' +
+                'Means - in 5000 walks, at the <span style="color:red;">1000</span>th step along the walk:<br>' +
+                '<ul>' +
+                '<li>the total was zero 121 times<br>' +
+                     '(500 heads, 500 tails, 500-500=0, 500+500=1000)' +
+                '</li>' +
+                '<li>the most negative total was -114<br>' +
+                     '(443 heads, 557 tails, 443-557=-114, 443+557=1000)' +
+                '</li>' +
+                '<li>the most positive total was +140<br>' +
+                     '(570 heads, 430 tails, 570-430=+140, 570+430=1000)' +
+                '</li>' +
+                '<li>the standard deviation of the total was 31.71' +
+                '</li>' +
+                '</ul>' +                
                 '</div>';
         }
         
@@ -661,7 +705,7 @@
         </td>
         <td>
             <table id="feedback">
-                <caption>steps / nudge</caption>
+                <caption>steps / feedback</caption>
                 <tr>
                     <td>expected</td>
                     <td id="expected"></td>
