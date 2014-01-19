@@ -323,7 +323,7 @@
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // UI code from here
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        
+                
         function display(n,walk) {
             function labeledCountPlot(n) {
                 return {
@@ -352,7 +352,7 @@
                    countPlots,
                    plotOptions.forCounts());
             
-            var colours = ['#b8860b','blue','red'];
+            var colours = [gold,blue,red];
             for (var at = 0; at !== countPlots.length; at++) {
                 $('#stats #steps_' + at + ' th').html(
                     "<span style='color:"+colours[at]+";'>" +
@@ -371,7 +371,10 @@
         }
         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                
+        var gold = '#b8860b';
+        var blue = 'blue';
+        var red  = 'red';
+        
         var plotOptions = {
             forCounts: function() {                            
                 return {
@@ -484,6 +487,9 @@
                 'How effective is this feedback?' +
                 "</div>";
         }
+        function colour(rgb,name) {
+            return "<span style='color:" + rgb + "'>" + name + "</span>";
+        }
         function makeGraphsHelpHtml() {
             return '' +
                 "<div>" +
@@ -497,17 +503,17 @@
                 'for all 5000 walks. ' +
                 'Three lines plot the frequencies at three places on the walks:' +
                 '<ul>' +
-                '<li>at step <span style="color:#b8860b">10</span> ' +
-                '- the <span style="color:#b8860b">gold</span> line</li>' +
-                '<li>at step <span style="color:blue">100</span> ' +
-                '- the <span style="color:blue">blue</span> line</li>' +
-                '<li>at step <span style="color:red">1000</span> ' +
-                '- the <span style="color:red">red</span> line</li>' +
+                '<li>at step ' + colour(gold,10) +
+                ' - the ' + colour(gold,'gold') + ' line</li>' +
+                '<li>at step ' + colour(blue,100) +
+                ' - the ' + colour(blue,'blue') + ' line</li>' +
+                '<li>at step ' + colour(red,1000) +
+                ' - the ' + colour(red,'red') + ' line</li>' +
                 '</ul>' +
                 'For example, a point (x=2,y=400) on the ' +
-                '<span style="color:blue">blue</span> line means 400 walks ' +
+                colour(blue,'blue') + ' line means 400 walks ' +
                 '(out of 5000) had a total of 2 at step ' +
-                '<span style="color:blue">100</span. ' +
+                colour(blue,100) +
                 '</div>';
         }
         function makeStatsHelpHtml() {
