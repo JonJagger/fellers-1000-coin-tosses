@@ -516,8 +516,11 @@
                 colour(blue,100) +
                 '</div>';
         }
-        function tr(text) {
-            return '<th style="font-weight:normal">' +
+        function th(text) {
+            return '<th style="font-size:1em;' +
+                              'border:solid 1px gray;' +
+                              'padding:0.25em;' +
+                              'font-weight:normal">' +
                    text +
                    '</th>';
         }
@@ -529,33 +532,36 @@
         function makeStatsHelpHtml() {
             return '' +
                 '<div>' +
-                '<table style="font-size:1em;border:solid 1px gray;padding:0.25em;">' +
-                  '<tr>' +
-                    tr('step') +
-                    tr('freq[0]') +
-                    tr('min') +
-                    tr('max') +
-                    tr('std.dev') +
+                '<table>' +
+                    th('step') +
+                    th('freq[0]') +
+                    th('min') +
+                    th('max') +
+                    th('mean') +
+                    th('std.dev') +
                 '</tr>' +
-                '<tr style="color:' + gold + ';">' +
-                  '<th>10</th>' +
+                '<tr>' +
+                  td(colour(gold,10)) +
                   td(1204) +
                   td(-10) +
                   td(10) +
+                  td(0.08) +
                   td(3.19) +
                 '</tr>' +
-                '<tr style="color:blue">' +
-                  '<th>100</th>' +
+                '<tr>' +
+                  td(colour(blue,100)) +
                   td(405) +
                   td(-32) +
                   td(36) +
+                  td(0.09) +
                   td(10.15) +
                 '</tr>' +
-                '<tr style="color:red;">' +
-                  '<th>1000</th>' +
+                '<tr>' +
+                  td(colour(red,1000)) +
                   td(121) +
                   td(-114) +
                   td(140) +
+                  td(0.13) +
                   td(31.71) +
                 '</tr>' +
                 '</table>' +
@@ -563,16 +569,17 @@
                 'Means - at the ' +
                 colour(red,1000) +'th step along the 5000 walks:<br>' +
                 '<ul>' +
-                '<li>the total was zero 121 times<br>' +
+                '<li>the total was zero ' + colour(red,121) + ' times<br>' +
                      '(500 heads, 500 tails, 500-500=0, 500+500=1000)' +
                 '</li>' +
-                '<li>the most negative total was -114<br>' +
+                '<li>the most negative total was ' + colour(red,-114) + '<br>' +
                      '(443 heads, 557 tails, 443-557=-114, 443+557=1000)' +
                 '</li>' +
-                '<li>the most positive total was +140<br>' +
+                '<li>the most positive total was ' + colour(red,140) + '<br>' +
                      '(570 heads, 430 tails, 570-430=+140, 570+430=1000)' +
                 '</li>' +
-                '<li>the standard deviation of the total was 31.71' +
+                '<li>the mean was ' + colour(red,0.13) + '</li>' +
+                '<li>the standard deviation of the total was ' + colour(red,31.71) +
                 '</li>' +
                 '</ul>' +                
                 '</div>';
