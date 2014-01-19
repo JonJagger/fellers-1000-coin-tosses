@@ -12,6 +12,8 @@
 
     <script type="text/javascript">
 
+        // PLOT THE MEAN
+        //
         // - - - - - - - - - - - - - - - - - - - - - - -
         // Code to investigate Feller's walk
         // Blogged at http://jonjagger.blogspot.co.uk/2013/01/fellers-walk.html        
@@ -262,10 +264,18 @@
                 flot.getPlot = function() {
                     var plot = this.makePlot();
                     
+                    plot.min = function() {
+                        return this[0][TOTAL];    
+                    }
+                    
+                    plot.max = function() {
+                        return this[this.length - 1][TOTAL];                        
+                    }
+                    
                     plot.rangeOfTotals = function() {
-                        var min = this[0][TOTAL];
-                        var max = this[this.length - 1][TOTAL];
-                        return min + ',+' + max;
+                        //var min = this[0][TOTAL];
+                        //var max = this[this.length - 1][TOTAL];
+                        return this.min() + ',+' + this.max();
                     }
                     
                     plot.countAtTotalZero = function() {
@@ -349,6 +359,8 @@
                 );
                 stat('total',  at).html(countPlots[at].data.countAtTotalZero());
                 stat('range',  at).html(countPlots[at].data.rangeOfTotals());
+                stat('min',  at).html(countPlots[at].data.min());
+                stat('max',  at).html(countPlots[at].data.max());                
                 stat('std_dev',at).html(countPlots[at].data.stdDev());                            
             }
             
@@ -583,6 +595,8 @@
                         '<th></th>' +
                         '<td id="total"></td>' +
                         '<td id="range"></td>' +
+                        '<td id="min"></td>' +
+                        '<td id="max"></td>' +
                         '<td id="std_dev"></td>' +
                     '</tr>';
                 $('#stats').append(tr);
@@ -718,6 +732,8 @@
                     <th>step</th>
                     <th>freq[0]</th>
                     <th>range</th>
+                    <th>min</th>
+                    <th>max</th>
                     <th>std.dev</th>
                 </tr>
             </table>
