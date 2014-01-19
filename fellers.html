@@ -17,15 +17,16 @@
         // Blogged at http://jonjagger.blogspot.co.uk/2013/01/fellers-walk.html        
         //
         // Image you have a fair coin, and you flip it 1000 times.
-        // These 1000 coin flips comprise one walk.
-        // Each time you flip a head you add 1 to your total.
-        // Each time you flip a tail you subtract 1 from your total.
+        // These 1000 coin steps comprise one walk.
+        // Each step you flip a coin.
+        // If you flip a head you add 1 to your total.
+        // If you flip a tail you subtract 1 from your total.
         //
-        // What will the cumulative total look like as the number of coin
-        // flips progresses from 1 to 1000?
+        // What will the cumulative total look like as the number 
+        // steps progresses from 1 to 1000?
         //
         // - - - - - - - - - - - - - - - - - - - - - - -
-        // Odd-Even Comment
+        // About odd/even-ness...
         // - - - - - - - - - - - - - - - - - - - - - - -
         // I must _not_ tweak the feedback like this:
         //    if (total < 0)
@@ -57,7 +58,7 @@
         // In this case a nudge would have no net effect on the
         // total and the odd/even-ness would again not be preserved.                    
                 
-        // It is important to understand that for a nudgless walk...
+        // It is important to understand that for a nudgeless walk...
         //   if the number of steps is even
         //     then the total is always even.
         //   if the number of steps is odd
@@ -82,7 +83,7 @@
         // - - - - - - - - - - - - - - - - - - - - - - -
                 
         var NUMBER_OF_WALKS = 5000;
-        var FLIPS_PER_WALK = 1000;
+        var STEPS_PER_WALK = 1000;
         var WALKS_PER_PLOT = 100;
         
         function doOneWalk() {            
@@ -90,17 +91,17 @@
             var TAIL = -1;
             var walk = [ [0,0] ];
             var total = 0;
-            for (var flip = 1; flip !== FLIPS_PER_WALK+1; flip++) {
-                if (feedback.nudge()) { // See Odd-Even Comment
+            for (var step = 1; step !== STEPS_PER_WALK+1; step++) {
+                if (feedback.nudge()) { // See About odd/even-ness above
                     total += (total < 0) ? HEAD : TAIL; 
                 } else {
                     total += (Math.random() < 0.5) ? HEAD : TAIL;
                 }                
-                if (flip % 5 === 0) {
-                    walk.push([flip,total]);
+                if (step % 5 === 0) {
+                    walk.push([step,total]);
                 }                
                 $.each(counts.points, function(_,point) {
-                    if (flip === point) {
+                    if (step === point) {
                         counts[point].record(total);    
                     }
                 });
@@ -143,7 +144,7 @@
             var my = feedback;
             return (my.actualCount === 0)
                 ? 'never'
-                : (1 / (my.actualCount / (FLIPS_PER_WALK * n))).toFixed(2);                
+                : (1 / (my.actualCount / (STEPS_PER_WALK * n))).toFixed(2);                
         }
         
         feedback.reset = function(n) {
@@ -180,7 +181,7 @@
         
         var counts = [ ];
         
-        counts.points = [ 10,100,FLIPS_PER_WALK ]; // when total is recorded
+        counts.points = [ 10,100,STEPS_PER_WALK ]; // when total is recorded
         
         counts.getPoint = function(n) {
             return counts.points[n];
@@ -246,7 +247,7 @@
                     plot.rangeOfTotals = function() {
                         var min = this[0][TOTAL];
                         var max = this[this.length - 1][TOTAL];
-                        return min + ',' + max;
+                        return min + ',+' + max;
                     }
                     
                     plot.countAtTotalZero = function() {
@@ -296,7 +297,7 @@
         function display(n,walk) {
             function labeledCountPlot(n) {
                 return {
-                    label: "after " + counts.getPoint(n) + " flips",
+                    label: "after " + counts.getPoint(n) + " steps",
                     data: counts.getPlot(n)
                 }
             }
@@ -305,7 +306,7 @@
                 return n + "th walk (" + percentDone + "%)";
             }
             function stat(kind,n) {
-                return $('#stats #flips_' + n + ' #' + kind);    
+                return $('#stats #steps_' + n + ' #' + kind);    
             }
             
             var countPlots = [ ];
@@ -321,8 +322,13 @@
                    countPlots,
                    plotOptions.forCounts());
             
+            var colours = ['#b8860b','blue','red'];
             for (var at = 0; at !== countPlots.length; at++) {
-                $('#stats #flips_'+at+' th').html(counts.getPoint(at));
+                $('#stats #steps_' + at + ' th').html(
+                    "<span style='color:"+colours[at]+";'>" +
+                    counts.getPoint(at) +
+                    "</span>"
+                );
                 stat('total',  at).html(countPlots[at].data.countAtTotalZero());
                 stat('range',  at).html(countPlots[at].data.rangeOfTotals());
                 stat('std_dev',at).html(countPlots[at].data.stdDev());                            
@@ -354,10 +360,10 @@
                 return {
                     legend: { position: "nw" },                                
                     xaxis: {
-                        axisLabel: "total&uarr; flip&rarr;", 
+                        axisLabel: "total&uarr; step&rarr;", 
                         position: "bottom",
                         min: 0,
-                        max: FLIPS_PER_WALK
+                        max: STEPS_PER_WALK
                     },
                     yaxis: {
                         tickDecimals: 0,
@@ -387,7 +393,7 @@
                              'style="width:3em;"' +
                              'value="' + feedback.expectedCount + '"' +
                              'id="feedback">' +
-                       '&nbsp;th flip (0 for never)' +
+                       '&nbsp;th step (0 for never)' +
                     '</td>' +
                   '</tr>' +
                   '<tr>' +
@@ -403,13 +409,13 @@
                   '</tr>' +                      
                   '<tr>' +
                     '<td>' +
-                      '<label>flips per walk&nbsp;</label>' +
+                      '<label>steps per walk&nbsp;</label>' +
                     '</td>' +
                     '<td>' +
                       '<input type="text"' +
                              'style="width:5em;"' +
-                             'value="' + FLIPS_PER_WALK + '"' +
-                             'id="flips_per_walk">' +
+                             'value="' + STEPS_PER_WALK + '"' +
+                             'id="steps_per_walk">' +
                     '</td>' +
                   '</tr>' +                      
                 '</table>';            
@@ -420,24 +426,25 @@
         function makeHelpHtml() {            
             return '' +
                 '<div>' +
-                  'Image you have a fair coin, and you flip it 1000 times, ' +
-                  'adding one or subtracting one each time you flip either ' +
-                  'a head or a tail respectively. ' +
-                  '<br><br>' +
-                  'How will the cumulative total behave as ' +
-                  'the number of coin flips progresses from 1 to 1000 ?' +
-                  '<br><br>' +
-                  'Suppose you occasionally nudge the total back towards zero. ' +
-                  'How effective are these nudges? ' +
-                  '<br><br>' +
-                  'The top graph shows individual walks, in green, rising as ' +
-                  'the total increases, falling as the total decreases.' +
-                  '<br><br>' +
-                  'The bottom graph shows the frequency of the total at various ' +
-                  'points along the walk. ' +
-                  'The blue line plots 100 coin ' +
-                  'flips into each walk, so a point (6,300) on the blue line ' +
-                  'means 300 walks had a total of 6 after 100 coin flips. ' +
+                "By default, each walk is 1000 steps long, and at each step you flip a fair coin.<br>" +
+                "As you walk you keep a running total (starting at zero):<br>" +
+                "&nbsp;&nbsp;&bull; adding 1 each time you flip a head<br>" +
+                "&nbsp;&nbsp;&bull; subtracting 1 each time you flip a tail<br>" +
+                "What will the cumulative total look like as the walk progresses?<br>" +
+                'The top graph shows individual walks, in green, rising as ' +
+                'the total increases, falling as the total decreases.' +
+                '<br><br>' +
+                "Suppose you add some feedback...<br>" +                
+                "Every Nth step (on average), instead of flipping the coin, you look at the total and:<br>" +
+                "&nbsp;&nbsp;&bull; if the total is negative you pretend you've flipped a head, and add one to the total.<br>"+
+                "&nbsp;&nbsp;&bull; if the total is positive you pretend you've flipped a tail, and subtract one from the total.<br>"+
+                "This increases the likelihood of the total staying nearer to zero.<br>" +
+                'How effective is this feedback?<br>' +
+                'The bottom graph shows the frequency of the total at various ' +
+                'steps along the walk. ' +
+                'For example, the blue line plots 100 steps ' +
+                'into each walk; a point (6,300) on the blue line ' +
+                'means 300 walks (out of 5000, the default) had a total of 6 after 100 steps. ' +
                 '</div>';
         }
         
@@ -446,9 +453,9 @@
         function showHelp() {
             var html = $(makeHelpHtml());
             var help = html.dialog({	  
-                title: "help",
+                title: "Feller's walk",
                 autoOpen: false,
-                width: 700,
+                width: 900,
                 modal: true,
                 buttons: {
                   ok: function() {
@@ -464,7 +471,7 @@
         function addStatsPlaceHolders() {
             for (var at = 0; at !== counts.points.length; at++) {
                 var tr = '' +
-                    '<tr id="flips_'+ at + '">' +
+                    '<tr id="steps_'+ at + '">' +
                         '<th></th>' +
                         '<td id="total"></td>' +
                         '<td id="range"></td>' +
@@ -489,9 +496,9 @@
                     //TODO: check input
                     feedback.reset(parseInt($('#feedback',html).val()));
                     NUMBER_OF_WALKS = parseInt($('#no_of_walks',html).val());
-                    FLIPS_PER_WALK = parseInt($('#flips_per_walk',html).val());
+                    STEPS_PER_WALK = parseInt($('#steps_per_walk',html).val());
                     counts.points.pop();
-                    counts.points.push(FLIPS_PER_WALK);
+                    counts.points.push(STEPS_PER_WALK);
                     runSimulation();
                     $(this).dialog('close');
                   },
@@ -598,7 +605,7 @@
         <td>    
             <table id="stats">
                 <tr>
-                    <th>flips</th>
+                    <th>step</th>
                     <th>freq[0]</th>
                     <th>range</th>
                     <th>std.dev</th>
@@ -607,7 +614,7 @@
         </td>
         <td>
             <table id="feedback">
-                <caption>flips / nudge</caption>
+                <caption>steps / nudge</caption>
                 <tr>
                     <td>expected</td>
                     <td id="expected"></td>
