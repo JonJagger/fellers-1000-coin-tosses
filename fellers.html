@@ -289,7 +289,7 @@
                         return '?';
                     }
                     
-                    plot.stdDev = function() {
+                    plot.unfolded = function() {
                         var element, total, count;
                         var raw = [ ];
                         // Eg [...[45,3]...] ==> [...[45] [45] [45]...]
@@ -306,8 +306,16 @@
                                 }
                             }
                         }
-                        return jStat.stdev(raw).toFixed(2);
-                    }                    
+                        return raw;
+                    }
+                    
+                    plot.stdDev = function() {
+                        return jStat.stdev(plot.unfolded()).toFixed(2);
+                    }
+                    
+                    plot.mean = function() {
+                        return jStat.mean(plot.unfolded()).toFixed(2);
+                    }
                     return plot;
                 }                            
                 return flot;
@@ -360,7 +368,8 @@
                 stat('total',  at).html(countPlots[at].data.countAtTotalZero());
                 stat('min',  at).html(countPlots[at].data.min());
                 stat('max',  at).html(countPlots[at].data.max());                
-                stat('std_dev',at).html(countPlots[at].data.stdDev());                            
+                stat('mean',at).html(countPlots[at].data.mean());
+                stat('std_dev',at).html(countPlots[at].data.stdDev());
             }
             
             $('#feedback #expected').html(feedback.expected());
@@ -595,6 +604,7 @@
                         '<td id="total"></td>' +
                         '<td id="min"></td>' +
                         '<td id="max"></td>' +
+                        '<td id="mean"></td>' +
                         '<td id="std_dev"></td>' +
                     '</tr>';
                 $('#stats').append(tr);
@@ -731,6 +741,7 @@
                     <th>freq[0]</th>
                     <th>min</th>
                     <th>max</th>
+                    <th>mean</th>
                     <th>std.dev</th>
                 </tr>
             </table>
