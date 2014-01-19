@@ -380,7 +380,7 @@
                 return {
                     legend: { position: "nw" },                                
                     xaxis: {
-                        axisLabel: "freq&uarr; &larr;total&rarr;",
+                        axisLabel: "frequency of total&uarr; &larr;total&rarr;",
                         position: "bottom",
                         min: -50,
                         max: 50                                            
@@ -709,6 +709,9 @@
         #stats, #feedback {
             font-size: 0.8em;
         }
+        input[type=button] {
+            background: LightGray;
+        }
         table {
             display: inline-block;
             border-collapse: collapse;
@@ -741,19 +744,10 @@
     <tr>
         <td>
             <table>
-                <td>
-                    <input type="button" id="walkHelp" value="walk?">
-                </td>
-                <td>
-                    <input type="button" id="feedbackHelp" value="feedback?">
-                </td>
-                <td>
-                    <input type="button" id="graphsHelp" value="graphs?">
-                </td>
-                <td>
-                    <input type="button" id="statsHelp" value="stats?">
-                </td>
-                </tr>                
+                <tr><td><input type="button" id="walkHelp" value="walk?"></td></tr>
+                <tr><td><input type="button" id="feedbackHelp" value="feedback?"></td></tr>
+                <tr><td><input type="button" id="graphsHelp" value="graphs?"></td></tr>
+                <tr><td><input type="button" id="statsHelp" value="stats?"></td></tr>                
             </table>
         </td>
         <td>    
