@@ -272,12 +272,6 @@
                         return this[this.length - 1][TOTAL];                        
                     }
                     
-                    plot.rangeOfTotals = function() {
-                        //var min = this[0][TOTAL];
-                        //var max = this[this.length - 1][TOTAL];
-                        return this.min() + ',+' + this.max();
-                    }
-                    
                     plot.countAtTotalZero = function() {
                         var element;
                         for (var at = 0; at !== this.length; at++) {
