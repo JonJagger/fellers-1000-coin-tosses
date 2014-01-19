@@ -358,7 +358,6 @@
                     "</span>"
                 );
                 stat('total',  at).html(countPlots[at].data.countAtTotalZero());
-                stat('range',  at).html(countPlots[at].data.rangeOfTotals());
                 stat('min',  at).html(countPlots[at].data.min());
                 stat('max',  at).html(countPlots[at].data.max());                
                 stat('std_dev',at).html(countPlots[at].data.stdDev());                            
@@ -594,7 +593,6 @@
                     '<tr id="steps_'+ at + '">' +
                         '<th></th>' +
                         '<td id="total"></td>' +
-                        '<td id="range"></td>' +
                         '<td id="min"></td>' +
                         '<td id="max"></td>' +
                         '<td id="std_dev"></td>' +
@@ -731,7 +729,6 @@
                 <tr>
                     <th>step</th>
                     <th>freq[0]</th>
-                    <th>range</th>
                     <th>min</th>
                     <th>max</th>
                     <th>std.dev</th>
