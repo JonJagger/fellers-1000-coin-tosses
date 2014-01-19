@@ -19,8 +19,8 @@
         // Image you have a fair coin, and you flip it 1000 times.
         // These 1000 coin steps comprise one walk.
         // Each step you flip a coin.
-        // If you flip a head you add 1 to your total.
-        // If you flip a tail you subtract 1 from your total.
+        // If you flip a head you add one to your total.
+        // If you flip a tail you subtract one from your total.
         //
         // What will the cumulative total look like as the number 
         // steps progresses from 1 to 1000?
@@ -28,58 +28,76 @@
         // - - - - - - - - - - - - - - - - - - - - - - -
         // About odd/even-ness...
         // - - - - - - - - - - - - - - - - - - - - - - -
-        // I must _not_ tweak the feedback like this:
-        //    if (total < 0)
-        //      total += 1;
-        //    if (total > 0)
-        //      total -= 1;
-        // If I do this, then for the case when total === 0
-        // I will _not_ do a head(+1) or a tail(-1) at all.
-        // This will alter the final total to be odd when
-        // its normally even (or vice versa). See below.
-        // Thus I will get an outlier in the plot data set.
+        // This is a long comment befitting the long time
+        // it took me track down...
         //
-        // Consider what happens to the total when a feedback
-        // nudge happens...
-        //   50% of the time it would have gone towards zero
-        //     in this case the nudge has no effect
-        //   50% of the time it would have gone away from zero
-        //     in this case the nudge has a net effect of +-2
-        // so
-        //   the net effect is +-1 (towards zero) per nudge
-        //   thus the odd/even-ness is preserved.
-        //
-        // Consider also, if the code did this...
-        //   var toss = (total < 0) ? HEAD : TAIL;
-        //   total += toss;
-        //   if (feedback()) {
-        //     total -= toss; 
-        //   }
-        // In this case a nudge would have no net effect on the
-        // total and the odd/even-ness would again not be preserved.                    
-                
-        // It is important to understand that for a nudgeless walk...
+        // For a walk with *no* feedback nudges...
         //   if the number of steps is even
-        //     then the total is always even.
+        //     then the total is also always even.
         //   if the number of steps is odd
-        //     then the total is always odd.
+        //     then the total is also always odd.
         //
-        // E.g. Suppose the number of steps in a walk == 4.
-        // Possibilities are:
+        // E.g. Suppose the number of steps == 4 (which is even).
+        //     Then all possibile totals are also even:
         //     0H 4T == 0-4 == -4
         //     1H 3T == 1-3 == -2
         //     2H 2T == 2-2 ==  0
         //     3H 1T == 3-1 == +2
         //     4H 0T == 4-0 == +4
         //
-        // E.g. Suppose the number of steps in a walk == 5.
-        // Possibilities are:
+        // E.g. Suppose the number of steps == 5 (which is odd.)
+        //     Then all possibile totals are also odd:
         //     0H 5T == 0-5 == -5
         //     1H 4T == 1-4 == -3
         //     2H 3T == 2-3 == -1
         //     3H 2T == 3-2 == +1
         //     4H 1T == 4-1 == +3
         //     5H 0T == 5-0 == +5
+        //
+        // Another way to see this is to realize that with
+        // no feedback nudges *every* step on the walk
+        // has a flip that alters the total from odd->even,
+        // or from even->odd. Thus a walk with an even number
+        // of steps will always end with an even total.
+        // And a walk with an odd number of steps will always
+        // end with an odd total.
+        //
+        // Why is this important?
+        // Consider if I implemented the feedback nudge like this:
+        //
+        //    if (total < 0)
+        //      total += 1;
+        //    if (total > 0)
+        //      total -= 1;
+        //
+        // This misses the case when the total === 0
+        // Thus there is a chance that a feedback nudge
+        // would happen when the total == 0 and it
+        // would *not* alter the total from odd->even
+        // or from even->odd for that step. If the number of times
+        // this happened on a walk was itself odd, then the
+        // final total would also be changed from odd->even
+        // or from even->odd.
+        // When this happened I got some very odd outliers
+        // in the data sets and the graph plots with feedback
+        // looked very odd and not at all like the graph
+        // plots with no feedback.
+        //
+        // For the same reason this code also does not work...
+        //
+        //   var toss = (total < 0) ? +1 : -1;
+        //   total += toss;
+        //   if (feedback()) {
+        //     total -= toss; 
+        //   }
+        //
+        // You have to do this:
+        //
+        //   if (feedback.nudge()) {
+        //     total += (total < 0) ? +1 : -1; 
+        //   } else {
+        //     ...
+        //   }                
         // - - - - - - - - - - - - - - - - - - - - - - -
                 
         var NUMBER_OF_WALKS = 5000;
@@ -97,7 +115,7 @@
                 } else {
                     total += (Math.random() < 0.5) ? HEAD : TAIL;
                 }                
-                if (step % 5 === 0) {
+                if (step % 5 === 0) { // limit samples to increase speed
                     walk.push([step,total]);
                 }                
                 $.each(counts.points, function(_,point) {
