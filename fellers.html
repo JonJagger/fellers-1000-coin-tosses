@@ -516,38 +516,48 @@
                 colour(blue,100) +
                 '</div>';
         }
+        function tr(text) {
+            return '<th style="font-weight:normal">' +
+                   text +
+                   '</th>';
+        }
+        function td(text) {
+            return '<td style="border:solid 1px gray;padding:0.25em;">' +
+                   text +
+                   '</td>';
+        }
         function makeStatsHelpHtml() {
             return '' +
                 '<div>' +
                 '<table style="font-size:1em;border:solid 1px gray;padding:0.25em;">' +
                   '<tr>' +
-                    '<th style="font-weight:normal">step</th>' +
-                    '<th style="font-weight:normal">freq[0]</th>' +
-                    '<th style="font-weight:normal">&nbsp;&nbsp;&nbsp;range</th>' +
-                    '<th style="font-weight:normal">std.dev</th>' +
+                    tr('step') +
+                    tr('freq[0]') +
+                    tr('range') +
+                    tr('std.dev') +
                 '</tr>' +
-                '<tr style="color:#b8860b;">' +
+                '<tr style="color:' + gold + ';">' +
                   '<th>10</th>' +
-                  '<td style="border:solid 1px gray;padding:0.25em;">1204</td>' +
-                  '<td style="border:solid 1px gray;padding:0.25em;">[-10,+10]</td>' +
-                  '<td style="border:solid 1px gray;padding:0.25em;">3.19</td>' +
+                  td(1204) +
+                  td('[-10,+10]') +
+                  td(3.19) +
                 '</tr>' +
                 '<tr style="color:blue">' +
                   '<th>100</th>' +
-                  '<td style="border:solid 1px gray;padding:0.25em;">405</td>' +
-                  '<td style="border:solid 1px gray;padding:0.25em;">[-32,+36]</td>' +
-                  '<td style="border:solid 1px gray;padding:0.25em;">10.15</td>' +
+                  td(405) +
+                  td('[-32,+36]') +
+                  td(10.15) +
                 '</tr>' +
                 '<tr style="color:red;">' +
                   '<th>1000</th>' +
-                  '<td style="border:solid 1px gray;padding:0.25em;">121</td>' +
-                  '<td style="border:solid 1px gray;padding:0.25em;">[-114,+140]</td>' +
-                  '<td style="border:solid 1px gray;padding:0.25em;">31.71</td>' +
+                  td(121) +
+                  td('[-114,+140]') +
+                  td(31.71) +
                 '</tr>' +
                 '</table>' +
                 '<br><br>' +
                 'Means - at the ' +
-                '<span style="color:red;">1000</span>th step along the 5000 walks:<br>' +
+                colour(red,1000) +'th step along the 5000 walks:<br>' +
                 '<ul>' +
                 '<li>the total was zero 121 times<br>' +
                      '(500 heads, 500 tails, 500-500=0, 500+500=1000)' +
