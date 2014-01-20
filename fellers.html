@@ -248,20 +248,9 @@
                     }
                     
                     plot.maxAbs = function() {
-                        return Math.max( -plot.min(), plot.max());
+                        return Math.max(-plot.min(), plot.max());
                     }
-                    
-                    plot.countAtTotalZero = function() {
-                        var element;
-                        for (var at = 0; at !== this.length; at++) {
-                            element = this[at];
-                            if (element[TOTAL] === 0) {
-                                return element[COUNT];
-                            }
-                        }
-                        return '?';
-                    }
-                    
+                                        
                     plot.unfolded = function() {
                         var element, total, count;
                         var raw = [ ];
@@ -404,7 +393,6 @@
                     counts.getPoint(at) +
                     "</span>"
                 );
-                stat('freq0', at).html(countPlots[at].data.countAtTotalZero());
                 stat('max_abs', at).html(countPlots[at].data.maxAbs());
                 stat('mean',at).html(countPlots[at].data.mean());
                 stat('std_dev',at).html(countPlots[at].data.stdDev());
@@ -692,7 +680,6 @@
                 var tr = '' +
                     '<tr id="steps_'+ at + '">' +
                         '<th></th>' +
-                        '<td id="freq0"></td>' +
                         '<td id="max_abs"></td>' +                        
                         '<td id="mean"></td>' +
                         '<td id="std_dev"></td>' +
@@ -756,7 +743,6 @@
             <table id="stats">
                 <tr>
                     <th>step</th>
-                    <th>freq[0]</th>
                     <th>max<br>abs(total)</th>
                     <th>mean</th>
                     <th>std.dev</th>
