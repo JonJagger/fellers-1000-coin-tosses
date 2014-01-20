@@ -100,22 +100,6 @@
         //   }                
         // - - - - - - - - - - - - - - - - - - - - - - -
              
-        Array.prototype.shuffle = function() {
-            // Fischer-Yates shuffle (after Ronald Fisher)
-            // http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle            
-            var i = this.length, j, temp;
-            if (i === 0) {
-                return;
-            }
-            while (--i) {
-               j = Math.floor(Math.random() * (i + 1));
-               temp = this[i];
-               this[i] = this[j];
-               this[j] = temp;
-            }
-            return this;
-        };
-                                
         var NUMBER_OF_WALKS = 5000;
         var STEPS_PER_WALK = 1000;
         var WALKS_PER_PLOT = 100;
@@ -127,7 +111,7 @@
             var total = 0;
             for (var step = 1; step !== STEPS_PER_WALK+1; step++) {
                 if (feedback.nudge()) { // See About odd/even-ness above
-                    total += (total > 0) ? TAIL : HEAD; 
+                    total += (total < 0) ? HEAD : TAIL; 
                 } else {
                     total += (Math.random() < 0.5) ? HEAD : TAIL;
                 }                
@@ -151,16 +135,16 @@
         
         var feedback = {
             expectedCount: undefined,
-            actualCount: 0,
-            ordinals: undefined,
+            actualCount: 0
         };
                 
         feedback.nudge = function() {
             // Deliberately independent of the walk number
-            var my = feedback;
-            my.ordinals.shuffle();
-            if (my.ordinals[0] === 0) {
-                my.actualCount += 1;
+            var NEVER = 0;
+            if (feedback.expectedCount === NEVER) {
+                return false;
+            } else if (Math.floor(Math.random() * feedback.expectedCount) === 0) {
+                feedback.actualCount += 1;
                 return true;
             } else {
                 return false;                
@@ -185,15 +169,6 @@
             var my = feedback;
             my.actualCount = 0;
             my.expectedCount = n;
-            my.ordinals = my.makeOrdinals(n);
-        }
-        
-        feedback.makeOrdinals = function(n) {
-            var array = [ ];
-            for (var at = 0; at !== n; at++) {
-                array.push(at);
-            }
-            return array;            
         }
                         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
