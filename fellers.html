@@ -679,6 +679,12 @@
         #stats, #feedback {
             font-size: 0.8em;
         }
+        .flow {
+            display: inline-block;
+            vertical-align: middle;
+            padding-left: 1em;
+            padding-right: 1em;
+        }
         input[type=button] {
             background: LightGray;
         }
@@ -707,32 +713,28 @@
     </tr>
     <tr>
         <td>
-            <table>
-                <tr>
-                    <td>
-                        <table>
-                            <tr><td><input type="button" id="walkHelp" value="walk?"></td></tr>
-                            <tr><td><input type="button" id="feedbackHelp" value="feedback?"></td></tr>
-                            <tr><td><input type="button" id="graphsHelp" value="graphs?"></td></tr>
-                            <tr><td><input type="button" id="statsHelp" value="stats?"></td></tr>                
-                        </table>
-                    </td>
-                    <td>                    
-                        <div id="feedback"></div>
-                        <table id="stats">
-                            <tr>
-                                <th>step</th>
-                                <th>freq[0]</th>
-                                <th>max<br>abs(total)</th>
-                                <th>std.dev</th>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
-                        <input type="button" id="re_run" value="re-run">
-                    </td>
-                </tr>
-            </table>
+            <div class="flow">
+                <table>
+                    <tr><td><input type="button" id="walkHelp" value="walk?"></td></tr>
+                    <tr><td><input type="button" id="feedbackHelp" value="feedback?"></td></tr>
+                    <tr><td><input type="button" id="graphsHelp" value="graphs?"></td></tr>
+                    <tr><td><input type="button" id="statsHelp" value="stats?"></td></tr>                
+                </table>
+            </div>
+            <div class="flow">
+                <div id="feedback"></div>                
+                <table id="stats">
+                    <tr>
+                        <th>step</th>
+                        <th>freq[0]</th>
+                        <th>max<br>abs(total)</th>
+                        <th>std.dev</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="flow">
+                <input type="button" id="re_run" value="re-run">
+            </div>
         </td>        
     </tr>
 </table>
