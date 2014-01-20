@@ -103,6 +103,7 @@
         Array.prototype.shuffle = function() {
             // Fischer-Yates shuffle (after Ronald Fisher)
             // http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+            
             var i = this.length, j, temp;
             if (i === 0) {
                 return;
@@ -116,19 +117,25 @@
             return array;
         };
                 
-                
-                
         var NUMBER_OF_WALKS = 5000;
         var STEPS_PER_WALK = 1000;
         var WALKS_PER_PLOT = 100;
         var flipped = { };
         
         flipped.heads = 0;
+        flipped.percent = function(n) {
+            return (n / (flipped.heads + flipped.tails) * 100).toFixed(4) + "%";                       
+        };
+        flipped.headsPercent = function() {
+            return flipped.percent(flipped.heads);
+        };
         flipped.tails = 0;
+        flipped.tailsPercent = function() {
+            return flipped.percent(flipped.tails);
+        };
         flipped.reset = function() {
-          var my = flipped;
-          my.heads = 0;
-          my.tails = 0;
+          flipped.heads = 0;
+          flipped.tails = 0;
         };
         
         function doOneWalk() {            
@@ -393,10 +400,10 @@
             $('#feedback #expected').html(feedback.expected());
             $('#feedback #actual').html(feedback.actual(n));
             
-            var headsPercent = (flipped.heads / (flipped.heads + flipped.tails) * 100).toFixed(4);
-            var tailsPercent = (flipped.tails / (flipped.heads + flipped.tails) * 100).toFixed(4);
-            $('#flipped #heads').html(flipped.heads + "=" + headsPercent + "%");
-            $('#flipped #tails').html(flipped.tails + "=" + tailsPercent + "%");
+            //var headsPercent = (flipped.heads / (flipped.heads + flipped.tails) * 100).toFixed(4);
+            //var tailsPercent = (flipped.tails / (flipped.heads + flipped.tails) * 100).toFixed(4);
+            $('#flipped #heads').html(flipped.heads + "=" + flipped.headsPercent());
+            $('#flipped #tails').html(flipped.tails + "=" + flipped.tailsPercent());
         }
         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
