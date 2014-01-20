@@ -247,6 +247,10 @@
                         return this[this.length - 1][TOTAL];                        
                     }
                     
+                    plot.maxAbs = function() {
+                        return Math.max( -plot.min(), plot.max());
+                    }
+                    
                     plot.countAtTotalZero = function() {
                         var element;
                         for (var at = 0; at !== this.length; at++) {
@@ -400,9 +404,10 @@
                     counts.getPoint(at) +
                     "</span>"
                 );
-                stat('total',  at).html(countPlots[at].data.countAtTotalZero());
+                stat('freq0', at).html(countPlots[at].data.countAtTotalZero());
                 stat('min',  at).html(countPlots[at].data.min());
-                stat('max',  at).html(countPlots[at].data.max());                
+                stat('max',  at).html(countPlots[at].data.max());
+                stat('max_abs', at).html(countPlots[at].data.maxAbs());
                 stat('mean',at).html(countPlots[at].data.mean());
                 stat('std_dev',at).html(countPlots[at].data.stdDev());
             }
@@ -689,9 +694,10 @@
                 var tr = '' +
                     '<tr id="steps_'+ at + '">' +
                         '<th></th>' +
-                        '<td id="total"></td>' +
+                        '<td id="freq0"></td>' +
                         '<td id="min"></td>' +
                         '<td id="max"></td>' +
+                        '<td id="max_abs"></td>' +                        
                         '<td id="mean"></td>' +
                         '<td id="std_dev"></td>' +
                     '</tr>';
@@ -757,6 +763,7 @@
                     <th>freq[0]</th>
                     <th>min</th>
                     <th>max</th>
+                    <th>max<br>abs(total)</th>
                     <th>mean</th>
                     <th>std.dev</th>
                 </tr>
