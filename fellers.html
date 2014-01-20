@@ -226,6 +226,17 @@
                 flot.getPlot = function() {
                     var plot = this.makePlot();
                     
+                    plot.freq0 = function() {
+                        var element;
+                        for (var at = 0; at !== this.length; at++) {
+                            element = this[at];
+                            if (element[TOTAL] === 0) {
+                                return element[COUNT];
+                            }
+                        }
+                        return '?';                        
+                    }
+                    
                     plot.min = function() {
                         return this[0][TOTAL];    
                     }
@@ -235,7 +246,13 @@
                     }
                     
                     plot.maxAbs = function() {
-                        return Math.max(-plot.min(), plot.max());
+                        var min = plot.min();
+                        var max = plot.max();
+                        if (max > -min) {
+                            return max;
+                        } else {
+                            return min;
+                        }
                     }
                                         
                     plot.unfolded = function() {
@@ -376,6 +393,7 @@
                     counts.getPoint(at) +
                     "</span>"
                 );
+                stat('freq0', at).html(countPlots[at].data.freq0());
                 stat('max_abs', at).html(countPlots[at].data.maxAbs());
                 stat('std_dev',at).html(countPlots[at].data.stdDev());
             }
@@ -564,22 +582,26 @@
                 '<div>' +
                 '<table>' +
                     th('step') +
+                    th('freq[0]') +
                     th('max<br>abs(total)') +
                     th('std.dev') +
                 '</tr>' +
                 '<tr>' +
                   td(colour(gold,10)) +
+                  td(colour(gold,1260)) +
                   td(colour(gold,10)) +
                   td(colour(gold,3.19)) +
                 '</tr>' +
                 '<tr>' +
                   td(colour(blue,100)) +
+                  td(colour(blue,391)) +
                   td(colour(blue,36)) +
                   td(colour(blue,10.15)) +
                 '</tr>' +
                 '<tr>' +
                   td(colour(red,1000)) +
-                  td(colour(red,140)) +
+                  td(colour(red,124)) +
+                  td(colour(red,-140)) +
                   td(colour(red,31.71)) +
                 '</tr>' +
                 '</table>' +
@@ -587,9 +609,11 @@
                 'At the ' + colour(red,1000) +"'th step of the walks:" +
                 squashed(
                     '<li>' +
-                        'the total straying from zero the most was either<br>' +
-                        colour(red,'-140') + ' (430 heads, 570 tails), or<br>' +
-                        colour(red,'+140') + ' (570 heads, 430 tails)' +
+                    'about freq[0]' +
+                    '</li>' +
+                    '<li>' +
+                        'the total farthest from zero was <br>' +
+                        colour(red,'-140') + ' (430 heads, 570 tails)' +
                     '</li>' +
                     '<li>' +
                         'the standard deviation of the total was ' + colour(red,31.71) +                        
@@ -637,6 +661,7 @@
                 var tr = '' +
                     '<tr id="steps_'+ at + '">' +
                         '<th></th>' +
+                        '<td id="freq0"></td>' +
                         '<td id="max_abs"></td>' +                        
                         '<td id="std_dev"></td>' +
                     '</tr>';
@@ -651,7 +676,7 @@
             width: 1100px;                        
             height: 280px;
         }
-        #stats, #feedback, #flipped {
+        #stats, #feedback {
             font-size: 0.8em;
         }
         input[type=button] {
@@ -662,12 +687,9 @@
             border-collapse: collapse;
             border-spacing: 4;
         }
-        #stats td, #stats th, #feedback td, #flipped td {
+        #stats td, #stats th {
             border: solid 1px gray;
             padding: 0.25em;
-        }
-        #feedback caption, #flipped caption {
-            font-weight: bold;
         }
         .ui-dialog {
               opacity: 0.75;
@@ -683,30 +705,34 @@
     <tr>
         <td><div id="fellers-counts"></div></td>
     </tr>
-</table>
-    
-<table>
     <tr>
         <td>
             <table>
-                <tr><td><input type="button" id="walkHelp" value="walk?"></td></tr>
-                <tr><td><input type="button" id="feedbackHelp" value="feedback?"></td></tr>
-                <tr><td><input type="button" id="graphsHelp" value="graphs?"></td></tr>
-                <tr><td><input type="button" id="statsHelp" value="stats?"></td></tr>                
-            </table>
-        </td>
-        <td>
-            <div id="feedback"></div>
-            <table id="stats">
                 <tr>
-                    <th>step</th>
-                    <th>max<br>abs(total)</th>
-                    <th>std.dev</th>
+                    <td>
+                        <table>
+                            <tr><td><input type="button" id="walkHelp" value="walk?"></td></tr>
+                            <tr><td><input type="button" id="feedbackHelp" value="feedback?"></td></tr>
+                            <tr><td><input type="button" id="graphsHelp" value="graphs?"></td></tr>
+                            <tr><td><input type="button" id="statsHelp" value="stats?"></td></tr>                
+                        </table>
+                    </td>
+                    <td>                    
+                        <div id="feedback"></div>
+                        <table id="stats">
+                            <tr>
+                                <th>step</th>
+                                <th>freq[0]</th>
+                                <th>max<br>abs(total)</th>
+                                <th>std.dev</th>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <input type="button" id="re_run" value="re-run">
+                    </td>
                 </tr>
             </table>
-        </td>
-        <td>
-            <input type="button" id="re_run" value="re-run">
         </td>        
     </tr>
 </table>
