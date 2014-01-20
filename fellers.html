@@ -130,33 +130,33 @@
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // What are the effects of adding feedback, of nudging
         // the total back towards zero every so often...?
-        // To get a feedback nudge every Nth throw (on average)
+        // To get a feedback nudge every N'th throw (on average)
         // call feedback.reset(N). To get no feedback use N == zero.
         
         var feedback = {
-            expectedCount: undefined
+            n: undefined
             //actualCount: 0
         };
                 
         feedback.nudge = function() {
             // Deliberately independent of the walk number
             var NEVER = 0;
-            if (feedback.expectedCount === NEVER) {
+            if (feedback.n === NEVER) {
                 return false;
-            } else if (Math.floor(Math.random() * feedback.expectedCount) === 0) {
-                feedback.actualCount += 1;
+            } else if (Math.floor(Math.random() * feedback.n) === 0) {
+                //feedback.actualCount += 1;
                 return true;
             } else {
                 return false;                
             }
         }        
         
-        feedback.expected = function() {
+        feedback.info = function() {
             var my = feedback;
             var title = '<b>feedback</b>=';
-            return (my.expectedCount === 0)
+            return (feedback.n === 0)
                 ? title + 'never'
-                : title + 'every ' + my.expectedCount + ' steps';   
+                : title + 'every ' + feedback.n + ' steps';   
         }
         
         /*feedback.actual = function(n) {
@@ -169,7 +169,7 @@
         feedback.reset = function(n) {
             //var my = feedback;
             //my.actualCount = 0;
-            feedback.expectedCount = n;
+            feedback.n = n;
         }
                         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -394,7 +394,7 @@
                 stat('std_dev',at).html(countPlots[at].data.stdDev());
             }
             
-            $('#feedback').html(feedback.expected());
+            $('#feedback').html(feedback.info());
             //$('#feedback #actual').html(feedback.actual(n));            
         }
         
@@ -460,7 +460,7 @@
                     '<td>' +  
                       '<input type="text"' +
                              'style="width:3em;"' +
-                             'value="' + feedback.expectedCount + '"' +
+                             'value="' + feedback.n + '"' +
                              'id="feedback">' +
                        '&nbsp;th step (0 for never)' +
                     '</td>' +
