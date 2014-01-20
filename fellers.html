@@ -502,42 +502,52 @@
                 
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 
+        function squashed(html) {
+            return "<ul style='margin-top:0;margin-bottom:0;'>" +
+                    html +
+                   "</ul>";
+        }        
+        function listElement(html) {
+            return '<br>&nbsp;&nbsp;&bull;&nbsp;' + html;
+        }
+                
         function makeWalkHelpHtml() {            
             return '' +
                 '<div>' +
-                "Each Feller's walk is 1000 steps long, and at each " +
-                "step you flip a fair coin. " +
-                "As you walk you keep a running total (starting at zero):" +
-                "<ul>" +
-                "<li>adding one each time you flip a head</li>" +
-                "<li>subtracting one each time you flip a tail</li>" +
-                "</ul>" +
-                "How will the cumulative total behave as the walk progresses?" +
+                "A Feller's walk comprises 1000 steps. " +
+                "At each step you flip a coin, keeping a running total " +
+                "(starting at zero)" +
+                squashed(
+                    "<li>adding one each time you flip a head</li>" +
+                    "<li>subtracting one each time you flip a tail</li>") +
+                "How will the total behave along the walk?" +
                 '</div>;'
         }
         function makeFeedbackHelpHtml() {
             return '' +
                 "<div>" +
-                "Every Nth step (on average), instead of flipping the coin, you look at the total and:<br>" +
-                "<ul>" +
-                "<li>if the total is negative you pretend you've flipped a head and<br>" +
-                     'add one to the total.' +
-                "</li>"+
-                "<li>if the total is positive you pretend you've flipped a tail and<br>" +
-                "subtract one from the total." +
-                "</li>"+
-                "</ul>" +
-                "This increases the likelihood of the total staying nearer to zero.<br>" +
+                "Every Nth step (on average), instead of flipping the coin, you look at the total and:" +
+                squashed(
+                    "<li>" +
+                    "if the total is negative you pretend you've flipped<br>" +
+                    'a head and add one to the total.' +
+                    "</li>"+
+                    "<li>" +
+                    "if the total is positive you pretend you've flipped<br>" +
+                    "a tail and subtract one from the total." +
+                    "</li>") +
+                "This increases the likelihood of the total staying near zero.<br>" +
                 'How effective is this feedback?' +
                 "</div>";
         }
         function colour(rgb,name) {
             return "<span style='color:" + rgb + "'>" + name + "</span>";
         }
-        function stepListElement(rgb,step,rgbName) {
-            return '<br>&nbsp;&nbsp;&bull;&nbsp;' +    
+        function stepLine(rgb,step,rgbName) {
+            return '<li>' + 
                     'at step ' + colour(rgb,step) +
-                    ' - the ' + colour(rgb,rgbName) + ' line';        
+                    ' - the ' + colour(rgb,rgbName) + ' line' +
+                    '</li>';
         }
         function makeGraphsHelpHtml() {
             return '' +
@@ -551,10 +561,10 @@
                 'The bottom graph plots the total (x) against the ' +
                 'frequency of the total for all walks. ' +
                 'Three lines plot the frequencies at three places on the walks:' +
-                  stepListElement(gold,10,'gold') +
-                  stepListElement(blue,100,'blue') +
-                  stepListElement(red,1000,'red') +
-                '<br>' +
+                squashed(
+                  stepLine(gold,10,'gold') +
+                  stepLine(blue,100,'blue') +
+                  stepLine(red,1000,'red')) +
                 'For example, a point (x=2,y=400) on the ' +
                 colour(blue,'blue') + ' line means 400 of the walks ' +
                 'had a total of 2 at step ' +
@@ -613,22 +623,21 @@
                 '</table>' +
                 '<br><br>' +
                 'Means - at the ' +
-                colour(red,1000) +'th step of the 5000 walks:<br>' +
-                '<ul>' +
-                '<li>the total was zero ' + colour(red,121) + ' times<br>' +
-                     '(500 heads, 500 tails, 500-500=0, 500+500=1000)' +
-                '</li>' +
-                '<li>the most negative total was ' + colour(red,-114) + '<br>' +
-                     '(443 heads, 557 tails, 443-557=-114, 443+557=1000)' +
-                '</li>' +
-                '<li>the most positive total was ' + colour(red,140) + '<br>' +
-                     '(570 heads, 430 tails, 570-430=140, 570+430=1000)' +
-                '</li>' +
-                '<li>the mean was ' + colour(red,0.13) +
-                '</li>' +
-                '<li>the standard deviation of the total was ' + colour(red,31.71) +
-                '</li>' +
-                '</ul>' +                
+                colour(red,1000) +'th step of the 5000 walks:' +
+                squashed(
+                    '<li>the total was zero ' + colour(red,121) + ' times<br>' +
+                         '(500 heads, 500 tails, 500-500=0, 500+500=1000)' +
+                    '</li>' +
+                    '<li>the most negative total was ' + colour(red,-114) + '<br>' +
+                         '(443 heads, 557 tails, 443-557=-114, 443+557=1000)' +
+                    '</li>' +
+                    '<li>the most positive total was ' + colour(red,140) + '<br>' +
+                         '(570 heads, 430 tails, 570-430=140, 570+430=1000)' +
+                    '</li>' +
+                    '<li>the mean was ' + colour(red,0.13) +
+                    '</li>' +
+                    '<li>the standard deviation of the total was ' + colour(red,31.71) +
+                    '</li>') +
                 '</div>';
         }
         
@@ -638,7 +647,7 @@
             var help = $(html).dialog({	  
                 title: title+"?",
                 autoOpen: false,
-                width: 700,
+                width: 600,
                 modal: true,
                 buttons: {
                   ok: function() {
