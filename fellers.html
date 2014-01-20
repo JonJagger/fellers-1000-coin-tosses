@@ -274,10 +274,6 @@
                     plot.stdDev = function() {
                         return jStat.stdev(plot.unfolded()).toFixed(2);
                     }
-                    
-                    plot.mean = function() {
-                        return jStat.mean(plot.unfolded()).toFixed(2);
-                    }
                     return plot;
                 }                            
                 return flot;
@@ -394,7 +390,6 @@
                     "</span>"
                 );
                 stat('max_abs', at).html(countPlots[at].data.maxAbs());
-                stat('mean',at).html(countPlots[at].data.mean());
                 stat('std_dev',at).html(countPlots[at].data.stdDev());
             }
             
@@ -681,7 +676,6 @@
                     '<tr id="steps_'+ at + '">' +
                         '<th></th>' +
                         '<td id="max_abs"></td>' +                        
-                        '<td id="mean"></td>' +
                         '<td id="std_dev"></td>' +
                     '</tr>';
                 $('#stats').append(tr);
@@ -744,7 +738,6 @@
                 <tr>
                     <th>step</th>
                     <th>max<br>abs(total)</th>
-                    <th>mean</th>
                     <th>std.dev</th>
                 </tr>
             </table>
