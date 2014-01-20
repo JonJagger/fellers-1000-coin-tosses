@@ -558,8 +558,8 @@
                   stepLine(gold,10,'gold') +
                   stepLine(blue,100,'blue') +
                   stepLine(red,1000,'red')) +
-                'For example, the point ' + colour(blue,'(x=2,y=400)') +
-                ' means 400 of the walks had a total of 2' + ' at step ' +
+                'For example, the point ' + colour(blue,'(x=2,y=417)') +
+                ' means 417 of the walks had a total of 2' + ' at step ' +
                 colour(blue,100) + ' (51 heads, 49 tails)' +
                 '</div>' +
                 '</div>';
@@ -606,14 +606,15 @@
                 '</tr>' +
                 '</table>' +
                 '<br><br>' +
-                'At the ' + colour(red,1000) +"'th step of the walks:" +
+                'Over all the walks, at the ' + colour(red,1000) +"'th step:" +
                 squashed(
                     '<li>' +
-                    'about freq[0]' +
+                        'the total was zero ' + colour(red,124) + ' times<br>' +
+                        '(500 heads, 500 tails)' +
                     '</li>' +
                     '<li>' +
-                        'the total farthest from zero was <br>' +
-                        colour(red,'-140') + ' (430 heads, 570 tails)' +
+                        'the total farthest from zero was ' + colour(red,'-140') + '<br>' +
+                        '(430 heads, 570 tails)' +
                     '</li>' +
                     '<li>' +
                         'the standard deviation of the total was ' + colour(red,31.71) +                        
