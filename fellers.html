@@ -135,7 +135,6 @@
         
         var feedback = {
             n: undefined
-            //actualCount: 0
         };
                 
         feedback.nudge = function() {
@@ -144,7 +143,6 @@
             if (feedback.n === NEVER) {
                 return false;
             } else if (Math.floor(Math.random() * feedback.n) === 0) {
-                //feedback.actualCount += 1;
                 return true;
             } else {
                 return false;                
@@ -159,16 +157,7 @@
                 : title + 'every ' + feedback.n + ' steps';   
         }
         
-        /*feedback.actual = function(n) {
-            var my = feedback;
-            return (my.actualCount === 0)
-                ? 'never'
-                : (1 / (my.actualCount / (STEPS_PER_WALK * n))).toFixed(2);                
-        }*/
-        
         feedback.reset = function(n) {
-            //var my = feedback;
-            //my.actualCount = 0;
             feedback.n = n;
         }
                         
@@ -395,7 +384,6 @@
             }
             
             $('#feedback').html(feedback.info());
-            //$('#feedback #actual').html(feedback.actual(n));            
         }
         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
