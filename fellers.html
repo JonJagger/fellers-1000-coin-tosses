@@ -102,8 +102,7 @@
              
         Array.prototype.shuffle = function() {
             // Fischer-Yates shuffle (after Ronald Fisher)
-            // http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
-            
+            // http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle            
             var i = this.length, j, temp;
             if (i === 0) {
                 return;
@@ -120,26 +119,17 @@
         var NUMBER_OF_WALKS = 5000;
         var STEPS_PER_WALK = 1000;
         var WALKS_PER_PLOT = 100;
-        var HEAD = +1;
-        var TAIL = -1;
         
         function doOneWalk() {            
+            var HEAD = +1;
+            var TAIL = -1;
             var walk = [ [0,0] ];
             var total = 0;
-
-            flipped.reset();
-
             for (var step = 1; step !== STEPS_PER_WALK+1; step++) {
                 if (feedback.nudge()) { // See About odd/even-ness above
                     total += (total > 0) ? TAIL : HEAD; 
                 } else {
-                    if (flipped.coin() === HEAD) {
-                        total += 1;
-                        flipped.heads++;                        
-                    } else {
-                        total -= 1;
-                        flipped.tails++;                        
-                    }
+                    total += (Math.random() < 0.5) ? HEAD : TAIL;
                 }                
                 if (step % 5 === 0) { // limit samples to increase speed
                     walk.push([step,total]);
@@ -151,50 +141,6 @@
                 });
             }
             return walk;
-        }
-        
-        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        
-        var flipped = { };
-        
-        flipped.heads = 0; // DROP?
-        flipped.percent = function(n) {
-            return (n / (flipped.heads + flipped.tails) * 100).toFixed(4) + "%";                       
-        };
-        flipped.headsPercent = function() {
-            return flipped.percent(flipped.heads);
-        };
-        flipped.tails = 0; // DROP?
-        flipped.tailsPercent = function() {
-            return flipped.percent(flipped.tails);
-        };
-        
-        flipped.reset = function() {
-          //flipped.heads = 0;
-          //flipped.tails = 0;
-          flipped.count = 0;
-          flipped.coins = [ ];
-          for (var i = 0; i < STEPS_PER_WALK*100; i++) {
-            flipped.coins.push(HEAD);
-            flipped.coins.push(TAIL);
-          }
-          flipped.coins.shuffle();
-        };
-        
-        flipped.count = 0; // DROP?
-        //flipped.headFirstCoinBag = [HEAD,TAIL,HEAD,TAIL,HEAD,TAIL];
-        //flipped.tailFirstCoinBag = [TAIL,HEAD,TAIL,HEAD,TAIL,HEAD];
-        //flipped.coinBag = [HEAD,TAIL,HEAD,TAIL,HEAD,TAIL,HEAD,TAIL,HEAD,TAIL];
-        //flipped.count = 0;
-        flipped.coin = function() {
-            return flipped.coins[flipped.count++];
-            
-            /*flipped.count += 1;
-            if (flipped.count % 2 === 0) {
-                return flipped.headFirstCoinBag.shuffle()[0];
-            } else {
-                return flipped.tailFirstCoinBag.shuffle()[0];
-            }*/
         }
         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -387,7 +333,6 @@
                 buttons: {
                   ok: function() {
                     //TODO: check input
-                    flipped.reset();
                     feedback.reset(parseInt($('#feedback',html).val()));
                     NUMBER_OF_WALKS = parseInt($('#no_of_walks',html).val());
                     STEPS_PER_WALK = parseInt($('#steps_per_walk',html).val());
@@ -412,8 +357,6 @@
             var n = 0;
             clearInterval(fid);
             counts.reset();
-            flipped.heads = 0;
-            flipped.tails = 0;            
             // Can't use for-loop (the plots don't appear?!)            
             fid = setInterval(
                 function() {
@@ -490,10 +433,7 @@
             }
             
             $('#feedback #expected').html(feedback.expected());
-            $('#feedback #actual').html(feedback.actual(n));
-            
-            $('#flipped #heads').html(flipped.heads + "=" + flipped.headsPercent());
-            $('#flipped #tails').html(flipped.tails + "=" + flipped.tailsPercent());
+            $('#feedback #actual').html(feedback.actual(n));            
         }
         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -840,19 +780,6 @@
                     <td id="actual"></td>
                 </tr>
             </table>
-        </td>
-        <td>
-            <table id="flipped">
-                <caption>flipped</caption>
-                <tr>
-                    <td>heads</td>
-                    <td id="heads"></td>
-                </tr>
-                <tr>
-                    <td>tails</td>
-                    <td id="tails"></td>
-                </tr>
-            </table>            
         </td>
         <td>
             <input type="button" id="re_run" value="re-run">
