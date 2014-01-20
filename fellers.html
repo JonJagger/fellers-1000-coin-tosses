@@ -578,62 +578,39 @@
                 '<div>' +
                 '<table>' +
                     th('step') +
-                    th('freq[0]') +
-                    th('min') +
-                    th('max') +
-                    th('mean') +
+                    th('max<br>abs(total)') +
                     th('std.dev') +
                 '</tr>' +
                 '<tr>' +
                   td(colour(gold,10)) +
-                  td(colour(gold,1204)) +
-                  td(colour(gold,-10)) +
                   td(colour(gold,10)) +
-                  td(colour(gold,0.08)) +
                   td(colour(gold,3.19)) +
                 '</tr>' +
                 '<tr>' +
                   td(colour(blue,100)) +
-                  td(colour(blue,405)) +
-                  td(colour(blue,-32)) +
                   td(colour(blue,36)) +
-                  td(colour(blue,0.09)) +
                   td(colour(blue,10.15)) +
                 '</tr>' +
                 '<tr>' +
                   td(colour(red,1000)) +
-                  td(colour(red,121)) +
-                  td(colour(red,-114)) +
                   td(colour(red,140)) +
-                  td(colour(red,0.13)) +
                   td(colour(red,31.71)) +
                 '</tr>' +
                 '</table>' +
                 '<br><br>' +
-                'Means - at the ' + colour(red,1000) +'th step of the walks:' +
+                'At the ' + colour(red,1000) +"'th step of the walks:" +
                 squashed(
                     '<li>' +
-                        'the total was zero ' + colour(red,121) + ' times<br>' +
-                        '(500 heads, 500 tails, 500-500=0, 500+500=1000)' +
-                    '</li>' +
-                    '<li>' +
-                        'the most negative total was ' + colour(red,-114) + '<br>' +
-                         '(443 heads, 557 tails, 443-557=-114, 443+557=1000)' +
-                    '</li>' +
-                    '<li>' +
-                        'the most positive total was ' + colour(red,140) + '<br>' +
-                         '(570 heads, 430 tails, 570-430=140, 570+430=1000)' +
-                    '</li>' +
-                    '<li>' +
-                        'the mean was ' + colour(red,0.13) +
+                        'the total straying from zero the most was either<br>' +
+                        colour(red,'-140') + ' (430 heads, 570 tails), or<br>' +
+                        colour(red,'+140') + ' (570 heads, 430 tails)' +
                     '</li>' +
                     '<li>' +
                         'the standard deviation of the total was ' + colour(red,31.71) +                        
                     '</li>') +
                     '<br>' +
-                    '95% of data typically falls in the range:<br>' +
-                    '&nbsp;&nbsp;&nbsp;[ mean - 2*std.dev, mean + 2*std.dev ] == <br>' +
-                    '&nbsp;&nbsp;&nbsp;[ ' + (0.13 - 2*31.71).toFixed(2) + ', ' + (0.13 + 2*31.71).toFixed(2) + ' ]' +
+                    '95% of data typically falls within 2 standard deviations:<br>' +
+                    '&nbsp;&nbsp;&nbsp;[ -' + (2*31.71).toFixed(2) + ', +' + (2*31.71).toFixed(2) + ' ]' +
                 '</div>';
         }
         
