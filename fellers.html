@@ -12,6 +12,9 @@
 
     <script type="text/javascript">
 
+        // IDEA... to a burst of fake walks at the start to
+        // try to remove any initial bias on random generator?
+        
         // - - - - - - - - - - - - - - - - - - - - - - -
         // Code to investigate Feller's walk
         // Blogged at http://jonjagger.blogspot.co.uk/2013/01/fellers-walk.html        
@@ -622,7 +625,7 @@
                 '</tr>' +
                 '</table>' +
                 '<br><br>' +
-                'Means - at the ' + colour(red,1000) +'th step of the 5000 walks:' +
+                'Means - at the ' + colour(red,1000) +'th step of the walks:' +
                 squashed(
                     '<li>' +
                         'the total was zero ' + colour(red,121) + ' times<br>' +
@@ -640,8 +643,12 @@
                         'the mean was ' + colour(red,0.13) +
                     '</li>' +
                     '<li>' +
-                        'the standard deviation of the total was ' + colour(red,31.71) +
+                        'the standard deviation of the total was ' + colour(red,31.71) +                        
                     '</li>') +
+                    '<br>' +
+                    '95% of data typically falls in the range:<br>' +
+                    '&nbsp;&nbsp;&nbsp;[ mean - 2*std.dev, mean + 2*std.dev ] == <br>' +
+                    '&nbsp;&nbsp;&nbsp;[ ' + (0.13 - 2*31.71).toFixed(2) + ', ' + (0.13 + 2*31.71).toFixed(2) + ' ]' +
                 '</div>';
         }
         
