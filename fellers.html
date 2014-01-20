@@ -405,8 +405,6 @@
                     "</span>"
                 );
                 stat('freq0', at).html(countPlots[at].data.countAtTotalZero());
-                stat('min',  at).html(countPlots[at].data.min());
-                stat('max',  at).html(countPlots[at].data.max());
                 stat('max_abs', at).html(countPlots[at].data.maxAbs());
                 stat('mean',at).html(countPlots[at].data.mean());
                 stat('std_dev',at).html(countPlots[at].data.stdDev());
@@ -695,8 +693,6 @@
                     '<tr id="steps_'+ at + '">' +
                         '<th></th>' +
                         '<td id="freq0"></td>' +
-                        '<td id="min"></td>' +
-                        '<td id="max"></td>' +
                         '<td id="max_abs"></td>' +                        
                         '<td id="mean"></td>' +
                         '<td id="std_dev"></td>' +
@@ -761,8 +757,6 @@
                 <tr>
                     <th>step</th>
                     <th>freq[0]</th>
-                    <th>min</th>
-                    <th>max</th>
                     <th>max<br>abs(total)</th>
                     <th>mean</th>
                     <th>std.dev</th>
