@@ -127,6 +127,8 @@
             var walk = [ [0,0] ];
             var total = 0;
 
+            flipped.reset();
+
             for (var step = 1; step !== STEPS_PER_WALK+1; step++) {
                 if (feedback.nudge()) { // See About odd/even-ness above
                     total += (total > 0) ? TAIL : HEAD; 
@@ -155,34 +157,44 @@
         
         var flipped = { };
         
-        flipped.heads = 0;
+        flipped.heads = 0; // DROP?
         flipped.percent = function(n) {
             return (n / (flipped.heads + flipped.tails) * 100).toFixed(4) + "%";                       
         };
         flipped.headsPercent = function() {
             return flipped.percent(flipped.heads);
         };
-        flipped.tails = 0;
+        flipped.tails = 0; // DROP?
         flipped.tailsPercent = function() {
             return flipped.percent(flipped.tails);
         };
+        
         flipped.reset = function() {
-          flipped.heads = 0;
-          flipped.tails = 0;
+          //flipped.heads = 0;
+          //flipped.tails = 0;
+          flipped.count = 0;
+          flipped.coins = [ ];
+          for (var i = 0; i < STEPS_PER_WALK*100; i++) {
+            flipped.coins.push(HEAD);
+            flipped.coins.push(TAIL);
+          }
+          flipped.coins.shuffle();
         };
-        flipped.count = 0;
-        flipped.headFirstCoinBag = [HEAD,TAIL,HEAD,TAIL,HEAD,TAIL];
-        flipped.tailFirstCoinBag = [TAIL,HEAD,TAIL,HEAD,TAIL,HEAD];
+        
+        flipped.count = 0; // DROP?
+        //flipped.headFirstCoinBag = [HEAD,TAIL,HEAD,TAIL,HEAD,TAIL];
+        //flipped.tailFirstCoinBag = [TAIL,HEAD,TAIL,HEAD,TAIL,HEAD];
         //flipped.coinBag = [HEAD,TAIL,HEAD,TAIL,HEAD,TAIL,HEAD,TAIL,HEAD,TAIL];
         //flipped.count = 0;
         flipped.coin = function() {
-            //return flipped.coinBag.shuffle()[0];
-            flipped.count += 1;
+            return flipped.coins[flipped.count++];
+            
+            /*flipped.count += 1;
             if (flipped.count % 2 === 0) {
                 return flipped.headFirstCoinBag.shuffle()[0];
             } else {
                 return flipped.tailFirstCoinBag.shuffle()[0];
-            }
+            }*/
         }
         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -398,8 +410,10 @@
         
         function runSimulation() {
             var n = 0;
-            clearInterval(fid);            
+            clearInterval(fid);
             counts.reset();
+            flipped.heads = 0;
+            flipped.tails = 0;            
             // Can't use for-loop (the plots don't appear?!)            
             fid = setInterval(
                 function() {
