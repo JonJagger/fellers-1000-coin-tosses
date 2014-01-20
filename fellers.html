@@ -534,6 +534,11 @@
         function colour(rgb,name) {
             return "<span style='color:" + rgb + "'>" + name + "</span>";
         }
+        function stepListElement(rgb,step,rgbName) {
+            return '<br>&nbsp;&nbsp;&bull;&nbsp;' +    
+                    'at step ' + colour(rgb,step) +
+                    ' - the ' + colour(rgb,rgbName) + ' line';        
+        }
         function makeGraphsHelpHtml() {
             return '' +
                 "<div>" +
@@ -546,16 +551,11 @@
                 'The bottom graph plots the total (x) against the ' +
                 'frequency of the total for all walks. ' +
                 'Three lines plot the frequencies at three places on the walks:' +
-                '<br>&nbsp;&nbsp;&bull;&nbsp;' +
-                'at step ' + colour(gold,10) +
-                ' - the ' + colour(gold,'gold') + ' line' +
-                '<br>&nbsp;&nbsp;&bull;&nbsp;' +
-                'at step ' + colour(blue,100) +
-                ' - the ' + colour(blue,'blue') + ' line' +
-                '<br>&nbsp;&nbsp;&bull;&nbsp;' +                
-                'at step ' + colour(red,1000) +
-                ' - the ' + colour(red,'red') + ' line' +
-                '<br>For example, a point (x=2,y=400) on the ' +
+                  stepListElement(gold,10,'gold') +
+                  stepListElement(blue,100,'blue') +
+                  stepListElement(red,1000,'red') +
+                '<br>' +
+                'For example, a point (x=2,y=400) on the ' +
                 colour(blue,'blue') + ' line means 400 of the walks ' +
                 'had a total of 2 at step ' +
                 colour(blue,100) +
