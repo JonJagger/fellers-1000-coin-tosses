@@ -99,21 +99,56 @@
         //     ...
         //   }                
         // - - - - - - - - - - - - - - - - - - - - - - -
+             
+        Array.prototype.shuffle = function() {
+            // Fischer-Yates shuffle (after Ronald Fisher)
+            // http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+            var i = this.length, j, temp;
+            if (i === 0) {
+                return;
+            }
+            while (--i) {
+               j = Math.floor(Math.random() * (i + 1));
+               temp = this[i];
+               this[i] = this[j];
+               this[j] = temp;
+            }
+            return array;
+        };
+                
+                
                 
         var NUMBER_OF_WALKS = 5000;
         var STEPS_PER_WALK = 1000;
         var WALKS_PER_PLOT = 100;
+        var flipped = { };
+        
+        flipped.heads = 0;
+        flipped.tails = 0;
+        flipped.reset = function() {
+          var my = flipped;
+          my.heads = 0;
+          my.tails = 0;
+        };
         
         function doOneWalk() {            
             var HEAD = +1;
             var TAIL = -1;
             var walk = [ [0,0] ];
             var total = 0;
+
             for (var step = 1; step !== STEPS_PER_WALK+1; step++) {
                 if (feedback.nudge()) { // See About odd/even-ness above
-                    total += (total < 0) ? HEAD : TAIL; 
+                    total += (total > 0) ? TAIL : HEAD; 
                 } else {
-                    total += (Math.random() < 0.5) ? HEAD : TAIL;
+                    //total += (Math.random() < 0.5) ? TAIL : HEAD;
+                    if (Math.random() < 0.5) {
+                        total -= 1;
+                        flipped.tails++;
+                    } else {
+                        total += 1;
+                        flipped.heads++;
+                    }
                 }                
                 if (step % 5 === 0) { // limit samples to increase speed
                     walk.push([step,total]);
@@ -125,8 +160,13 @@
                 });
             }
             return walk;
-        }       
-                
+        }
+        
+        //function flipped() {
+        //    var coins = [HEAD, TAIL, HEAD, TAIL, HEAD, TAIL];
+        //    
+        //}
+        
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // What are the effects of adding feedback, of nudging
         // the total back towards zero every so often...?
@@ -176,20 +216,6 @@
             var array = [ ];
             for (var at = 0; at !== n; at++) {
                 array.push(at);
-            }
-            array.shuffle = function() {
-                // Fischer-Yates shuffle (after Ronald Fisher)
-                // http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
-                var i = this.length, j, temp;
-                if (i === 0) {
-                    return;
-                }
-                while (--i) {
-                   j = Math.floor(Math.random() * (i + 1));
-                   temp = this[i];
-                   this[i] = this[j];
-                   this[j] = temp;
-                }
             }
             return array;            
         }
@@ -366,6 +392,11 @@
             
             $('#feedback #expected').html(feedback.expected());
             $('#feedback #actual').html(feedback.actual(n));
+            
+            var headsPercent = (flipped.heads / (flipped.heads + flipped.tails) * 100).toFixed(4);
+            var tailsPercent = (flipped.tails / (flipped.heads + flipped.tails) * 100).toFixed(4);
+            $('#flipped #heads').html(flipped.heads + "=" + headsPercent + "%");
+            $('#flipped #tails').html(flipped.tails + "=" + tailsPercent + "%");
         }
         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -650,6 +681,7 @@
                 buttons: {
                   ok: function() {
                     //TODO: check input
+                    flipped.reset();
                     feedback.reset(parseInt($('#feedback',html).val()));
                     NUMBER_OF_WALKS = parseInt($('#no_of_walks',html).val());
                     STEPS_PER_WALK = parseInt($('#steps_per_walk',html).val());
@@ -710,7 +742,7 @@
             width: 1100px;                        
             height: 280px;
         }
-        #stats, #feedback {
+        #stats, #feedback, #flipped {
             font-size: 0.8em;
         }
         input[type=button] {
@@ -721,11 +753,11 @@
             border-collapse: collapse;
             border-spacing: 4;
         }
-        #stats td, #stats th, #feedback td {
+        #stats td, #stats th, #feedback td, #flipped td {
             border: solid 1px gray;
             padding: 0.25em;
         }
-        #feedback caption {
+        #feedback caption, #flipped caption {
             font-weight: bold;
         }
         .ui-dialog {
@@ -778,6 +810,19 @@
                     <td id="actual"></td>
                 </tr>
             </table>
+        </td>
+        <td>
+            <table id="flipped">
+                <caption>flipped</caption>
+                <tr>
+                    <td>heads</td>
+                    <td id="heads"></td>
+                </tr>
+                <tr>
+                    <td>tails</td>
+                    <td id="tails"></td>
+                </tr>
+            </table>            
         </td>
         <td>
             <input type="button" id="re_run" value="re-run">
