@@ -515,7 +515,7 @@
         function makeFeedbackHelpHtml() {
             return '' +
                 "<div>" +
-                "Every Nth step (on average), instead of flipping the coin, you look at the total and:" +
+                "Every N'th step (on average), instead of flipping the coin, you look at the total and:" +
                 squashed(
                     "<li>" +
                     "if the total is negative you pretend you've flipped<br>" +
@@ -525,7 +525,7 @@
                     "if the total is positive you pretend you've flipped<br>" +
                     "a tail and subtract one from the total." +
                     "</li>") +
-                "This increases the likelihood of the total staying near zero.<br>" +
+                "This increases the likelihood of the total staying nearer zero.<br>" +
                 'How effective is this feedback?' +
                 "</div>";
         }
@@ -554,10 +554,9 @@
                   stepLine(gold,10,'gold') +
                   stepLine(blue,100,'blue') +
                   stepLine(red,1000,'red')) +
-                'For example, a point (x=2,y=400) on the ' +
-                colour(blue,'blue') + ' line means 400 of the walks ' +
-                'had a total of 2 at step ' +
-                colour(blue,100) +
+                'For example, the point ' + colour(blue,'(x=2,y=400)') +
+                ' means 400 of the walks had a total of 2' + ' at step ' +
+                colour(blue,100) + ' (51 heads, 49 tails)' +
                 '</div>' +
                 '</div>';
         }
