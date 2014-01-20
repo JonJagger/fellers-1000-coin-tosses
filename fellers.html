@@ -414,25 +414,6 @@
         var red  = 'red';
         
         var plotOptions = {
-            forCounts: function() {                            
-                return {
-                    legend: { position: "nw" },                                
-                    xaxis: {
-                        axisLabel: "&larr;total&rarr;",
-                        position: "bottom",
-                        min: -50,
-                        max: 50                                            
-                    },
-                    yaxis: {
-                        axisLabel: "&larr;frequency of total",
-                        position: "right"
-                    },
-                    series: {
-                        lines: { show: true },
-                        points: { show: false }
-                    }
-                };                        
-            },
             forWalk: function(walk) {
                 return {
                     legend: { position: "nw" },                                
@@ -455,6 +436,25 @@
                         points: { show: false }
                     }
                 };            
+            },
+            forCounts: function() {                            
+                return {
+                    legend: { position: "nw" },                                
+                    xaxis: {
+                        axisLabel: "&larr;total&rarr;",
+                        position: "bottom",
+                        min: -50,
+                        max: 50                                            
+                    },
+                    yaxis: {
+                        axisLabel: "&larr;frequency of total",
+                        position: "right"
+                    },
+                    series: {
+                        lines: { show: true },
+                        points: { show: false }
+                    }
+                };                        
             }            
         };
                           
@@ -505,7 +505,7 @@
         function makeWalkHelpHtml() {            
             return '' +
                 '<div>' +
-                "By default, each Feller's walk is 1000 steps long, and at each " +
+                "Each Feller's walk is 1000 steps long, and at each " +
                 "step you flip a fair coin. " +
                 "As you walk you keep a running total (starting at zero):" +
                 "<ul>" +
@@ -537,27 +537,29 @@
         function makeGraphsHelpHtml() {
             return '' +
                 "<div>" +
-                'By default the simulation does 5000 walks, where each walk ' +
-                'is 1000 steps.' +
-                '<br><br>' +
+                '<div style="padding:1em;border:1px solid Black;">' +
                 'The top <span style="color:green">green</span> graph plots ' +
-                'the total (y) against the step (x) for one walk.' +
-                '<br><br>' +
-                'The bottom graph plots the frequency of the total (y) against the total (x) ' +
-                'for all 5000 walks. ' +
+                'the step (x) against the total (y) for one walk.' +
+                '</div>' +
+                '<br>' +
+                '<div style="padding:1em;border:1px solid Black;">' +
+                'The bottom graph plots the total (x) against the ' +
+                'frequency of the total for all walks. ' +
                 'Three lines plot the frequencies at three places on the walks:' +
-                '<ul>' +
-                '<li>at step ' + colour(gold,10) +
-                ' - the ' + colour(gold,'gold') + ' line</li>' +
-                '<li>at step ' + colour(blue,100) +
-                ' - the ' + colour(blue,'blue') + ' line</li>' +
-                '<li>at step ' + colour(red,1000) +
-                ' - the ' + colour(red,'red') + ' line</li>' +
-                '</ul>' +
-                'For example, a point (x=2,y=400) on the ' +
-                colour(blue,'blue') + ' line means 400 walks ' +
-                '(out of 5000) had a total of 2 at step ' +
+                '<br>&nbsp;&nbsp;&bull;&nbsp;' +
+                'at step ' + colour(gold,10) +
+                ' - the ' + colour(gold,'gold') + ' line' +
+                '<br>&nbsp;&nbsp;&bull;&nbsp;' +
+                'at step ' + colour(blue,100) +
+                ' - the ' + colour(blue,'blue') + ' line' +
+                '<br>&nbsp;&nbsp;&bull;&nbsp;' +                
+                'at step ' + colour(red,1000) +
+                ' - the ' + colour(red,'red') + ' line' +
+                '<br>For example, a point (x=2,y=400) on the ' +
+                colour(blue,'blue') + ' line means 400 of the walks ' +
+                'had a total of 2 at step ' +
                 colour(blue,100) +
+                '</div>' +
                 '</div>';
         }
         function th(text) {
