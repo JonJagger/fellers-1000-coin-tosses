@@ -12,14 +12,14 @@
 
     <script type="text/javascript">
         
-        // IDEA: could I use the entire stats table as the
-        //       bottom graph legend?
+        // IDEA: use the entire stats table as the
+        //       bottom graph legend!
+        // IDEA: add [steps-per-walk]
+        //       and [number-of-walks]
+        //       next to feedback label.
         //
         // IDEA: freq[0] and lower-graph y label in same colour.
         //       orange?
-        //
-        // IDEA: add [steps-per-walk] and [number-of-walks]
-        //       next to feedback label.
         //
         // IDEA: top graph could dynamically set yaxis min/max
         //       values based on no-of-steps-in-one-walk
@@ -775,10 +775,10 @@
             <div id="feedback"></div>                
             <table id="stats">
                 <tr>
-                    <th>step</th>
+                    <th>at<br>step</th>
                     <th>freq[0]</th>
                     <th>max<br>abs<br>total</th>
-                    <th>std.dev</th>
+                    <th>std<br>dev</th>
                 </tr>
             </table>
         </td>            
