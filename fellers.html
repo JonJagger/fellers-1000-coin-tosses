@@ -12,6 +12,15 @@
 
     <script type="text/javascript">
         
+        // IDEA: could I use the entire stats table as the
+        //       bottom graph legend?
+        //
+        // IDEA: freq[0] and lower-graph y label in same colour.
+        //       orange?
+        //
+        // IDEA: add [steps-per-walk] and [number-of-walks]
+        //       next to feedback label.
+        //
         // IDEA: top graph could dynamically set yaxis min/max
         //       values based on no-of-steps-in-one-walk
         //        
@@ -21,14 +30,6 @@
         // IDEA: lower graph legend, instead of saying
         //       after 10 steps, it could say
         //       after 10 steps of 1000 walks (20%)
-        //
-        // IDEA: freq[0] and lower-graph y label in same colour.
-        //       orange?
-        //
-        // IDEA: all three colours for bottom-graphs could
-        //       be same colour, in light,normal,darker.
-        //       Would free up colour for freq[0] and
-        //       'frequency of total' y-axis label.
         //
         // IDEA: 'green' still needs refactoring.
         //
@@ -137,8 +138,8 @@
         
         var walkColor = 'green';
 
-        var colours = ['#B8860B','#0000FF','#FF0000'];
-        var colourNames = ['gold','blue','red'];
+        var colours = ['lightBlue','blue','black'];
+        var colourNames = ['light blue','blue','black'];
         
         function doOneWalk() {            
             var HEAD = +1;
@@ -509,7 +510,7 @@
                         lines: {
                             show: true,
                             lineWidth: 0,
-                            fill: 0.25 // 0=transparent, 1=opaque
+                            fill: 0.35 // 0=transparent, 1=opaque
                         },
                         points: { show: false }
                     },
@@ -596,10 +597,13 @@
                 'How effective is this feedback?' +
                 "</div>";
         }
+        function bold(html) {
+            return xml('b',html);
+        }
         function stepLine(n,step) {
             return '<li>' + 
-                    'at step ' + colour(n,step) +
-                    ' - the ' + colour(n,colourNames[n]) + ' line' +
+                    'step ' + bold(colour(n,step)) +
+                    ' - the ' + bold(colour(n,colourNames[n])) + ' line' +
                     '</li>';
         }
         function makeGraphsHelpHtml() {
@@ -612,12 +616,12 @@
                 '<br>' +
                 '<div style="padding:1em;border:1px solid Black;">' +
                 'The bottom graph plots the total (x) against the ' +
-                'frequency of the total for all walks. ' +
-                'Three lines plot the frequencies at three places on the walks:' +
+                'frequency of the total (y) for all walks. ' +
+                'Three lines show the frequencies at:' +
                 squashed(stepLine(0,10) + stepLine(1,100) + stepLine(2,1000)) +
-                'For example, the point ' + colour(1,'(x=2,y=417)') +
+                'For example, the point ' + bold(colour(1,'(x=2,y=417)')) +
                 ' means 417 of the walks had a total of 2' + ' at step ' +
-                colour(1,100) + ' (51 heads, 49 tails)' +
+                bold(colour(1,100)) + ' (51 heads, 49 tails)' +
                 '</div>' +
                 '</div>';
         }
