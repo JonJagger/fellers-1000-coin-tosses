@@ -600,22 +600,15 @@
                 '</div>';
         }
         function th(text) {
-            return '<th style="font-size:1em;' +
-                              'border:solid 1px gray;' +
-                              'padding:0.25em;' +
-                              'font-weight:bold;">' +
-                   text +
-                   '</th>';
+            return '<th>' + text + '</th>';
         }
         function td(text) {
-            return '<td style="border:solid 1px gray;padding:0.25em;">' +
-                   text +
-                   '</td>';
+            return '<td>' + text + '</td>';
         }
         function makeStatsHelpHtml() {
             return '' +
                 '<div>' +
-                '<table>' +
+                '<table id="stats">' +
                     th('step') +
                     th('freq[0]') +
                     th('max<br>abs<br>total') +
@@ -640,7 +633,7 @@
                   td(colour(2,31.71)) +
                 '</tr>' +
                 '</table>' +
-                '<br><br>' +
+                '<br>' +
                 'Over all the walks, at the ' + colour(2,1000) +"'th step:" +
                 squashed(
                     '<li>' +
