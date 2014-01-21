@@ -23,10 +23,6 @@
         // IDEA: use grid.markings to draw vertical lines
         //       on top graph showing positions of steps10,100,1000
         //
-        // IDEA: add [steps-per-walk]
-        //       and [number-of-walks]
-        //       next to feedback label.
-        //
         // IDEA: freq[0] and lower-graph y label in same colour.
         //       orange?
         //
@@ -369,6 +365,9 @@
         
         function runSimulation() {
             var n = 0;
+            $('#feedback').html(feedback.info());
+            $('#noOfWalks').html('<b>#walks</b> = ' + NUMBER_OF_WALKS);
+            $('#stepsPerWalk').html('<b>steps</b> = ' + STEPS_PER_WALK);
             clearInterval(fid);
             counts.reset();
             // Can't use for-loop (the plots don't appear?!)            
@@ -389,13 +388,14 @@
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                            
         $(document).ready(function() {
+            var never = 0;
             $('#walkHelp').click(function() { showWalkHelp(); });
             $('#feedbackHelp').click(function() { showFeedbackHelp(); });
             $('#graphsHelp').click(function() { showGraphsHelp(); });
             $('#statsHelp').click(function() { showStatsHelp(); });            
             $('#reRun').click(function() { reRunSimulation(); });
             addStatsPlaceHolders();
-            feedback.reset(0);
+            feedback.reset(never);
             runSimulation();
             showWalkHelp();
         });
@@ -436,8 +436,6 @@
                 stat(at,'maxAbs',countPlots[at].data.maxAbs());
                 stat(at,'stdDev',countPlots[at].data.stdDev());
             }
-            //- - - - feedback? - - - -
-            $('#feedback').html(feedback.info());
         }
         
         function colour(n,html) {
@@ -751,7 +749,7 @@
             padding: 0.25em;
         }
         td .step { font-weight: bold; }
-        #feedback {
+        #feedback, #noOfWalks, #stepsPerWalk {
             font-size: 0.8em;
             margin-top: 5px;
         }
@@ -762,8 +760,9 @@
             display: block;
             font-size: 1em;
         }
-        #re-run {
+        #reRun {
             font-size: 1em;
+            margin-top: 10px;
         }
         .ui-dialog {
               opacity: 0.75;
@@ -778,7 +777,9 @@
             <input type="button" id="feedbackHelp" value="feedback?">
             <input type="button" id="graphsHelp" value="graphs?">
             <input type="button" id="statsHelp" value="stats?">
-            <div id="feedback"></div>                
+            <div id="feedback"></div>
+            <div id="noOfWalks">#walks =</div>
+            <div id="stepsPerWalk">steps-per-walk = </div>
             <input type="button" id="reRun" value="re-run">
         </td>
         <td xrowspan="2" class="edged">
