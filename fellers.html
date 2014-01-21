@@ -127,10 +127,8 @@
         
         var walkColor = 'green';
 
-        var gold = '#b8860b';
-        var blue = 'blue';
-        var red  = 'red';
-        var colours = [gold,blue,red];
+        var colours = ['#B8860B','#0000FF','#FF0000'];
+        var colourNames = ['gold','blue','red'];
         
         function doOneWalk() {            
             var HEAD = +1;
@@ -176,7 +174,7 @@
         }        
         
         feedback.info = function() {
-            var title = '<b>feedback</b>=';
+            var title = '<b>feedback</b> = ';
             return (feedback.n === 0)
                 ? title + 'never'
                 : title + 'every ' + feedback.n + ' steps';   
@@ -489,7 +487,7 @@
                         },
                         points: { show: false }
                     },
-                    colors: [ gold, blue, red ]
+                    colors: [ colours[0], colours[1], colours[2] ]
                 };                        
             }            
         };
@@ -579,10 +577,10 @@
         function colour(n,name) {
             return "<span style='color:" + colours[n] + "'>" + name + "</span>";
         }
-        function stepLine(n,step,rgbName) {
+        function stepLine(n,step) {
             return '<li>' + 
                     'at step ' + colour(n,step) +
-                    ' - the ' + colour(n,rgbName) + ' line' +
+                    ' - the ' + colour(n,colourNames[n]) + ' line' +
                     '</li>';
         }
         function makeGraphsHelpHtml() {
@@ -597,10 +595,7 @@
                 'The bottom graph plots the total (x) against the ' +
                 'frequency of the total for all walks. ' +
                 'Three lines plot the frequencies at three places on the walks:' +
-                squashed(
-                  stepLine(0,10,'gold') +
-                  stepLine(1,100,'blue') +
-                  stepLine(2,1000,'red')) +
+                squashed(stepLine(0,10) + stepLine(1,100) + stepLine(2,1000)) +
                 'For example, the point ' + colour(1,'(x=2,y=417)') +
                 ' means 417 of the walks had a total of 2' + ' at step ' +
                 colour(1,100) + ' (51 heads, 49 tails)' +
