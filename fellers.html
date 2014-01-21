@@ -711,28 +711,24 @@
             background: GhostWhite;
         }
         #fellers-walk, #fellers-counts {
-            width: 1100px;                        
-            height: 260px;
+            height: 310px;
+        }
+        #fellers-walk {
+            width: 900px;
+        }
+        #fellers-counts {
+            width: 1100px;            
         }
         #stats, #feedback {
             font-size: 0.8em;
         }
-        .flow {
-            display: inline-block;
-            vertical-align: middle;
-            padding-left: 1em;
-            padding-right: 1em;
-        }
         input[type=button] {
-            display: block;
             background: LightGray;
             width: 8em;
             text-align: center;
         }
-        table {
-            display: inline-block;
-            border-collapse: collapse;
-            border-spacing: 4;
+        #re-run {
+            font-size: 1em;
         }
         #stats td, #stats th {
             border: solid 1px gray;
@@ -746,43 +742,37 @@
 <body>
 <table>
     <tr>
-        <td>
-            <div class="edged">
-                <div id="fellers-walk"></div>
-            </div>
+        <td class="edged">
+            <input type="button" id="re-run" value="re-run">
+            <br>
+            <input type="button" id="walkHelp" value="walk?">
+            <input type="button" id="feedbackHelp" value="feedback?">
+            <br>
+            <input type="button" id="graphsHelp" value="graphs?">
+            <input type="button" id="statsHelp" value="stats?">
         </td>
+        <td rowspan="2" class="edged">
+            <div id="fellers-walk"></div>
+        </td>            
     </tr>
     <tr>
-        <td>
-            <div class="edged">
-                <div id="fellers-counts"></div>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div class="edged flow">
-                <input type="button" id="walkHelp" value="walk?">
-                <input type="button" id="feedbackHelp" value="feedback?">
-                <input type="button" id="graphsHelp" value="graphs?">
-                <input type="button" id="statsHelp" value="stats?">
-            </div>
-            <div class="edged flow">
-                <div id="feedback"></div>                
-                <table id="stats">
-                    <tr>
-                        <th>step</th>
-                        <th>freq[0]</th>
-                        <th>max<br>abs(total)</th>
-                        <th>std.dev</th>
-                    </tr>
-                </table>
-            </div>
-            <div class="flow">
-                <input type="button" id="re_run" value="re-run">
-            </div>
-        </td>        
+        <td class="edged">
+            <div id="feedback"></div>                
+            <table id="stats">
+                <tr>
+                    <th>step</th>
+                    <th>freq[0]</th>
+                    <th>max<br>abs(total)</th>
+                    <th>std.dev</th>
+                </tr>
+            </table>
+        </td>            
     </tr>
 </table>
+            
+<div class="edged cell">
+    <div id="fellers-counts"></div>
+</div>
+
 </body>
 </html>
