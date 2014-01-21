@@ -423,16 +423,18 @@
         
         var plotOptions = {
             forWalk: function(stdDev) {
-                var zeroLine = [ {
-                    yaxis: {
-                        from: 0,
-                        to: 0
-                    },
-                    xaxis: {
-                        from: 0,
-                        to: STEPS_PER_WALK,
-                    },
-                    color: "#000000" }
+                var zeroLine = [
+                    {
+                        yaxis: {
+                            from: 0,
+                            to: 0
+                        },
+                        xaxis: {
+                            from: 0,
+                            to: STEPS_PER_WALK,
+                        },
+                        color: 'LightGray'
+                    }
                 ];         
                 return {
                     legend: { position: "nw" },                                
