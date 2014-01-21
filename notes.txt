@@ -1,10 +1,15 @@
-IDEA: put top-left button grid "inside" lower-graph as-well.
+TODO: check
+
+TODO: use grid.markings to draw lines for 0-- top and 0|bottom
+
+TODO: put top-left button grid "inside" lower-graph as-well.
       allows both graphs to use full width.
       Will buttons be clickable?
 
-IDEA: add 3 radio-buttons to explain three rows of table in stats? html
-IDEA: take values for stats? help html from real table.
+TODO: add 3 radio-buttons to explain three rows of table in stats? html
+TODO: take values for stats? help html from real table.
       generate explanations (32 heads, 68 tails...) in code.
+
 IDEA: use grid.markings to draw vertical lines
       on top graph showing positions of steps10,100,1000
 

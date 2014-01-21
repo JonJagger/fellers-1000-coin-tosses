@@ -372,14 +372,6 @@
             return (nom / denom * 100);
         }
         function display(n,walk) {
-            //- - - - top graph - - - -
-            function walkLabel() {
-                return n + "th walk (" + percent(n,NUMBER_OF_WALKS).toFixed(0) + "%)";
-            }                                    
-            $.plot($("#fellersWalk"),
-                   [ { label: walkLabel(), data: walk } ],
-                   plotOptions.forWalk());
-            
             //- - - - bottom graph - - - -
             var countPlots = [ ];
             for (var at = 0; at !== counts.points.length; at++) {
@@ -389,6 +381,14 @@
             $.plot($("#fellersCounts"),
                    countPlots,
                    plotOptions.forCounts(n,stdDev));
+            
+            //- - - - top graph - - - -
+            function walkLabel() {
+                return n + "th walk (" + percent(n,NUMBER_OF_WALKS).toFixed(0) + "%)";
+            }                                    
+            $.plot($("#fellersWalk"),
+                   [ { label: walkLabel(), data: walk } ],
+                   plotOptions.forWalk(stdDev));
             
             //- - - - stats table - - - -
             function stat(n,klass,value) {
@@ -422,7 +422,7 @@
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
         var plotOptions = {
-            forWalk: function() {
+            forWalk: function(stdDev) {
                 return {
                     legend: { position: "nw" },                                
                     grid: {
@@ -440,8 +440,8 @@
                         color: walkColor,
                         position: "right",
                         tickDecimals: 0,
-                        min: -60,
-                        max: 60                    
+                        min: -(2*stdDev),
+                        max: +(2*stdDev)                    
                     },
                     series: {
                         color: walkColor,
@@ -727,7 +727,7 @@
         }
         .ui-dialog {
             opacity: 0.75;
-        }    
+        }
     </style>      
 </head>
 <body>
