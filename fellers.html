@@ -12,7 +12,6 @@
 
     <script type="text/javascript">
         
-        // IDEA: same idea for freq[0] stats table
         // IDEA: lower graph could dynamically set xaxis min/max
         //       values as 2*std.dev
         //        
@@ -396,7 +395,6 @@
         function display(n,walk) {
             //- - - - top graph - - - -
             function walkLabel() {
-                //var percentDone = (n / NUMBER_OF_WALKS * 100).toFixed(0);
                 return n + "th walk (" + percent(n,NUMBER_OF_WALKS).toFixed(0) + "%)";
             }                                    
             $.plot($("#fellersWalk"),
