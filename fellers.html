@@ -29,6 +29,7 @@
         // IDEA: gold,blue,red --> colours[0,1,2]
         // IDEA: link back to source
         // IDEA: link back to blog article
+        // IDEA: could show 3 (say) walks on top graph.
         
         // - - - - - - - - - - - - - - - - - - - - - - -
         // Code to investigate Feller's walk with feedback.
@@ -418,8 +419,8 @@
                     "</span>"
                 );
                 stat('freq0', at).html(countPlots[at].data.freq0());
-                stat('max_abs', at).html(countPlots[at].data.maxAbs());
-                stat('std_dev',at).html(countPlots[at].data.stdDev());
+                stat('maxAbs', at).html(countPlots[at].data.maxAbs());
+                stat('stdDev',at).html(countPlots[at].data.stdDev());
             }
             
             $('#feedback').html(feedback.info());
@@ -703,8 +704,8 @@
                     '<tr id="steps_'+ at + '">' +
                         '<th></th>' +
                         '<td id="freq0"></td>' +
-                        '<td id="max_abs"></td>' +                        
-                        '<td id="std_dev"></td>' +
+                        '<td id="maxAbs"></td>' +                        
+                        '<td id="stdDev"></td>' +
                     '</tr>';
                 $('#stats').append(tr);
             }
