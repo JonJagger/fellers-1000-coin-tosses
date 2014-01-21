@@ -382,7 +382,7 @@
                         
             $.plot($("#fellers-walk"),
                    [ { label: walkLabel(), data: walk } ],
-                   plotOptions.forWalk(walk));
+                   plotOptions.forWalk());
             
             $.plot($("#fellers-counts"),
                    countPlots,
@@ -409,7 +409,7 @@
         var red  = 'red';
         
         var plotOptions = {
-            forWalk: function(walk) {
+            forWalk: function() {
                 return {
                     legend: { position: "nw" },                                
                     xaxis: {
@@ -449,7 +449,7 @@
                         lines: {
                             show: true,
                             lineWidth: 1,
-                            fill: 0.25
+                            fill: 0.25 // 0=transparent, 1=opaque
                         },
                         points: { show: false }
                     }
