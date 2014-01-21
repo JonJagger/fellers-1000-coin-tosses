@@ -134,9 +134,9 @@
         
         var walkColor = 'green';
 
-        var colours = ['lightBlue','blue','black'];
-        var colourNames = ['light blue','blue','black'];
-        
+        var colours = ['lightGreen','green','#003C00'];
+        var colourNames = ['light green','green','dark green'];
+
         function doOneWalk() {            
             var HEAD = +1;
             var TAIL = -1;
@@ -529,7 +529,7 @@
                     '</td>' +
                   '</tr>' +
                   '<tr>' +
-                    '<td>' +
+                    '<td align="right">' +
                       '<label>number of walks&nbsp;</label>' +
                     '</td>' +
                     '<td>' +
@@ -540,7 +540,7 @@
                     '</td>' +
                   '</tr>' +                      
                   '<tr>' +
-                    '<td>' +
+                    '<td align="right">' +
                       '<label>steps per walk&nbsp;</label>' +
                     '</td>' +
                     '<td>' +
@@ -602,12 +602,12 @@
             return '' +
                 "<div>" +
                 '<div style="padding:1em;border:1px solid Black;">' +
-                'The top <span style="color:green">green</span> graph plots ' +
-                'the step (x) against<br>the total (y) for one walk.' +
+                'top: the step (x) against ' +
+                'the ' + bold(colour(1,'total')) + ' (y) for one walk.' +
                 '</div>' +
                 '<br>' +
                 '<div style="padding:1em;border:1px solid Black;">' +
-                'The bottom graph plots the total (x) against the ' +
+                'bottom: the total (x) against the ' +
                 'frequency of the total (y) for all walks. ' +
                 'Three lines show the frequencies at:' +
                 squashed(stepLine(0,10) + stepLine(1,100) + stepLine(2,1000)) +
