@@ -108,7 +108,7 @@
         
         var colours = ['lightGreen','green','#003C00'];
         var colourNames = ['light green','green','dark green'];
-        var walkColor = colours[1];
+        var walkColor = 'red';
 
         function doOneWalk() {            
             var HEAD = +1;
@@ -427,7 +427,18 @@
                     legend: { position: "nw" },                                
                     grid: {
                         color: 'DarkGray',
-                        borderWidth: 1
+                        borderWidth: 1,
+                        /*markings: [ { // zero-line
+                            yaxis: {
+                                from: 0,
+                                to: 0
+                            },
+                            xaxis: {
+                                from: 0,
+                                to: STEPS_PER_WALK,
+                            },
+                            color: "#000000" }
+                        ]*/                       
                     },
                     xaxis: {
                         axisLabel: "step&rarr;", 
@@ -445,7 +456,10 @@
                     },
                     series: {
                         color: walkColor,
-                        lines: { show: true },
+                        lines: {
+                            show: true,
+                            lineWidth: 1,
+                        },
                         points: { show: false }
                     }
                 };            
@@ -455,7 +469,18 @@
                     legend: { position: "nw" },                                
                     grid: {
                         color: 'DarkGray',
-                        borderWidth: 1,
+                        borderWidth: 1,                        
+                        /*markings: [ { // zero-line
+                            xaxis: {
+                                from: 0,
+                                to: 0
+                            },
+                            yaxis: {
+                                from: 0,
+                                to: 10000,
+                            },
+                            color: "#000000" }
+                        ]*/                        
                     },
                     xaxis: {
                         axisLabel: "&larr;total&rarr;",

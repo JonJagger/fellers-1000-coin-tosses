@@ -1,4 +1,3 @@
-TODO: check
 
 TODO: use grid.markings to draw lines for 0-- top and 0|bottom
 
@@ -9,6 +8,13 @@ TODO: put top-left button grid "inside" lower-graph as-well.
 TODO: add 3 radio-buttons to explain three rows of table in stats? html
 TODO: take values for stats? help html from real table.
       generate explanations (32 heads, 68 tails...) in code.
+
+TODO: on re-run check no-of-steps > 100
+      you lose 3rd plot...
+      
+TODO: colours and colourNames needs refactoring
+TODO: colors: [ colours[0], colours[1], colours[2] ]
+      also needs refactoring
 
 IDEA: use grid.markings to draw vertical lines
       on top graph showing positions of steps10,100,1000
