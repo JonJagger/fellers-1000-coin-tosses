@@ -12,8 +12,17 @@
 
     <script type="text/javascript">
         
+        // IDEA: top graph legend, instead of saying
+        //       1000th walk (20%), it could say
+        //       1000th walk (20% of 5000)
+        // IDEA: lower graph legend, instead of saying
+        //       after 10 steps, it could say
+        //       after 10 steps of 1000 walks (20%)
         // IDEA: lower graph could dynamically set xaxis min/max
-        // values as 2*std.dev 
+        // values as 2*std.dev
+        // IDEA: lower graph's yaxis legend, instead of saying
+        //       1000, it could say 1000 (20%)
+        // IDEA: same idea for freq[0] stats table
         
         // - - - - - - - - - - - - - - - - - - - - - - -
         // Code to investigate Feller's walk with feedback.
@@ -418,6 +427,7 @@
         var plotOptions = {
             forWalk: function() {
                 return {
+                    grid: { color: 'DarkGray' },
                     legend: { position: "nw" },                                
                     xaxis: {
                         axisLabel: "step&rarr;", 
@@ -441,6 +451,7 @@
             },
             forCounts: function() {                            
                 return {
+                    grid: { color: 'DarkGray' },                    
                     legend: { position: "nw" },                                
                     xaxis: {
                         axisLabel: "&larr;total&rarr;",
