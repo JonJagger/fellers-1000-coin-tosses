@@ -24,7 +24,8 @@
         // IDEA: lower graph legend, instead of saying
         //       after 10 steps, it could say
         //       after 10 steps of 1000 walks (20%)
-        
+        //
+        // IDEA: freq[0] and lower-graph y label in same colour.
         // IDEA: gold,blue,red --> colours[0,1,2]
         // IDEA: link back to source
         // IDEA: link back to blog article
@@ -713,11 +714,11 @@
     
     <style type="text/css">
         body {
-            background: Moccasin;
+            background: #FFEBCD; /*BlanchedAlmond*/
         }
         .edged {
             padding: 10px;
-            background: GhostWhite;
+            background: #FFFFFF; /*White*/
         }
         #fellersWalk {
             width: 950px;
@@ -729,9 +730,10 @@
         }
         #stats, #feedback {
             font-size: 0.8em;
+            margin-top: 5px;
         }
         input[type=button] {
-            background: LightGray;
+            background: #F8F8FF; /*GhostWhite*/
             width: 7em;
             text-align: center;
         }
@@ -739,7 +741,7 @@
             font-size: 1em;
         }
         #stats td, #stats th {
-            border: solid 1px gray;
+            background: #FFF5EE; /*SeaShell*/
             padding: 0.25em;
         }
         .ui-dialog {
