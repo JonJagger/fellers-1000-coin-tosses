@@ -14,6 +14,10 @@
         
         // IDEA: make stats-table legend opaque
         //
+        // IDEA: add explain buttons to three rows of table
+        //       in stats? help html.
+        // IDEA: take values for stats? help html from real table.
+        //
         // IDEA: feedback does not have to be set every display()
         //
         // IDEA: use grid.markings to draw vertical lines
@@ -639,11 +643,11 @@
         function makeStatsHelpHtml() {
             return '' +
                 '<div>' +
-                '<table id="stats">' +
-                    th('step') +
+                '<table id="helpStats">' +
+                    th('at<br>step') +
                     th('freq[0]') +
                     th('max<br>abs<br>total') +
-                    th('std.dev') +
+                    th('std<br>dev') +
                 '<tr>' +
                   tdStep(0,10) +
                   tdColour(0,1260) +
@@ -664,22 +668,22 @@
                 '</tr>' +
                 '</table>' +
                 '<br>' +
-                'Over all the walks, at the ' + colour(2,1000) +"'th step:" +
+                'Over all the walks, at the ' + colour(1,100) +"'th step:" +
                 squashed(
                     '<li>' +
-                        'the total was zero ' + colour(2,124) + ' times<br>' +
-                        '(500 heads, 500 tails)' +
+                        'the total was zero ' + colour(1,391) + ' times<br>' +
+                        '(50 heads, 50 tails, 50-50=0, 50+50=100)' +
                     '</li>' +
                     '<li>' +
-                        'the total farthest from zero was ' + colour(2,'-140') + '<br>' +
-                        '(430 heads, 570 tails)' +
+                        'the total farthest from zero was ' + colour(1,'-36') + '<br>' +
+                        '(32 heads, 68 tails, 32-68=-36, 32+68=100)' +
                     '</li>' +
                     '<li>' +
-                        'the standard deviation of the total was ' + colour(2,31.71) +                        
+                        'the standard deviation of the total was ' + colour(1,10.15) +                        
                     '</li>') +
                     '<br>' +
                     '95% of data typically falls within 2 standard deviations:<br>' +
-                    '&nbsp;&nbsp;&nbsp;[ -' + (2*31.71).toFixed(2) + ', +' + (2*31.71).toFixed(2) + ' ]' +
+                    '&nbsp;&nbsp;&nbsp;[ -' + (2*10.15).toFixed(2) + ', +' + (2*10.15).toFixed(2) + ' ]' +
                 '</div>';
         }
         
@@ -724,36 +728,43 @@
             background: #FFFFFF; /*White*/
         }
         #fellersWalk {
-            width: 950px;
+            width: 1015px;
             height: 250px;
         }
         #fellersCounts {
             width: 1150px;            
             height: 370px;
         }
-        #stats {
-            position: absolute;
+        #stats, #helpStats {
             background: Moccasin;
-            left: 30px;
+            font-weight: 400;
+            font-family: Tahoma;
         }
-        #stats, #feedback {
+        #stats {
+            font-size: 1em;
+            position: absolute;
+            left: 30px;
+            margin-top: 10px;
+        }
+        #stats th, #stats td, #helpStats th, #helpStats td {
+            background: #FFF5EE; /*SeaShell*/
+            padding: 0.25em;
+        }
+        td .step { font-weight: bold; }
+        #feedback {
             font-size: 0.8em;
             margin-top: 5px;
         }
         input[type=button] {
             background: #F8F8FF; /*GhostWhite*/
-            width: 7em;
+            width: 6em;
             text-align: center;
+            display: block;
+            font-size: 1em;
         }
         #re-run {
             font-size: 1em;
         }
-        #stats td, #stats th {
-            background: #FFF5EE; /*SeaShell*/
-            padding:
-            0.25em;
-        }
-        td .step { font-weight: bold; }
         .ui-dialog {
               opacity: 0.75;
         }    
@@ -765,23 +776,17 @@
         <td class="edged">
             <input type="button" id="walkHelp" value="walk?">
             <input type="button" id="feedbackHelp" value="feedback?">
-            <br>
             <input type="button" id="graphsHelp" value="graphs?">
             <input type="button" id="statsHelp" value="stats?">
+            <div id="feedback"></div>                
+            <input type="button" id="reRun" value="re-run">
         </td>
-        <td rowspan="2" class="edged">
+        <td xrowspan="2" class="edged">
             <div id="fellersWalk"></div>
         </td>            
     </tr>
     <tr>
-        <td class="edged">
-            <input type="button" id="reRun" value="re-run">
-            <div id="feedback"></div>                
-        </td>            
-    </tr>
-    <tr>
-       <td colspan="2" class="edged">
-        
+       <td colspan="2" class="edged">        
             <table id="stats">
                 <tr>
                     <th>at<br>step</th>
@@ -789,8 +794,7 @@
                     <th>max<br>abs<br>total</th>
                     <th>std<br>dev</th>
                 </tr>
-            </table>
-        
+            </table>        
             <div id="fellersCounts"></div>
        </td>
     </tr>
