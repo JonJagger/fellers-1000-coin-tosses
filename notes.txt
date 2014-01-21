@@ -1,6 +1,9 @@
 
 TODO: use grid.markings to draw lines for 0-- top and 0|bottom
 
+TODO: drop grids but retain axis
+      see http://stackoverflow.com/questions/7433154/display-x-axis-and-y-axis-lines-with-out-the-grid-lines-using-flot
+      
 TODO: put top-left button grid "inside" lower-graph as-well.
       allows both graphs to use full width.
       Will buttons be clickable?
