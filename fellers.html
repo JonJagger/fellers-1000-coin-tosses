@@ -12,6 +12,8 @@
 
     <script type="text/javascript">
         
+        // IDEA: reduce width of top graph and put table/buttons on
+        //       top-right or top-left
         // IDEA: top graph legend, instead of saying
         //       1000th walk (20%), it could say
         //       1000th walk (20% of 5000)
@@ -698,9 +700,18 @@
     </script>
     
     <style type="text/css">
+        body {
+            background: Moccasin;
+        }
+        .edged {
+            Xmargin: 10px;
+            padding: 10px;
+            background: GhostWhite;
+        }
         #fellers-walk, #fellers-counts {
             width: 1100px;                        
-            height: 280px;
+            height: 260px;
+            Xpadding: 10px;
         }
         #stats, #feedback {
             font-size: 0.8em;
@@ -732,23 +743,30 @@
     </style>      
 </head>
 <body>
-    
 <table>
     <tr>
-        <td><div id="fellers-walk"></div></td>
-    </tr>
-    <tr>
-        <td><div id="fellers-counts"></div></td>
+        <td>
+            <div class="edged">
+                <div id="fellers-walk"></div>
+            </div>
+        </td>
     </tr>
     <tr>
         <td>
-            <div class="flow">
+            <div class="edged">
+                <div id="fellers-counts"></div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="edged flow">
                 <input type="button" id="walkHelp" value="walk?">
                 <input type="button" id="feedbackHelp" value="feedback?">
                 <input type="button" id="graphsHelp" value="graphs?">
                 <input type="button" id="statsHelp" value="stats?">
             </div>
-            <div class="flow">
+            <div class="edged flow">
                 <div id="feedback"></div>                
                 <table id="stats">
                     <tr>
@@ -765,6 +783,5 @@
         </td>        
     </tr>
 </table>
-    
 </body>
 </html>
