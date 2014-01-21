@@ -12,8 +12,13 @@
 
     <script type="text/javascript">
         
-        // IDEA: use the entire stats table as the
-        //       bottom graph legend!
+        // IDEA: make stats-table legend opaque
+        //
+        // IDEA: feedback does not have to be set every display()
+        //
+        // IDEA: use grid.markings to draw vertical lines
+        //       on top graph showing positions of steps10,100,1000
+        //
         // IDEA: add [steps-per-walk]
         //       and [number-of-walks]
         //       next to feedback label.
@@ -408,15 +413,9 @@
                    plotOptions.forWalk());
             
             //- - - - bottom graph - - - -
-            function labeledCountPlot(n) {
-                return {
-                    label: "after " + counts.getPoint(n) + " steps",
-                    data: counts.getPlot(n)
-                }
-            }
             var countPlots = [ ];
             for (var at = 0; at !== counts.points.length; at++) {
-                countPlots.push(labeledCountPlot(at));
+                countPlots.push({ data: counts.getPlot(at)});
             }
             var stdDev = countPlots[countPlots.length-1].data.stdDev();
             $.plot($("#fellersCounts"),
@@ -490,8 +489,8 @@
                     legend: { position: "nw" },                                
                     grid: {
                         color: 'DarkGray',
-                        borderWidth: 1
-                    },  
+                        borderWidth: 1,
+                    },
                     xaxis: {
                         axisLabel: "&larr;total&rarr;",
                         color: walkColor,
@@ -732,6 +731,11 @@
             width: 1150px;            
             height: 370px;
         }
+        #stats {
+            position: absolute;
+            background: Moccasin;
+            left: 30px;
+        }
         #stats, #feedback {
             font-size: 0.8em;
             margin-top: 5px;
@@ -773,6 +777,11 @@
         <td class="edged">
             <input type="button" id="reRun" value="re-run">
             <div id="feedback"></div>                
+        </td>            
+    </tr>
+    <tr>
+       <td colspan="2" class="edged">
+        
             <table id="stats">
                 <tr>
                     <th>at<br>step</th>
@@ -781,10 +790,7 @@
                     <th>std<br>dev</th>
                 </tr>
             </table>
-        </td>            
-    </tr>
-    <tr>
-       <td colspan="2" class="edged">     
+        
             <div id="fellersCounts"></div>
        </td>
     </tr>
