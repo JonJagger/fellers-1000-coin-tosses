@@ -1,23 +1,20 @@
 A simple web-page to simulate lots of Feller's walks.
-Each walk is 1000 steps long. At each step you flip a fair coin
+Each Feller's walk is 1000 steps long. At each step you flip a fair coin
 and keep a running total (starting at zero), 
   o) adding one to the total if you flip a head,
   o) subtracting one from the total if you flip a tail.
-
-What will the cumulative total look like as the number of coin flips
-progresses from 1 to 1000? 
-
+How will the total behave as the walk proceeds?
 Most people's intuition is that the total will hover around zero.
-Does it? Try it!
+Does it? Find out!
 https://rawgithub.com/JonJagger/Fellers-1000-coin-tosses/master/fellers.html
 
-How effective is feedback?
 Every N steps (on average) intead of flipping the coin, you look at the total:
   o) if its negative (more tails than heads), pretend you 
      flipped a head, and add one to the total
   o) if its positive (more heads than tails), pretend you
      flipped a tail, and subtract one from the total.
-To set a value of N click the re-run bottom at the bottom.
+This increases the likelihood of the total staying nearer zero.
+How effective is this feedback? Find out!
 
 I discovered Feller's walk on page 77 of Don Reinersten's book
 The Principles of Product Development FLOW.
