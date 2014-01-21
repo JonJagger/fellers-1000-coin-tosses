@@ -11,12 +11,9 @@
     <link   href="jquery-ui.css"            type="text/css" rel="stylesheet">
 
     <script type="text/javascript">
-
-        // IDEA... to a burst of fake walks at the start to
-        // try to remove any initial bias on random generator?
         
         // - - - - - - - - - - - - - - - - - - - - - - -
-        // Code to investigate Feller's walk
+        // Code to investigate Feller's walk with feedback.
         // Blogged at http://jonjagger.blogspot.co.uk/2013/01/fellers-walk.html        
         //
         // Feller's walk is a walk of 1000 steps.
@@ -25,6 +22,11 @@
         // If you flip a tail you subtract one from your total.
         // What will the total look like as the walk progresses?
         //
+        // - - - - - - - - - - - - - - - - - - - - - - -
+        // I do not know how good Math.random() is but it
+        // doesn't really matter. It is the same for simulations
+        // with and without feedback, and my main purpose is
+        // to compare those two variations.
         // - - - - - - - - - - - - - - - - - - - - - - -
         // About odd/even-ness...
         // - - - - - - - - - - - - - - - - - - - - - - -
@@ -444,7 +446,11 @@
                         position: "right"
                     },
                     series: {
-                        lines: { show: true },
+                        lines: {
+                            show: true,
+                            lineWidth: 1,
+                            fill: 0.25
+                        },
                         points: { show: false }
                     }
                 };                        
