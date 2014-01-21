@@ -1,11 +1,8 @@
-Fellers-1000-coin-tosses
-========================
-
 A simple web-page to simulate lots of Feller's walks.
 Each walk is 1000 steps long. At each step you flip a fair coin
 and keep a running total (starting at zero), 
-  o) adding one to your total if you flip a head,
-  o) subtracting one from your total if you flip a tail.
+  o) adding one to the total if you flip a head,
+  o) subtracting one from the total if you flip a tail.
 
 What will the cumulative total look like as the number of coin flips
 progresses from 1 to 1000? 
