@@ -366,7 +366,7 @@
             $('#feedbackHelp').click(function() { showFeedbackHelp(); });
             $('#graphsHelp').click(function() { showGraphsHelp(); });
             $('#statsHelp').click(function() { showStatsHelp(); });            
-            $('#re-run').click(function() { reRunSimulation(); });
+            $('#reRun').click(function() { reRunSimulation(); });
             addStatsPlaceHolders();
             feedback.reset(0);
             runSimulation();
@@ -384,7 +384,7 @@
                 return n + "th walk (" + percentDone + "%)";
             }
                                     
-            $.plot($("#fellers-walk"),
+            $.plot($("#fellersWalk"),
                    [ { label: walkLabel(), data: walk } ],
                    plotOptions.forWalk());
             
@@ -400,7 +400,7 @@
                 countPlots.push(labeledCountPlot(at));
             }
             
-            $.plot($("#fellers-counts"),
+            $.plot($("#fellersCounts"),
                    countPlots,
                    plotOptions.forCounts());
             
@@ -719,11 +719,11 @@
             padding: 10px;
             background: GhostWhite;
         }
-        #fellers-walk {
+        #fellersWalk {
             width: 950px;
             height: 250px;
         }
-        #fellers-counts {
+        #fellersCounts {
             width: 1150px;            
             height: 370px;
         }
@@ -758,12 +758,12 @@
             <input type="button" id="statsHelp" value="stats?">
         </td>
         <td rowspan="2" class="edged">
-            <div id="fellers-walk"></div>
+            <div id="fellersWalk"></div>
         </td>            
     </tr>
     <tr>
         <td class="edged">
-            <input type="button" id="re-run" value="re-run">
+            <input type="button" id="reRun" value="re-run">
             <div id="feedback"></div>                
             <table id="stats">
                 <tr>
@@ -777,7 +777,7 @@
     </tr>
     <tr>
        <td colspan="2" class="edged">     
-            <div id="fellers-counts"></div>
+            <div id="fellersCounts"></div>
        </td>
     </tr>
 </table>
