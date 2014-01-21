@@ -12,32 +12,6 @@
 
     <script type="text/javascript">
         
-        // IDEA: make stats-table legend opaque
-        //
-        // IDEA: add explain buttons to three rows of table
-        //       in stats? help html.
-        // IDEA: take values for stats? help html from real table.
-        //
-        // IDEA: use grid.markings to draw vertical lines
-        //       on top graph showing positions of steps10,100,1000
-        //
-        // IDEA: freq[0] and lower-graph y label in same colour.
-        //       orange?
-        //
-        // IDEA: top graph could dynamically set yaxis min/max
-        //       values based on no-of-steps-in-one-walk
-        //
-        // IDEA: 'green' still needs refactoring.
-        //
-        // IDEA: link back to source
-        // IDEA: link back to blog article
-        //
-        // IDEA: could show 3 (say) walks on top graph.
-        // IDEA: at end could show top-graph with all
-        //       the walks plotted on it. Or some of them.
-        //       And make yaxis limits cater for min/max totals.
-        //       Would be nice tree-on-its-side shape.
-        
         // - - - - - - - - - - - - - - - - - - - - - - -
         // Code to investigate Feller's walk with feedback.
         // Blogged at http://jonjagger.blogspot.co.uk/2013/01/fellers-walk.html        
@@ -132,10 +106,9 @@
         var STEPS_PER_WALK = 1000;
         var WALKS_PER_PLOT = 100;
         
-        var walkColor = 'green';
-
         var colours = ['lightGreen','green','#003C00'];
         var colourNames = ['light green','green','dark green'];
+        var walkColor = colours[1];
 
         function doOneWalk() {            
             var HEAD = +1;

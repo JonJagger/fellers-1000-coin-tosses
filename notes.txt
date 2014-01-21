@@ -1,0 +1,24 @@
+IDEA: put top-left button grid "inside" lower-graph as-well.
+      allows both graphs to use full width.
+      Will buttons be clickable?
+
+IDEA: add 3 radio-buttons to explain three rows of table in stats? html
+IDEA: take values for stats? help html from real table.
+      generate explanations (32 heads, 68 tails...) in code.
+IDEA: use grid.markings to draw vertical lines
+      on top graph showing positions of steps10,100,1000
+
+IDEA: freq[0] and lower-graph y label in same colour.
+      orange?
+
+IDEA: top graph could dynamically set yaxis min/max
+      values based on no-of-steps-in-one-walk?
+IDEA: link back to source
+IDEA: link back to blog article
+
+IDEA: could show 3 (say) walks on top graph.
+IDEA: at end could show top-graph with all
+      the walks plotted on it. Or some of them.
+      And make yaxis limits cater for min/max totals.
+      Would be nice tree-on-its-side shape.
+
