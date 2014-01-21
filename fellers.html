@@ -613,11 +613,11 @@
         function th(html) {
             return xml('th',html);
         }
-        function td(html) {
-            return xml('td',html);
+        function tdStep(n,html) {
+            return xml('td', xml('b', colour(n,html)));
         }
-        function tdStep(html) {
-            return '<td class="step">' + html + '</td>';
+        function tdColour(n,html) {
+            return xml('td',colour(n,html));
         }
         function makeStatsHelpHtml() {
             return '' +
@@ -627,24 +627,23 @@
                     th('freq[0]') +
                     th('max<br>abs<br>total') +
                     th('std.dev') +
+                '<tr>' +
+                  tdStep(0,10) +
+                  tdColour(0,1260) +
+                  tdColour(0,10) +
+                  tdColour(0,3.19) +
                 '</tr>' +
                 '<tr>' +
-                  tdStep(colour(0,10)) +
-                  td(colour(0,1260)) +
-                  td(colour(0,10)) +
-                  td(colour(0,3.19)) +
+                  tdStep(1,100) +
+                  tdColour(1,391) +
+                  tdColour(1,36) +
+                  tdColour(1,10.15) +
                 '</tr>' +
                 '<tr>' +
-                  tdStep(colour(1,100)) +
-                  td(colour(1,391)) +
-                  td(colour(1,36)) +
-                  td(colour(1,10.15)) +
-                '</tr>' +
-                '<tr>' +
-                  tdStep(colour(2,1000)) +
-                  td(colour(2,124)) +
-                  td(colour(2,-140)) +
-                  td(colour(2,31.71)) +
+                  tdStep(2,1000) +
+                  tdColour(2,124) +
+                  tdColour(2,-140) +
+                  tdColour(2,31.71) +
                 '</tr>' +
                 '</table>' +
                 '<br>' +
