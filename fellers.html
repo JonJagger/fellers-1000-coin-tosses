@@ -444,14 +444,14 @@
                         markings: zeroLine,
                     },
                     xaxis: {
-                        tickLength: 0, // no-grid
+                        tickLength: 5, // turns off || grid lines too
                         axisLabel: "step&rarr;", 
                         position: "bottom",
                         min: 0,
                         max: STEPS_PER_WALK+5
                     },
                     yaxis: {
-                        tickLength: 0, // no-grid
+                        tickLength: 5, // turns off == grid lines too
                         axisLabel: "&larr;total&rarr;",
                         color: walkColor,
                         position: "right",
@@ -490,7 +490,7 @@
                         markings: zeroLine
                     },
                     xaxis: {
-                        tickLength: 0, // no grid                    
+                        tickLength: 5, // turns off || grid lines too
                         axisLabel: "&larr;total&rarr;",
                         color: walkColor,
                         position: "bottom",
@@ -498,7 +498,7 @@
                         max: +(2*stdDev)                                            
                     },
                     yaxis: {
-                        tickLength: 0, // no grid                        
+                        tickLength: 5, // turns off == grid lines too
                         axisLabel: "&larr;frequency of total",
                         position: "right",
                         tickFormatter:function(freq) {

@@ -1,8 +1,3 @@
-
-TODO: use grid.markings to draw lines for 0-- top and 0|bottom
-
-TODO: drop grids but retain axis
-      see http://stackoverflow.com/questions/7433154/display-x-axis-and-y-axis-lines-with-out-the-grid-lines-using-flot
       
 TODO: put top-left button grid "inside" lower-graph as-well.
       allows both graphs to use full width.
@@ -25,8 +20,6 @@ IDEA: use grid.markings to draw vertical lines
 IDEA: freq[0] and lower-graph y label in same colour.
       orange?
 
-IDEA: top graph could dynamically set yaxis min/max
-      values based on no-of-steps-in-one-walk?
 IDEA: link back to source
 IDEA: link back to blog article
 
