@@ -412,24 +412,36 @@
                    plotOptions.forCounts());
             
             //------- stats table -------
-            function stat(kind,n) {
-                return $('#stats #steps_' + n + ' #' + kind);    
+            function stat(n,klass,value) {
+                $('#stats #steps_' + n + ' .' + klass).html(colour(n,value));
             }
-            
             for (var at = 0; at !== countPlots.length; at++) {
-                $('#stats #steps_' + at + ' th').html(
-                    "<span style='color:"+colours[at]+";'>" +
-                    counts.getPoint(at) +
-                    "</span>"
-                );
-                stat('freq0', at).html(countPlots[at].data.freq0());
-                stat('maxAbs', at).html(countPlots[at].data.maxAbs());
-                stat('stdDev',at).html(countPlots[at].data.stdDev());
+                stat(at,'step', counts.getPoint(at));
+                stat(at,'freq0', countPlots[at].data.freq0());
+                stat(at,'maxAbs',countPlots[at].data.maxAbs());
+                stat(at,'stdDev',countPlots[at].data.stdDev());
             }
-            
+            //------- feedback? -------            
             $('#feedback').html(feedback.info());
         }
         
+        function colour(n,html) {
+            return "<span style='color:" + colours[n] + "'>" + html + "</span>";
+        }
+        
+        function addStatsPlaceHolders() {
+            for (var at = 0; at !== counts.points.length; at++) {
+                var tr = '' +
+                    '<tr id="steps_'+ at + '">' +
+                        '<td class="step"></td>' +
+                        '<td class="freq0"></td>' +
+                        '<td class="maxAbs"></td>' +                        
+                        '<td class="stdDev"></td>' +
+                    '</tr>';
+                $('#stats').append(tr);
+            }
+        }
+                                                   
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
         var plotOptions = {
@@ -540,8 +552,7 @@
             return "<ul style='margin-top:0;margin-bottom:0;'>" +
                     html +
                    "</ul>";
-        }        
-                
+        }                        
         function makeWalkHelpHtml() {            
             return '' +
                 '<div>' +
@@ -571,9 +582,6 @@
                 'How effective is this feedback?' +
                 "</div>";
         }
-        function colour(n,name) {
-            return "<span style='color:" + colours[n] + "'>" + name + "</span>";
-        }
         function stepLine(n,step) {
             return '<li>' + 
                     'at step ' + colour(n,step) +
@@ -599,11 +607,17 @@
                 '</div>' +
                 '</div>';
         }
-        function th(text) {
-            return '<th>' + text + '</th>';
+        function xml(tag,value) {
+            return '<'+tag+'>'+value+'</'+tag+'>';
+        }        
+        function th(html) {
+            return xml('th',html);
         }
-        function td(text) {
-            return '<td>' + text + '</td>';
+        function td(html) {
+            return xml('td',html);
+        }
+        function tdStep(html) {
+            return '<td class="step">' + html + '</td>';
         }
         function makeStatsHelpHtml() {
             return '' +
@@ -615,19 +629,19 @@
                     th('std.dev') +
                 '</tr>' +
                 '<tr>' +
-                  td(colour(0,10)) +
+                  tdStep(colour(0,10)) +
                   td(colour(0,1260)) +
                   td(colour(0,10)) +
                   td(colour(0,3.19)) +
                 '</tr>' +
                 '<tr>' +
-                  td(colour(1,100)) +
+                  tdStep(colour(1,100)) +
                   td(colour(1,391)) +
                   td(colour(1,36)) +
                   td(colour(1,10.15)) +
                 '</tr>' +
                 '<tr>' +
-                  td(colour(2,1000)) +
+                  tdStep(colour(2,1000)) +
                   td(colour(2,124)) +
                   td(colour(2,-140)) +
                   td(colour(2,31.71)) +
@@ -683,21 +697,6 @@
             showDialog( makeStatsHelpHtml(), "stats");
         }
         
-        //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-        function addStatsPlaceHolders() {
-            for (var at = 0; at !== counts.points.length; at++) {
-                var tr = '' +
-                    '<tr id="steps_'+ at + '">' +
-                        '<th></th>' +
-                        '<td id="freq0"></td>' +
-                        '<td id="maxAbs"></td>' +                        
-                        '<td id="stdDev"></td>' +
-                    '</tr>';
-                $('#stats').append(tr);
-            }
-        }
-                
     </script>
     
     <style type="text/css">
@@ -730,8 +729,10 @@
         }
         #stats td, #stats th {
             background: #FFF5EE; /*SeaShell*/
-            padding: 0.25em;
+            padding:
+            0.25em;
         }
+        td .step { font-weight: bold; }
         .ui-dialog {
               opacity: 0.75;
         }    
