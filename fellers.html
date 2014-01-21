@@ -423,25 +423,26 @@
         
         var plotOptions = {
             forWalk: function(stdDev) {
+                var zeroLine = [ {
+                    yaxis: {
+                        from: 0,
+                        to: 0
+                    },
+                    xaxis: {
+                        from: 0,
+                        to: STEPS_PER_WALK,
+                    },
+                    color: "#000000" }
+                ];         
                 return {
                     legend: { position: "nw" },                                
                     grid: {
                         color: 'DarkGray',
                         borderWidth: 1,                        
-                        /*markings: [ { // zero-line -----
-                            yaxis: {
-                                from: 0,
-                                to: 0
-                            },
-                            xaxis: {
-                                from: 0,
-                                to: STEPS_PER_WALK,
-                            },
-                            color: "#000000" }
-                        ]*/                       
+                        markings: zeroLine,
                     },
                     xaxis: {
-                        tickLength: 0, //no-grid
+                        tickLength: 0, // no-grid
                         axisLabel: "step&rarr;", 
                         position: "bottom",
                         min: 0,
