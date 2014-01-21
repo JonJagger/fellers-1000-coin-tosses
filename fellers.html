@@ -361,32 +361,36 @@
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 
         function display(n,walk) {
+            //------- top graph -------
+            function walkLabel() {
+                var percentDone = (n / NUMBER_OF_WALKS * 100).toFixed(0);
+                return n + "th walk (" + percentDone + "%)";
+            }
+                                    
+            $.plot($("#fellers-walk"),
+                   [ { label: walkLabel(), data: walk } ],
+                   plotOptions.forWalk());
+            
+            //------- bottom graph -------
             function labeledCountPlot(n) {
                 return {
                     label: "after " + counts.getPoint(n) + " steps",
                     data: counts.getPlot(n)
                 }
             }
-            function walkLabel() {
-                var percentDone = (n / NUMBER_OF_WALKS * 100).toFixed(0);
-                return n + "th walk (" + percentDone + "%)";
-            }
-            function stat(kind,n) {
-                return $('#stats #steps_' + n + ' #' + kind);    
-            }
-            
             var countPlots = [ ];
             for (var at = 0; at !== counts.points.length; at++) {
                 countPlots.push(labeledCountPlot(at));
             }
-                        
-            $.plot($("#fellers-walk"),
-                   [ { label: walkLabel(), data: walk } ],
-                   plotOptions.forWalk());
             
             $.plot($("#fellers-counts"),
                    countPlots,
                    plotOptions.forCounts());
+            
+            //------- stats table -------
+            function stat(kind,n) {
+                return $('#stats #steps_' + n + ' #' + kind);    
+            }
             
             var colours = [gold,blue,red];
             for (var at = 0; at !== countPlots.length; at++) {
@@ -448,11 +452,12 @@
                     series: {
                         lines: {
                             show: true,
-                            lineWidth: 1,
+                            lineWidth: 0,
                             fill: 0.25 // 0=transparent, 1=opaque
                         },
                         points: { show: false }
-                    }
+                    },
+                    colors: [ gold, blue, red ]
                 };                        
             }            
         };
