@@ -366,7 +366,7 @@
             $('#feedbackHelp').click(function() { showFeedbackHelp(); });
             $('#graphsHelp').click(function() { showGraphsHelp(); });
             $('#statsHelp').click(function() { showStatsHelp(); });            
-            $('#re_run').click(function() { reRunSimulation(); });
+            $('#re-run').click(function() { reRunSimulation(); });
             addStatsPlaceHolders();
             feedback.reset(0);
             runSimulation();
@@ -433,8 +433,11 @@
         var plotOptions = {
             forWalk: function() {
                 return {
-                    grid: { color: 'DarkGray' },
                     legend: { position: "nw" },                                
+                    grid: {
+                        color: 'DarkGray',
+                        borderWidth: 1
+                    },
                     xaxis: {
                         axisLabel: "step&rarr;", 
                         position: "top",
@@ -458,8 +461,11 @@
             },
             forCounts: function() {                            
                 return {
-                    grid: { color: 'DarkGray' },                    
                     legend: { position: "nw" },                                
+                    grid: {
+                        color: 'DarkGray',
+                        borderWidth: 1
+                    },  
                     xaxis: {
                         axisLabel: "&larr;total&rarr;",
                         color: walkColor,
