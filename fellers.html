@@ -710,21 +710,20 @@
             padding: 10px;
             background: GhostWhite;
         }
-        #fellers-walk, #fellers-counts {
-            height: 310px;
-        }
         #fellers-walk {
-            width: 900px;
+            width: 950px;
+            height: 250px;
         }
         #fellers-counts {
-            width: 1100px;            
+            width: 1150px;            
+            height: 370px;
         }
         #stats, #feedback {
             font-size: 0.8em;
         }
         input[type=button] {
             background: LightGray;
-            width: 8em;
+            width: 7em;
             text-align: center;
         }
         #re-run {
@@ -762,17 +761,18 @@
                 <tr>
                     <th>step</th>
                     <th>freq[0]</th>
-                    <th>max<br>abs(total)</th>
+                    <th>max<br>abs<br>total</th>
                     <th>std.dev</th>
                 </tr>
             </table>
         </td>            
     </tr>
+    <tr>
+       <td colspan="2" class="edged">     
+            <div id="fellers-counts"></div>
+       </td>
+    </tr>
 </table>
-            
-<div class="edged cell">
-    <div id="fellers-counts"></div>
-</div>
 
 </body>
 </html>
