@@ -322,8 +322,8 @@
                   ok: function() {
                     //TODO: check input
                     feedback.reset(parseInt($('#feedback',html).val()));
-                    NUMBER_OF_WALKS = parseInt($('#no_of_walks',html).val());
-                    STEPS_PER_WALK = parseInt($('#steps_per_walk',html).val());
+                    NUMBER_OF_WALKS = parseInt($('#noOfWalks',html).val());
+                    STEPS_PER_WALK = parseInt($('#stepsPerWalk',html).val());
                     counts.points.pop();
                     counts.points.push(STEPS_PER_WALK);
                     runSimulation();
@@ -516,7 +516,7 @@
                       '<input type="text"' +
                              'style="width:5em;"' +
                              'value="' + NUMBER_OF_WALKS + '"' +
-                             'id="no_of_walks">' +
+                             'id="noOfWalks">' +
                     '</td>' +
                   '</tr>' +                      
                   '<tr>' +
@@ -527,7 +527,7 @@
                       '<input type="text"' +
                              'style="width:5em;"' +
                              'value="' + STEPS_PER_WALK + '"' +
-                             'id="steps_per_walk">' +
+                             'id="stepsPerWalk">' +
                     '</td>' +
                   '</tr>' +                      
                 '</table>';            
