@@ -125,6 +125,13 @@
         var STEPS_PER_WALK = 1000;
         var WALKS_PER_PLOT = 100;
         
+        var walkColor = 'green';
+
+        var gold = '#b8860b';
+        var blue = 'blue';
+        var red  = 'red';
+        var colours = [gold,blue,red];
+        
         function doOneWalk() {            
             var HEAD = +1;
             var TAIL = -1;
@@ -411,7 +418,6 @@
                 return $('#stats #steps_' + n + ' #' + kind);    
             }
             
-            var colours = [gold,blue,red];
             for (var at = 0; at !== countPlots.length; at++) {
                 $('#stats #steps_' + at + ' th').html(
                     "<span style='color:"+colours[at]+";'>" +
@@ -427,10 +433,6 @@
         }
         
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        var gold = '#b8860b';
-        var blue = 'blue';
-        var red  = 'red';
-        var walkColor = 'green';
         
         var plotOptions = {
             forWalk: function() {
@@ -574,13 +576,13 @@
                 'How effective is this feedback?' +
                 "</div>";
         }
-        function colour(rgb,name) {
-            return "<span style='color:" + rgb + "'>" + name + "</span>";
+        function colour(n,name) {
+            return "<span style='color:" + colours[n] + "'>" + name + "</span>";
         }
-        function stepLine(rgb,step,rgbName) {
+        function stepLine(n,step,rgbName) {
             return '<li>' + 
-                    'at step ' + colour(rgb,step) +
-                    ' - the ' + colour(rgb,rgbName) + ' line' +
+                    'at step ' + colour(n,step) +
+                    ' - the ' + colour(n,rgbName) + ' line' +
                     '</li>';
         }
         function makeGraphsHelpHtml() {
@@ -588,7 +590,7 @@
                 "<div>" +
                 '<div style="padding:1em;border:1px solid Black;">' +
                 'The top <span style="color:green">green</span> graph plots ' +
-                'the step (x) against the total (y) for one walk.' +
+                'the step (x) against<br>the total (y) for one walk.' +
                 '</div>' +
                 '<br>' +
                 '<div style="padding:1em;border:1px solid Black;">' +
@@ -596,12 +598,12 @@
                 'frequency of the total for all walks. ' +
                 'Three lines plot the frequencies at three places on the walks:' +
                 squashed(
-                  stepLine(gold,10,'gold') +
-                  stepLine(blue,100,'blue') +
-                  stepLine(red,1000,'red')) +
-                'For example, the point ' + colour(blue,'(x=2,y=417)') +
+                  stepLine(0,10,'gold') +
+                  stepLine(1,100,'blue') +
+                  stepLine(2,1000,'red')) +
+                'For example, the point ' + colour(1,'(x=2,y=417)') +
                 ' means 417 of the walks had a total of 2' + ' at step ' +
-                colour(blue,100) + ' (51 heads, 49 tails)' +
+                colour(1,100) + ' (51 heads, 49 tails)' +
                 '</div>' +
                 '</div>';
         }
@@ -624,41 +626,41 @@
                 '<table>' +
                     th('step') +
                     th('freq[0]') +
-                    th('max<br>abs(total)') +
+                    th('max<br>abs<br>total') +
                     th('std.dev') +
                 '</tr>' +
                 '<tr>' +
-                  td(colour(gold,10)) +
-                  td(colour(gold,1260)) +
-                  td(colour(gold,10)) +
-                  td(colour(gold,3.19)) +
+                  td(colour(0,10)) +
+                  td(colour(0,1260)) +
+                  td(colour(0,10)) +
+                  td(colour(0,3.19)) +
                 '</tr>' +
                 '<tr>' +
-                  td(colour(blue,100)) +
-                  td(colour(blue,391)) +
-                  td(colour(blue,36)) +
-                  td(colour(blue,10.15)) +
+                  td(colour(1,100)) +
+                  td(colour(1,391)) +
+                  td(colour(1,36)) +
+                  td(colour(1,10.15)) +
                 '</tr>' +
                 '<tr>' +
-                  td(colour(red,1000)) +
-                  td(colour(red,124)) +
-                  td(colour(red,-140)) +
-                  td(colour(red,31.71)) +
+                  td(colour(2,1000)) +
+                  td(colour(2,124)) +
+                  td(colour(2,-140)) +
+                  td(colour(2,31.71)) +
                 '</tr>' +
                 '</table>' +
                 '<br><br>' +
-                'Over all the walks, at the ' + colour(red,1000) +"'th step:" +
+                'Over all the walks, at the ' + colour(2,1000) +"'th step:" +
                 squashed(
                     '<li>' +
-                        'the total was zero ' + colour(red,124) + ' times<br>' +
+                        'the total was zero ' + colour(2,124) + ' times<br>' +
                         '(500 heads, 500 tails)' +
                     '</li>' +
                     '<li>' +
-                        'the total farthest from zero was ' + colour(red,'-140') + '<br>' +
+                        'the total farthest from zero was ' + colour(2,'-140') + '<br>' +
                         '(430 heads, 570 tails)' +
                     '</li>' +
                     '<li>' +
-                        'the standard deviation of the total was ' + colour(red,31.71) +                        
+                        'the standard deviation of the total was ' + colour(2,31.71) +                        
                     '</li>') +
                     '<br>' +
                     '95% of data typically falls within 2 standard deviations:<br>' +
