@@ -12,12 +12,10 @@
 
     <script type="text/javascript">
         
-        // IDEA: lower graph could dynamically set xaxis min/max
-        // values as 2*std.dev
-        // IDEA: lower graph's yaxis legend, instead of saying
-        //       1000, it could say 1000 (20%)
         // IDEA: same idea for freq[0] stats table
-        
+        // IDEA: lower graph could dynamically set xaxis min/max
+        //       values as 2*std.dev
+        //        
         // IDEA: top graph legend, instead of saying
         //       1000th walk (20%), it could say
         //       1000th walk (20% of 5000)
@@ -26,10 +24,18 @@
         //       after 10 steps of 1000 walks (20%)
         //
         // IDEA: freq[0] and lower-graph y label in same colour.
-        // IDEA: gold,blue,red --> colours[0,1,2]
+        //       orange?
+        //
+        // IDEA: 'green' still needs refactoring.
+        //
         // IDEA: link back to source
         // IDEA: link back to blog article
+        //
         // IDEA: could show 3 (say) walks on top graph.
+        // IDEA: at end could show top-graph with all
+        //       the walks plotted on it. Or some of them.
+        //       And make yaxis limits cater for min/max totals.
+        //       Would be nice tree-on-its-side shape.
         
         // - - - - - - - - - - - - - - - - - - - - - - -
         // Code to investigate Feller's walk with feedback.
@@ -384,18 +390,20 @@
         // UI code from here
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 
+        function percent(nom,denom) {
+            return (nom / denom * 100);
+        }
         function display(n,walk) {
-            //------- top graph -------
+            //- - - - top graph - - - -
             function walkLabel() {
-                var percentDone = (n / NUMBER_OF_WALKS * 100).toFixed(0);
-                return n + "th walk (" + percentDone + "%)";
-            }
-                                    
+                //var percentDone = (n / NUMBER_OF_WALKS * 100).toFixed(0);
+                return n + "th walk (" + percent(n,NUMBER_OF_WALKS).toFixed(0) + "%)";
+            }                                    
             $.plot($("#fellersWalk"),
                    [ { label: walkLabel(), data: walk } ],
                    plotOptions.forWalk());
             
-            //------- bottom graph -------
+            //- - - - bottom graph - - - -
             function labeledCountPlot(n) {
                 return {
                     label: "after " + counts.getPoint(n) + " steps",
@@ -405,13 +413,12 @@
             var countPlots = [ ];
             for (var at = 0; at !== counts.points.length; at++) {
                 countPlots.push(labeledCountPlot(at));
-            }
-            
+            }            
             $.plot($("#fellersCounts"),
                    countPlots,
-                   plotOptions.forCounts());
+                   plotOptions.forCounts(n));
             
-            //------- stats table -------
+            //- - - - stats table - - - -
             function stat(n,klass,value) {
                 $('#stats #steps_' + n + ' .' + klass).html(colour(n,value));
             }
@@ -421,7 +428,7 @@
                 stat(at,'maxAbs',countPlots[at].data.maxAbs());
                 stat(at,'stdDev',countPlots[at].data.stdDev());
             }
-            //------- feedback? -------            
+            //- - - - feedback? - - - -
             $('#feedback').html(feedback.info());
         }
         
@@ -473,7 +480,7 @@
                     }
                 };            
             },
-            forCounts: function() {                            
+            forCounts: function(n) {                            
                 return {
                     legend: { position: "nw" },                                
                     grid: {
@@ -489,7 +496,10 @@
                     },
                     yaxis: {
                         axisLabel: "&larr;frequency of total",
-                        position: "right"
+                        position: "right",
+                        tickFormatter:function(freq) {
+                            return freq + " (" + percent(freq,n).toFixed(0) + "%)";
+                        }                        
                     },
                     series: {
                         lines: {
