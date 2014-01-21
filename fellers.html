@@ -620,11 +620,8 @@
         function xml(tag,value) {
             return '<'+tag+'>'+value+'</'+tag+'>';
         }        
-        function th(html) {
-            return xml('th',html);
-        }
-        function tdStep(n,html) {
-            return xml('td', xml('b', colour(n,html)));
+        function td(html) {
+            return '<td style="font-weight:normal;">' + html + '</td>';
         }
         function tdColour(n,html) {
             return xml('td',colour(n,html));
@@ -633,42 +630,42 @@
             return '' +
                 '<div>' +
                 '<table id="helpStats">' +
-                    th('at<br>step') +
-                    th('freq[0]') +
-                    th('max<br>abs<br>total') +
-                    th('std<br>dev') +
+                    td('at step') +
+                    td('freq[0]') +
+                    td('max abs(total)') +
+                    td('std.dev') +
                 '<tr>' +
-                  tdStep(0,10) +
+                  tdColour(0,10) +
                   tdColour(0,1260) +
                   tdColour(0,10) +
                   tdColour(0,3.19) +
                 '</tr>' +
                 '<tr>' +
-                  tdStep(1,100) +
+                  tdColour(1,100) +
                   tdColour(1,391) +
-                  tdColour(1,36) +
+                  tdColour(1,-36) +
                   tdColour(1,10.15) +
                 '</tr>' +
                 '<tr>' +
-                  tdStep(2,1000) +
+                  tdColour(2,1000) +
                   tdColour(2,124) +
                   tdColour(2,-140) +
                   tdColour(2,31.71) +
                 '</tr>' +
                 '</table>' +
                 '<br>' +
-                'Over all the walks, at the ' + colour(1,100) +"'th step:" +
+                'Over all the walks, at the ' + bold(colour(1,100)) +"'th step:" +
                 squashed(
                     '<li>' +
-                        'the total was zero ' + colour(1,391) + ' times<br>' +
+                        'the total was zero ' + bold(colour(1,391)) + ' times<br>' +
                         '(50 heads, 50 tails, 50-50=0, 50+50=100)' +
                     '</li>' +
                     '<li>' +
-                        'the total farthest from zero was ' + colour(1,'-36') + '<br>' +
+                        'the total farthest from zero was ' + bold(colour(1,'-36')) + '<br>' +
                         '(32 heads, 68 tails, 32-68=-36, 32+68=100)' +
                     '</li>' +
                     '<li>' +
-                        'the standard deviation of the total was ' + colour(1,10.15) +                        
+                        'the standard deviation of the total was ' + bold(colour(1,10.15)) +                        
                     '</li>') +
                     '<br>' +
                     '95% of data typically falls within 2 standard deviations:<br>' +
@@ -726,8 +723,9 @@
         }
         #stats, #helpStats {
             background: Moccasin;
-            font-weight: 400;
+            Xfont-weight: 400;
             font-family: Tahoma;
+            border-spacing: 5px;
         }
         #stats {
             font-size: 1em;
@@ -735,11 +733,11 @@
             left: 30px;
             margin-top: 10px;
         }
-        #stats th, #stats td, #helpStats th, #helpStats td {
+        #stats td, #helpStats td {
             background: #FFF5EE; /*SeaShell*/
             padding: 0.25em;
+            font-weight: bold;
         }
-        td .step { font-weight: bold; }
         #feedback, #noOfWalks, #stepsPerWalk {
             font-size: 0.8em;
             margin-top: 5px;
@@ -781,10 +779,10 @@
        <td colspan="2" class="edged">        
             <table id="stats">
                 <tr>
-                    <th>at<br>step</th>
-                    <th>freq[0]</th>
-                    <th>max<br>abs<br>total</th>
-                    <th>std<br>dev</th>
+                    <td style="font-weight:normal;">at step</td>
+                    <td style="font-weight:normal;">freq[0]</td>
+                    <td style="font-weight:normal;">max abs(total)</td>
+                    <td style="font-weight:normal;">std.dev</td>
                 </tr>
             </table>        
             <div id="fellersCounts"></div>
