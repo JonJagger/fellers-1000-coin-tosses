@@ -14,9 +14,6 @@ TODO: colours and colourNames needs refactoring
 TODO: colors: [ colours[0], colours[1], colours[2] ]
       also needs refactoring
 
-IDEA: use grid.markings to draw vertical lines
-      on top graph showing positions of steps10,100,1000
-
 IDEA: freq[0] and lower-graph y label in same colour.
       orange?
 

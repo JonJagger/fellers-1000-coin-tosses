@@ -423,26 +423,33 @@
         
         var plotOptions = {
             forWalk: function(stdDev) {
-                var zeroLine = [
-                    {
-                        yaxis: {
-                            from: 0,
-                            to: 0
-                        },
-                        xaxis: {
-                            from: 0,
-                            to: STEPS_PER_WALK,
-                        },
+                var zeroLine = {
+                        yaxis: { from: 0, to: 0 },
+                        xaxis: { from: 0, to: STEPS_PER_WALK },
                         color: 'LightGray'
-                    }
-                ];         
+                    };
+                var line10 = {
+                        yaxis: { from: -1000, to: +1000 },
+                        xaxis: { from: 10, to: 10 },
+                        color: colours[0]
+                    };
+                var line100 = {
+                        yaxis: { from: -1000, to: +1000 },
+                        xaxis: { from: 100, to: 100 },
+                        color: colours[1]
+                    };                    
+                var line1000 = {
+                        yaxis: { from: -1000, to: +1000 },
+                        xaxis: { from: 1000, to: 1000 },
+                        color: colours[2]
+                    };                    
                 return {
                     legend: { position: "nw" },                                
                     grid: {
                         color: 'DarkGray',
                         //backgroundColor: 'DarkGray',
                         borderWidth: 1,                        
-                        markings: zeroLine,
+                        markings: [ zeroLine,line10,line100,line1000 ],
                     },
                     xaxis: {
                         tickLength: 5, // turns off || grid lines too
@@ -470,25 +477,17 @@
                 };            
             },
             forCounts: function(n,stdDev) {
-                var zeroLine = [
-                    {
-                        xaxis: {
-                            from: 0,
-                            to: 0
-                        },
-                        yaxis: {
-                            from: 0,
-                            to: 10000,
-                        },
+                var zeroLine = {
+                        xaxis: { from: 0, to: 0 },
+                        yaxis: { from: 0,  to: 10000 },
                         color: 'LightGray'
-                    }
-                ];
+                    };
                 return {
                     legend: { position: "nw" },                                
                     grid: {
                         color: 'DarkGray',
                         borderWidth: 1,                        
-                        markings: zeroLine
+                        markings: [ zeroLine ]
                     },
                     xaxis: {
                         tickLength: 5, // turns off || grid lines too
