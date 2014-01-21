@@ -12,22 +12,22 @@
 
     <script type="text/javascript">
         
-        // IDEA: reduce width of top graph and put table/buttons on
-        //       top-right or top-left
-        // IDEA: -ve <---- total ----> +ve    (in green)
-        // IDEA: link back to source
-        // IDEA: link back to blog article
+        // IDEA: lower graph could dynamically set xaxis min/max
+        // values as 2*std.dev
+        // IDEA: lower graph's yaxis legend, instead of saying
+        //       1000, it could say 1000 (20%)
+        // IDEA: same idea for freq[0] stats table
+        
         // IDEA: top graph legend, instead of saying
         //       1000th walk (20%), it could say
         //       1000th walk (20% of 5000)
         // IDEA: lower graph legend, instead of saying
         //       after 10 steps, it could say
         //       after 10 steps of 1000 walks (20%)
-        // IDEA: lower graph could dynamically set xaxis min/max
-        // values as 2*std.dev
-        // IDEA: lower graph's yaxis legend, instead of saying
-        //       1000, it could say 1000 (20%)
-        // IDEA: same idea for freq[0] stats table
+        
+        // IDEA: gold,blue,red --> colours[0,1,2]
+        // IDEA: link back to source
+        // IDEA: link back to blog article
         
         // - - - - - - - - - - - - - - - - - - - - - - -
         // Code to investigate Feller's walk with feedback.
@@ -428,6 +428,7 @@
         var gold = '#b8860b';
         var blue = 'blue';
         var red  = 'red';
+        var walkColor = 'green';
         
         var plotOptions = {
             forWalk: function() {
@@ -436,19 +437,20 @@
                     legend: { position: "nw" },                                
                     xaxis: {
                         axisLabel: "step&rarr;", 
-                        position: "top left",
+                        position: "top",
                         min: 0,
                         max: STEPS_PER_WALK
                     },
                     yaxis: {
                         axisLabel: "&larr;total&rarr;",
+                        color: walkColor,
                         position: "right",
                         tickDecimals: 0,
                         min: -60,
                         max: 60                    
                     },
                     series: {
-                        color: "green",
+                        color: walkColor,
                         lines: { show: true },
                         points: { show: false }
                     }
@@ -460,6 +462,7 @@
                     legend: { position: "nw" },                                
                     xaxis: {
                         axisLabel: "&larr;total&rarr;",
+                        color: walkColor,
                         position: "bottom",
                         min: -50,
                         max: 50                                            
