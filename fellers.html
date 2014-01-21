@@ -12,8 +12,8 @@
 
     <script type="text/javascript">
         
-        // IDEA: lower graph could dynamically set xaxis min/max
-        //       values as 2*std.dev
+        // IDEA: top graph could dynamically set yaxis min/max
+        //       values based on no-of-steps-in-one-walk
         //        
         // IDEA: top graph legend, instead of saying
         //       1000th walk (20%), it could say
@@ -24,6 +24,11 @@
         //
         // IDEA: freq[0] and lower-graph y label in same colour.
         //       orange?
+        //
+        // IDEA: all three colours for bottom-graphs could
+        //       be same colour, in light,normal,darker.
+        //       Would free up colour for freq[0] and
+        //       'frequency of total' y-axis label.
         //
         // IDEA: 'green' still needs refactoring.
         //
@@ -411,10 +416,11 @@
             var countPlots = [ ];
             for (var at = 0; at !== counts.points.length; at++) {
                 countPlots.push(labeledCountPlot(at));
-            }            
+            }
+            var stdDev = countPlots[countPlots.length-1].data.stdDev();
             $.plot($("#fellersCounts"),
                    countPlots,
-                   plotOptions.forCounts(n));
+                   plotOptions.forCounts(n,stdDev));
             
             //- - - - stats table - - - -
             function stat(n,klass,value) {
@@ -478,7 +484,7 @@
                     }
                 };            
             },
-            forCounts: function(n) {                            
+            forCounts: function(n,stdDev) {                            
                 return {
                     legend: { position: "nw" },                                
                     grid: {
@@ -489,8 +495,8 @@
                         axisLabel: "&larr;total&rarr;",
                         color: walkColor,
                         position: "bottom",
-                        min: -50,
-                        max: 50                                            
+                        min: -(2*stdDev),
+                        max: +(2*stdDev)                                            
                     },
                     yaxis: {
                         axisLabel: "&larr;frequency of total",
