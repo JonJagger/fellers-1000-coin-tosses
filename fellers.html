@@ -440,19 +440,20 @@
                     legend: { position: "nw" },                                
                     grid: {
                         color: 'DarkGray',
+                        //backgroundColor: 'DarkGray',
                         borderWidth: 1,                        
                         markings: zeroLine,
                     },
                     xaxis: {
                         tickLength: 5, // turns off || grid lines too
-                        axisLabel: "step&rarr;", 
+                        axisLabel: "step", 
                         position: "bottom",
                         min: 0,
                         max: STEPS_PER_WALK+5
                     },
                     yaxis: {
                         tickLength: 5, // turns off == grid lines too
-                        axisLabel: "&larr;total&rarr;",
+                        axisLabel: "total",
                         color: walkColor,
                         position: "right",
                         min: -(2*stdDev),
@@ -491,7 +492,7 @@
                     },
                     xaxis: {
                         tickLength: 5, // turns off || grid lines too
-                        axisLabel: "&larr;total&rarr;",
+                        axisLabel: "total",
                         color: walkColor,
                         position: "bottom",
                         min: -(2*stdDev),
@@ -499,7 +500,7 @@
                     },
                     yaxis: {
                         tickLength: 5, // turns off == grid lines too
-                        axisLabel: "&larr;frequency of total",
+                        axisLabel: "frequency of total",
                         position: "right",
                         tickFormatter:function(freq) {
                             return freq + " (" + percent(freq,n).toFixed(0) + "%)";
