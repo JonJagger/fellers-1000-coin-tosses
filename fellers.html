@@ -296,8 +296,8 @@
                 
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 
-        function runSimulation() {
-            var html = $(makeReRunDialogHtml());
+        function run() {
+            var html = $(makeRunDialogHtml());
             //TODO: hit enter on feedback input to ok the dialog
             var setup = html.dialog({	  
                 title: "Feller's walk",
@@ -357,7 +357,7 @@
             $('#feedbackHelp').click(function() { showFeedbackHelp(); });
             $('#graphsHelp').click(function() { showGraphsHelp(); });
             $('#statsHelp').click(function() { showStatsHelp(); });            
-            $('#run').click(function() { runSimulation(); });
+            $('#run').click(function() { run(); });
             addStatsPlaceHolders();
             feedback.reset(never);
             runSimulation();
@@ -512,7 +512,7 @@
                           
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                                 
-        function makeReRunDialogHtml() {
+        function makeRunDialogHtml() {
             return '' +
                 '<table>' +
                   '<tr>' +
@@ -690,16 +690,16 @@
         }
         
         function showWalkHelp() {
-            showDialog( makeWalkHelpHtml(), "walk");
+            showDialog(makeWalkHelpHtml(), "walk");
         }
         function showFeedbackHelp() {
-            showDialog( makeFeedbackHelpHtml(), "feedback");
+            showDialog(makeFeedbackHelpHtml(), "feedback");
         }
         function showGraphsHelp() {
-            showDialog( makeGraphsHelpHtml(), "graphs");
+            showDialog(makeGraphsHelpHtml(), "graphs");
         }
         function showStatsHelp() {
-            showDialog( makeStatsHelpHtml(), "stats");
+            showDialog(makeStatsHelpHtml(), "stats");
         }
         
     </script>
