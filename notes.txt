@@ -3,6 +3,8 @@ TODO: put top-left button grid "inside" lower-graph as-well.
       allows both graphs to use full width.
       Will buttons be clickable?
 
+TODO: remove red square from left of single-walk label
+
 TODO: add 3 radio-buttons to explain three rows of table in stats? html
 TODO: take values for stats? help html from real table.
       generate explanations (32 heads, 68 tails...) in code.
