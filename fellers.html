@@ -106,9 +106,9 @@
         var STEPS_PER_WALK = 1000;
         var WALKS_PER_PLOT = 100;
         
-        var colours = ['lightGreen','green','#003C00'];
-        var colourNames = ['light green','green','dark green'];
         var walkColor = 'red';
+        var freqColours = ['lightGreen','green','#003C00'];
+        var freqColourNames = ['light green','green','dark green'];
 
         function doOneWalk() {            
             var HEAD = +1;
@@ -403,7 +403,7 @@
         }
         
         function colour(n,html) {
-            return "<span style='color:" + colours[n] + "'>" + html + "</span>";
+            return "<span style='color:" + freqColours[n] + "'>" + html + "</span>";
         }
         
         function addStatsPlaceHolders() {
@@ -431,17 +431,17 @@
                 var line10 = {
                         yaxis: { from: -1000, to: +1000 },
                         xaxis: { from: 10, to: 10 },
-                        color: colours[0]
+                        color: freqColours[0]
                     };
                 var line100 = {
                         yaxis: { from: -1000, to: +1000 },
                         xaxis: { from: 100, to: 100 },
-                        color: colours[1]
+                        color: freqColours[1]
                     };                    
                 var line1000 = {
                         yaxis: { from: -1000, to: +1000 },
                         xaxis: { from: STEPS_PER_WALK, to: STEPS_PER_WALK },
-                        color: colours[2]
+                        color: freqColours[2]
                     };                    
                 return {
                     legend: { position: "nw" },  
@@ -512,7 +512,7 @@
                         },
                         points: { show: false }
                     },
-                    colors: [ colours[0], colours[1], colours[2] ]
+                    colors: freqColours //[ colours[0], colours[1], colours[2] ]
                 };                        
             }            
         };
@@ -601,7 +601,7 @@
         function stepLine(n,step) {
             return '<li>' + 
                     'step ' + bold(colour(n,step)) +
-                    ' - the ' + bold(colour(n,colourNames[n])) + ' line' +
+                    ' - the ' + bold(colour(n,freqColourNames[n])) + ' line' +
                     '</li>';
         }
         function makeGraphsHelpHtml() {

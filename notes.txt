@@ -3,7 +3,8 @@ TODO: put top-left button grid "inside" lower-graph as-well.
       allows both graphs to use full width.
       Will buttons be clickable? No.
 
-TODO: remove red square from left of single-walk label
+TODO: remove red square from left of single-walk label.
+      Do as position:absolute custom legend like for freq-graphs.
 
 TODO: add 3 radio-buttons to explain three rows of table in stats? html
 TODO: take values for stats? help html from real table.
@@ -12,10 +13,6 @@ TODO: take values for stats? help html from real table.
 TODO: on re-run check no-of-steps > 100
       you lose 3rd plot...
       
-TODO: colours and colourNames needs refactoring
-TODO: colors: [ colours[0], colours[1], colours[2] ]
-      also needs refactoring
-
 IDEA: freq[0] and lower-graph y label in same colour.
       orange?
 
