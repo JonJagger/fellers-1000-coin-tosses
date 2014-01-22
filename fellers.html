@@ -444,10 +444,9 @@
                         color: colours[2]
                     };                    
                 return {
-                    legend: { position: "nw" },                                
+                    legend: { position: "nw" },  
                     grid: {
                         color: 'DarkGray',
-                        //backgroundColor: 'DarkGray',
                         borderWidth: 1,                        
                         markings: [ zeroLine,line10,line100,line1000 ],
                     },
@@ -728,6 +727,11 @@
             width: 1150px;            
             height: 370px;
         }
+        #legend {
+            position: absolute;
+            left: 30px;
+            margin-top: 10px;            
+        }
         #stats, #helpStats {
             background: Moccasin;
             font-family: Tahoma;
@@ -735,9 +739,6 @@
         }
         #stats {
             font-size: 1em;
-            position: absolute;
-            left: 30px;
-            margin-top: 10px;
         }
         #stats td, #helpStats td {
             background: #FFF5EE; /*SeaShell*/
@@ -768,10 +769,10 @@
 <table>
     <tr>
         <td class="edged">
-            <input type="button" id="walkHelp" value="walk?">
+            <input type="button" id="walkHelp" value="walk?">                            
             <input type="button" id="feedbackHelp" value="feedback?">
             <input type="button" id="graphsHelp" value="graphs?">
-            <input type="button" id="statsHelp" value="stats?">
+            <input type="button" id="statsHelp" value="stats?">            
             <div id="feedback"></div>
             <div id="noOfWalks">#walks =</div>
             <div id="stepsPerWalk">steps-per-walk = </div>
@@ -782,15 +783,17 @@
         </td>            
     </tr>
     <tr>
-       <td colspan="2" class="edged">        
-            <table id="stats">
-                <tr>
-                    <td style="font-weight:normal;">at step</td>
-                    <td style="font-weight:normal;">freq[0]</td>
-                    <td style="font-weight:normal;">max<br>abs(total)</td>
-                    <td style="font-weight:normal;">std.dev</td>
-                </tr>
-            </table>        
+       <td colspan="2" class="edged">
+            <div id="legend">
+                <table id="stats">
+                    <tr>
+                        <td style="font-weight:normal;">at step</td>
+                        <td style="font-weight:normal;">freq[0]</td>
+                        <td style="font-weight:normal;">max<br>abs(total)</td>
+                        <td style="font-weight:normal;">std.dev</td>
+                    </tr>
+                </table>
+            </div>
             <div id="fellersCounts"></div>
        </td>
     </tr>
