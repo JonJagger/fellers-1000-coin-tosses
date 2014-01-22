@@ -1,8 +1,7 @@
       
-TODO: put top-left button grid "inside" lower-graph as-well.
-      allows both graphs to use full width.
-      Will buttons be clickable? No.
-
+TODO: move walk-plot legend down to number-of-walks legend
+      and make it update every redisplay.
+      
 TODO: remove red square from left of single-walk label.
       Do as position:absolute custom legend like for freq-graphs.
 

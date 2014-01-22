@@ -296,7 +296,7 @@
                 
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 
-        function reRunSimulation() {
+        function runSimulation() {
             var html = $(makeReRunDialogHtml());
             //TODO: hit enter on feedback input to ok the dialog
             var setup = html.dialog({	  
@@ -357,7 +357,7 @@
             $('#feedbackHelp').click(function() { showFeedbackHelp(); });
             $('#graphsHelp').click(function() { showGraphsHelp(); });
             $('#statsHelp').click(function() { showStatsHelp(); });            
-            $('#reRun').click(function() { reRunSimulation(); });
+            $('#run').click(function() { runSimulation(); });
             addStatsPlaceHolders();
             feedback.reset(never);
             runSimulation();
@@ -708,17 +708,19 @@
         body {
             background: #FFEBCD; /*BlanchedAlmond*/
         }
+        input[type=button] {
+            background: #F8F8FF; /*GhostWhite*/
+            width: 6em;
+            text-align: center;
+            font-size: 0.8em;
+        }        
         .edged {
             padding: 10px;
             background: #FFFFFF; /*White*/
         }
-        #fellersWalk {
-            width: 1015px;
-            height: 250px;
-        }
-        #fellersCounts {
-            width: 1150px;            
-            height: 370px;
+        #fellersWalk, #fellersCounts {
+            width: 1150px;
+            height: 300px;
         }
         #legend {
             position: absolute;
@@ -742,17 +744,6 @@
             font-size: 0.8em;
             margin-top: 5px;
         }
-        input[type=button] {
-            background: #F8F8FF; /*GhostWhite*/
-            width: 6em;
-            text-align: center;
-            display: block;
-            font-size: 0.8em;
-        }
-        #reRun {
-            font-size: 1em;
-            margin-top: 20px;
-        }
         .ui-dialog {
             opacity: 0.75;
         }
@@ -761,13 +752,15 @@
 <body>
 <table>
     <tr>
-        <td class="edged">
+        <td Xclass="edged">
             <input type="button" id="walkHelp" value="walk?">                            
             <input type="button" id="feedbackHelp" value="feedback?">
             <input type="button" id="graphsHelp" value="graphs?">
             <input type="button" id="statsHelp" value="stats?">            
-            <input type="button" id="reRun" value="re-run">
+            <input type="button" id="run" value="run">
         </td>
+    </tr>
+    <tr>
         <td class="edged">
             <div id="fellersWalk"></div>
         </td>            
