@@ -428,27 +428,20 @@
                         xaxis: { from: 0, to: STEPS_PER_WALK },
                         color: 'LightGray'
                     };
-                var line10 = {
+                function makeLine(n) {
+                    return {
                         yaxis: { from: -1000, to: +1000 },
-                        xaxis: { from: 10, to: 10 },
-                        color: freqColours[0]
-                    };
-                var line100 = {
-                        yaxis: { from: -1000, to: +1000 },
-                        xaxis: { from: 100, to: 100 },
-                        color: freqColours[1]
+                        xaxis: { from: counts.getPoint(n),
+                                   to: counts.getPoint(n) },
+                        color: freqColours[n]
                     };                    
-                var line1000 = {
-                        yaxis: { from: -1000, to: +1000 },
-                        xaxis: { from: STEPS_PER_WALK, to: STEPS_PER_WALK },
-                        color: freqColours[2]
-                    };                    
+                }
                 return {
                     legend: { position: "nw" },  
                     grid: {
                         color: 'DarkGray',
                         borderWidth: 1,                        
-                        markings: [ zeroLine,line10,line100,line1000 ],
+                        markings: [ zeroLine,makeLine(0),makeLine(1),makeLine(2) ],
                     },
                     xaxis: {
                         tickLength: 5, // turns off || grid lines too
