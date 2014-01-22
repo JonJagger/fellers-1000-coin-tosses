@@ -330,8 +330,8 @@
         function runSimulation() {
             var n = 0;
             $('#feedback').html(feedback.info());
-            $('#noOfWalks').html('<b>#walks</b> = ' + NUMBER_OF_WALKS);
-            $('#stepsPerWalk').html('<b>steps</b> = ' + STEPS_PER_WALK);
+            $('#noOfWalks').html('<b>number of walks</b> = ' + NUMBER_OF_WALKS);
+            $('#stepsPerWalk').html('<b>steps per walk</b> = ' + STEPS_PER_WALK);
             clearInterval(fid);
             counts.reset();
             // Can't use for-loop (the plots don't appear?!)            
@@ -747,11 +747,11 @@
             width: 6em;
             text-align: center;
             display: block;
-            font-size: 1em;
+            font-size: 0.8em;
         }
         #reRun {
             font-size: 1em;
-            margin-top: 10px;
+            margin-top: 20px;
         }
         .ui-dialog {
             opacity: 0.75;
@@ -766,9 +766,6 @@
             <input type="button" id="feedbackHelp" value="feedback?">
             <input type="button" id="graphsHelp" value="graphs?">
             <input type="button" id="statsHelp" value="stats?">            
-            <div id="feedback"></div>
-            <div id="noOfWalks">#walks =</div>
-            <div id="stepsPerWalk">steps-per-walk = </div>
             <input type="button" id="reRun" value="re-run">
         </td>
         <td class="edged">
@@ -786,6 +783,9 @@
                         <td style="font-weight:normal;">std.dev</td>
                     </tr>
                 </table>
+                <div id="noOfWalks"></div>
+                <div id="stepsPerWalk"></div>
+                <div id="feedback"></div>
             </div>
             <div id="fellersCounts"></div>
        </td>
