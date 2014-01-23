@@ -397,8 +397,8 @@
             }
             for (var at = 0; at !== countPlots.length; at++) {
                 stat(at,'step', counts.getPoint(at));
-                stat(at,'stdDev',countPlots[at].data.stdDev());
                 stat(at,'freq0', countPlots[at].data.freq0());
+                stat(at,'stdDev',countPlots[at].data.stdDev());
                 stat(at,'maxAbs', pos(countPlots[at].data.maxAbs()));  
             }
         }
@@ -412,8 +412,8 @@
                 var tr = '' +
                     '<tr id="steps_'+ at + '">' +
                         '<td class="step"></td>' +
-                        '<td class="stdDev"></td>' +
                         '<td class="freq0"></td>' +
+                        '<td class="stdDev"></td>' +
                         '<td class="maxAbs"></td>' +                        
                     '</tr>';
                 $('#stats').append(tr);
@@ -494,6 +494,7 @@
                     yaxis: {
                         tickLength: tickLength,
                         axisLabel: "frequency of total",
+                        color: "blue",
                         position: "right",
                         tickFormatter:function(freq) {
                             return freq + " " + percent(freq,n);
@@ -639,25 +640,25 @@
                 '<div>' +
                 '<table id="helpStats">' +
                     td('at step') +
+                    td('<span style="color:blue;">freq[<span style="color:red;">0</span>]</span>') +
                     td('std dev') +
-                    td('freq[0]') +
                     td('max abs(total)') +
                 '<tr>' +
                   tdColour(0,10) +
-                  tdColour(0,3.19) +
                   tdColour(0,1260) +
+                  tdColour(0,3.19) +
                   tdColour(0,-10) +
                 '</tr>' +
                 '<tr>' +
                   tdColour(1,100) +
-                  tdColour(1,10.15) +
                   tdColour(1,391) +
+                  tdColour(1,10.15) +
                   tdColour(1,'+36') +
                 '</tr>' +
                 '<tr>' +
                   tdColour(2,1000) +
-                  tdColour(2,31.71) +
                   tdColour(2,124) +
+                  tdColour(2,31.71) +
                   tdColour(2,-140) +
                 '</tr>' +
                 '</table>' +
@@ -665,11 +666,11 @@
                 'Over all the walks, at the ' + bold(colour(1,100)) +"'th step:" +
                 squashed(
                     '<li>' +
-                        'the standard deviation of the total was ' + bold(colour(1,10.15)) +                        
-                    '</li>' +
-                    '<li>' +
                         'the total was zero ' + bold(colour(1,391)) + ' times<br>' +
                         '(50 heads-50 tails=0, 50+50=100)' +
+                    '</li>' +
+                    '<li>' +
+                        'the standard deviation of the total was ' + bold(colour(1,10.15)) +                        
                     '</li>' +
                     '<li>' +
                         'the total farthest from zero was ' + bold(colour(1,'+36')) + '<br>' +
@@ -785,8 +786,10 @@
                 <table id="stats">
                     <tr>
                         <td style="font-weight:normal;">at step</td>
+                        <td style="font-weight:normal;color:blue;">
+                            freq[<span style="color:red">0</span>]
+                        </td>
                         <td style="font-weight:normal;">std dev</td>
-                        <td style="font-weight:normal;">freq[0]</td>
                         <td style="font-weight:normal;">max abs(total)</td>
                     </tr>
                 </table>

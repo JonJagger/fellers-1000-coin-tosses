@@ -12,9 +12,6 @@ TODO: take values for stats?-help-html from real table.
 
 TODO: on re-run check no-of-steps > 100
       you lose 3rd plot...
-      
-IDEA: freq[0] and lower-graph y label in same colour.
-      orange?
 
 IDEA: link back to source
 IDEA: link back to blog article
