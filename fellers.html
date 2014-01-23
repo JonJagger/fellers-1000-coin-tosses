@@ -434,8 +434,7 @@
                 function makeLine(n) {
                     return {
                         yaxis: { from: -1000, to: +1000 },
-                        xaxis: { from: counts.getPoint(n),
-                                   to: counts.getPoint(n) },
+                        xaxis: { from: counts.getPoint(n), to: counts.getPoint(n) },
                         color: freqColours[n]
                     };                    
                 }
@@ -456,7 +455,7 @@
                         tickLength: tickLength,
                         axisLabel: "total",
                         color: walkColor,
-                        position: "right",
+                        position: "left",
                         min: -(2*stdDev),
                         max: +(2*stdDev)                    
                     },
@@ -495,7 +494,7 @@
                         tickLength: tickLength,
                         axisLabel: "frequency of total",
                         color: "blue",
-                        position: "right",
+                        position: "left",
                         tickFormatter:function(freq) {
                             return freq + " " + percent(freq,n);
                         }                        
@@ -735,9 +734,16 @@
             width: 1150px;
             height: 300px;
         }
-        #legend {
+        #lhsLegend {
+            background: #FFEBCD; /*BlanchedAlmond*/
+            padding: 5px;
+            position: absolute;            
+            left: 115px;
+            margin-top: 10px;            
+        }
+        #rhsLegend {
             position: absolute;
-            left: 30px;
+            left: 890px;
             margin-top: 10px;            
         }
         #stats, #helpStats {
@@ -746,14 +752,15 @@
             border-spacing: 5px;
         }
         #stats {
-            font-size: 1em;
+            font-size: 0.9em;
         }
         #stats td, #helpStats td {
             background: #FFF5EE; /*SeaShell*/
             padding: 0.25em;
             font-weight: bold;
         }
-        #feedback, #noOfWalks, #stepsPerWalk {
+        #stepsPerWalk, #feedback, #noOfWalks {
+            background: #FFF5EE; /*SeaShell*/
             font-size: 0.8em;
             margin-top: 5px;
         }
@@ -782,7 +789,12 @@
     </tr>
     <tr>
        <td class="edged">
-            <div id="legend">
+            <div id="lhsLegend">
+                <div id="stepsPerWalk"></div>
+                <div id="feedback"></div>
+                <div id="noOfWalks"></div>
+            </div>
+            <div id="rhsLegend">
                 <table id="stats">
                     <tr>
                         <td style="font-weight:normal;">at step</td>
@@ -793,9 +805,6 @@
                         <td style="font-weight:normal;">max abs(total)</td>
                     </tr>
                 </table>
-                <div id="stepsPerWalk"></div>
-                <div id="feedback"></div>
-                <div id="noOfWalks"></div>
             </div>
             <div id="fellersCounts"></div>
        </td>
