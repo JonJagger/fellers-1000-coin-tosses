@@ -707,6 +707,9 @@
         body {
             background: #FFEBCD; /*BlanchedAlmond*/
         }
+        #helpButtons {
+            float: right;            
+        }
         input[type=button] {
             background: #F8F8FF; /*GhostWhite*/
             width: 6em;
@@ -753,10 +756,12 @@
     <tr>
         <td>
             <input type="button" id="run" value="run">
-            <input type="button" id="walkHelp" value="walk?">                            
-            <input type="button" id="feedbackHelp" value="feedback?">
-            <input type="button" id="graphsHelp" value="graphs?">
-            <input type="button" id="statsHelp" value="stats?">            
+            <div id="helpButtons">
+                <input type="button" id="walkHelp" value="walk?">                            
+                <input type="button" id="feedbackHelp" value="feedback?">
+                <input type="button" id="graphsHelp" value="graphs?">
+                <input type="button" id="statsHelp" value="stats?">
+            </div>
         </td>
     </tr>
     <tr>
