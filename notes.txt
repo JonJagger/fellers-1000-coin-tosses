@@ -1,7 +1,4 @@
       
-TODO: initially make the freq-plot graph a histogram. Some way
-      into the simulation convert to using the line-graph.
-
 TODO: change red/green colour combination. Worst for people who
       are colour-blind?
 

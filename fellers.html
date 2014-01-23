@@ -468,7 +468,7 @@
                         },
                         points: { show: false }
                     }
-                };            
+                };
             },
             forCounts: function(n,stdDev) {
                 var zeroLine = {
@@ -476,7 +476,7 @@
                         yaxis: { from: 0,  to: 10000 },
                         color: 'LightGray'
                     };
-                return {
+                var options = {
                     legend: { position: "nw" },                                
                     grid: {
                         color: 'DarkGray',
@@ -508,7 +508,14 @@
                         points: { show: false }
                     },
                     colors: freqColours
-                };                        
+                };
+                if (n < NUMBER_OF_WALKS / 3) {
+                    options.series.bars = {
+                        show: true,
+                        lineWidth: 0
+                    };
+                }
+                return options;
             }            
         };
                           
