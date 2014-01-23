@@ -1,4 +1,6 @@
       
+    use + for +ve max abs total
+    
 TODO: add a single-walk tickMark of 10 to 1st vertical line.
 
 TODO: initially make the freq-plot graph a histogram. Some way
