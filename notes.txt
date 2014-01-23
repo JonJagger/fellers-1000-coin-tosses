@@ -1,10 +1,4 @@
       
-TODO: move walk-plot legend down to number-of-walks legend
-      and make it update every redisplay.
-      
-TODO: remove red square from left of single-walk label.
-      Do as position:absolute custom legend like for freq-graphs.
-
 TODO: add 3 radio-buttons to explain three rows of table in stats? html
 TODO: take values for stats? help html from real table.
       generate explanations (32 heads, 68 tails...) in code.

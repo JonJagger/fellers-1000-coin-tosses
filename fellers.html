@@ -330,7 +330,6 @@
         function runSimulation() {
             var n = 0;
             $('#feedback').html(feedback.info());
-            $('#noOfWalks').html('<b>number of walks</b> = ' + NUMBER_OF_WALKS);
             $('#stepsPerWalk').html('<b>steps per walk</b> = ' + STEPS_PER_WALK);
             clearInterval(fid);
             counts.reset();
@@ -372,6 +371,9 @@
             return (nom / denom * 100);
         }
         function display(n,walk) {
+            $('#noOfWalks').html('<b>walks</b> = ' +
+                n + ' / ' + NUMBER_OF_WALKS +
+                ' (' + percent(n,NUMBER_OF_WALKS).toFixed(0) + '%)');
             //- - - - bottom graph - - - -
             var countPlots = [ ];
             for (var at = 0; at !== counts.points.length; at++) {
@@ -383,11 +385,8 @@
                    plotOptions.forCounts(n,stdDev));
             
             //- - - - top graph - - - -
-            function walkLabel() {
-                return n + "th walk (" + percent(n,NUMBER_OF_WALKS).toFixed(0) + "%)";
-            }                                    
             $.plot($("#fellersWalk"),
-                   [ { label: walkLabel(), data: walk } ],
+                   [ { data: walk } ],
                    plotOptions.forWalk(stdDev));
             
             //- - - - stats table - - - -
@@ -437,7 +436,6 @@
                     };                    
                 }
                 return {
-                    legend: { position: "nw" },  
                     grid: {
                         color: 'DarkGray',
                         borderWidth: 1,                        
@@ -776,9 +774,9 @@
                         <td style="font-weight:normal;">std.dev</td>
                     </tr>
                 </table>
-                <div id="noOfWalks"></div>
                 <div id="stepsPerWalk"></div>
                 <div id="feedback"></div>
+                <div id="noOfWalks"></div>
             </div>
             <div id="fellersCounts"></div>
        </td>
