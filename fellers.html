@@ -420,6 +420,8 @@
                                                    
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
+        var tickLength = 5; // turns off ==|| grid lines too
+        
         var plotOptions = {
             forWalk: function(stdDev) {
                 var zeroLine = {
@@ -442,14 +444,14 @@
                         markings: [ zeroLine,makeLine(0),makeLine(1),makeLine(2) ],
                     },
                     xaxis: {
-                        tickLength: 5, // turns off || grid lines too
+                        tickLength: tickLength, 
                         axisLabel: "step", 
                         position: "bottom",
                         min: 0,
                         max: STEPS_PER_WALK+5
                     },
                     yaxis: {
-                        tickLength: 5, // turns off == grid lines too
+                        tickLength: tickLength,
                         axisLabel: "total",
                         color: walkColor,
                         position: "right",
@@ -480,7 +482,7 @@
                         markings: [ zeroLine ]
                     },
                     xaxis: {
-                        tickLength: 5, // turns off || grid lines too
+                        tickLength: tickLength,
                         axisLabel: "total",
                         color: walkColor,
                         position: "bottom",
@@ -488,7 +490,7 @@
                         max: +(2*stdDev)                                            
                     },
                     yaxis: {
-                        tickLength: 5, // turns off == grid lines too
+                        tickLength: tickLength,
                         axisLabel: "frequency of total",
                         position: "right",
                         tickFormatter:function(freq) {
