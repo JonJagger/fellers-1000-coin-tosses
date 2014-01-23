@@ -728,7 +728,11 @@
             width: 6em;
             text-align: center;
             font-size: 0.8em;
-        }        
+        }
+        #spacer {
+            width: 12em;
+            display: inline-block;
+        }
         .edged {
             padding: 10px;
         }
@@ -779,12 +783,14 @@
 <table>
     <tr>
         <td>
-            <input type="button" id="run" value="run">
             <div id="helpButtons">
+                <input type="button" id="run" value="run">
+                <div id="spacer"></div>   
                 <input type="button" id="walkHelp" value="walk?">                            
                 <input type="button" id="feedbackHelp" value="feedback?">
                 <input type="button" id="graphsHelp" value="graphs?">
                 <input type="button" id="statsHelp" value="stats?">
+                <div id="spacer"></div>   
             </div>
         </td>
     </tr>
