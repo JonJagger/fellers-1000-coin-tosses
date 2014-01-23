@@ -392,11 +392,14 @@
             function stat(n,klass,value) {
                 $('#stats #steps_' + n + ' .' + klass).html(colour(n,value));
             }
+            function pos(n) {
+                return (n > 0 ? "+" : "") + n;
+            }
             for (var at = 0; at !== countPlots.length; at++) {
                 stat(at,'step', counts.getPoint(at));
                 stat(at,'stdDev',countPlots[at].data.stdDev());
                 stat(at,'freq0', countPlots[at].data.freq0());
-                stat(at,'maxAbs',countPlots[at].data.maxAbs());
+                stat(at,'maxAbs', pos(countPlots[at].data.maxAbs()));  
             }
         }
         
@@ -636,13 +639,13 @@
                   tdColour(0,10) +
                   tdColour(0,3.19) +
                   tdColour(0,1260) +
-                  tdColour(0,10) +
+                  tdColour(0,-10) +
                 '</tr>' +
                 '<tr>' +
                   tdColour(1,100) +
                   tdColour(1,10.15) +
                   tdColour(1,391) +
-                  tdColour(1,-36) +
+                  tdColour(1,'+36') +
                 '</tr>' +
                 '<tr>' +
                   tdColour(2,1000) +
@@ -662,8 +665,8 @@
                         '(50 heads-50 tails=0, 50+50=100)' +
                     '</li>' +
                     '<li>' +
-                        'the total farthest from zero was ' + bold(colour(1,'-36')) + '<br>' +
-                        '(32 heads-68 tails=-36, 32+68=100)' +
+                        'the total farthest from zero was ' + bold(colour(1,'+36')) + '<br>' +
+                        '(68 heads-32 tails=+36, 68+32=100)' +
                     '</li>') +
                     '<br>' +
                     '95% of data typically falls within 2 standard deviations:<br>' +
