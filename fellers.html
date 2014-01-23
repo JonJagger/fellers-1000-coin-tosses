@@ -368,12 +368,11 @@
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 
         function percent(nom,denom) {
-            return (nom / denom * 100);
+            return '(' + (nom / denom * 100).toFixed(0) + '%)';
         }
         function display(n,walk) {
             $('#noOfWalks').html('<b>walks</b> = ' +
-                n + ' / ' + NUMBER_OF_WALKS +
-                ' (' + percent(n,NUMBER_OF_WALKS).toFixed(0) + '%)');
+                n + ' / ' + NUMBER_OF_WALKS + ' ' + percent(n,NUMBER_OF_WALKS));
             //- - - - bottom graph - - - -
             var countPlots = [ ];
             for (var at = 0; at !== counts.points.length; at++) {
@@ -494,7 +493,7 @@
                         axisLabel: "frequency of total",
                         position: "right",
                         tickFormatter:function(freq) {
-                            return freq + " (" + percent(freq,n).toFixed(0) + "%)";
+                            return freq + " " + percent(freq,n);
                         }                        
                     },
                     series: {
