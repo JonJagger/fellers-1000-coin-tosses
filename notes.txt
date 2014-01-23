@@ -1,9 +1,14 @@
       
 TODO: add a single-walk tickMark of 10 to 1st vertical line.
 
-TODO: add 3 radio-buttons to explain three rows of table in stats? html
-TODO: take values for stats? help html from real table.
-      generate explanations (32 heads, 68 tails...) in code.
+TODO: initially make the freq-plot graph a histogram. Some way
+      into the simulation convert to using the line-graph.
+
+TODO: detect when mouse hovers overs any stat in the help-stat dialog
+      and reveals help in the area below the stat (in the help stat dialog)
+
+TODO: take values for stats?-help-html from real table.
+      generate more detailed explanations (32 heads, 68 tails...)
 
 TODO: on re-run check no-of-steps > 100
       you lose 3rd plot...
