@@ -442,7 +442,7 @@
                     grid: {
                         color: 'DarkGray',
                         borderWidth: 1,                        
-                        markings: [ zeroLine,makeLine(0),makeLine(1),makeLine(2) ],
+                        markings: [ zeroLine,makeLine(0),makeLine(1),makeLine(2) ]
                     },
                     xaxis: {
                         tickLength: tickLength, 
@@ -730,8 +730,13 @@
             padding: 10px;
             background: #FFFFFF; /*White*/
         }
-        #fellersWalk, #fellersCounts {
+        #fellersWalk {
             width: 1150px;
+            height: 300px;
+            margin-left: 40px;
+        }
+        #fellersCounts {
+            width: 1190px;
             height: 300px;
         }
         #lhsLegend {
@@ -743,7 +748,7 @@
         }
         #rhsLegend {
             position: absolute;
-            left: 890px;
+            left: 930px;
             margin-top: 10px;            
         }
         #stats, #helpStats {
