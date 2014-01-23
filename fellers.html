@@ -410,8 +410,8 @@
                     '<tr id="steps_'+ at + '">' +
                         '<td class="step"></td>' +
                         '<td class="freq0"></td>' +
-                        '<td class="maxAbs"></td>' +                        
                         '<td class="stdDev"></td>' +
+                        '<td class="maxAbs"></td>' +                        
                     '</tr>';
                 $('#stats').append(tr);
             }
@@ -630,25 +630,25 @@
                 '<table id="helpStats">' +
                     td('at step') +
                     td('freq[0]') +
-                    td('max<br>abs(total)') +
-                    td('std.dev') +
+                    td('std dev') +
+                    td('max abs(total)') +
                 '<tr>' +
                   tdColour(0,10) +
                   tdColour(0,1260) +
-                  tdColour(0,10) +
                   tdColour(0,3.19) +
+                  tdColour(0,10) +
                 '</tr>' +
                 '<tr>' +
                   tdColour(1,100) +
                   tdColour(1,391) +
-                  tdColour(1,-36) +
                   tdColour(1,10.15) +
+                  tdColour(1,-36) +
                 '</tr>' +
                 '<tr>' +
                   tdColour(2,1000) +
                   tdColour(2,124) +
-                  tdColour(2,-140) +
                   tdColour(2,31.71) +
+                  tdColour(2,-140) +
                 '</tr>' +
                 '</table>' +
                 '<br>' +
@@ -659,11 +659,11 @@
                         '(50 heads, 50 tails, 50-50=0, 50+50=100)' +
                     '</li>' +
                     '<li>' +
-                        'the total farthest from zero was ' + bold(colour(1,'-36')) + '<br>' +
-                        '(32 heads, 68 tails, 32-68=-36, 32+68=100)' +
+                        'the standard deviation of the total was ' + bold(colour(1,10.15)) +                        
                     '</li>' +
                     '<li>' +
-                        'the standard deviation of the total was ' + bold(colour(1,10.15)) +                        
+                        'the total farthest from zero was ' + bold(colour(1,'-36')) + '<br>' +
+                        '(32 heads, 68 tails, 32-68=-36, 32+68=100)' +
                     '</li>') +
                     '<br>' +
                     '95% of data typically falls within 2 standard deviations:<br>' +
@@ -776,8 +776,8 @@
                     <tr>
                         <td style="font-weight:normal;">at step</td>
                         <td style="font-weight:normal;">freq[0]</td>
-                        <td style="font-weight:normal;">max<br>abs(total)</td>
-                        <td style="font-weight:normal;">std.dev</td>
+                        <td style="font-weight:normal;">std dev</td>
+                        <td style="font-weight:normal;">max abs(total)</td>
                     </tr>
                 </table>
                 <div id="stepsPerWalk"></div>
