@@ -19,6 +19,5 @@ IDEA: link back to blog article
 IDEA: could show 3 (say) walks on top graph.
 IDEA: at end could show top-graph with all
       the walks plotted on it. Or some of them.
-      And make yaxis limits cater for min/max totals.
       Would be nice tree-on-its-side shape.
 
