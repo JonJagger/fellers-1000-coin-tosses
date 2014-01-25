@@ -121,9 +121,7 @@
                 } else {
                     total += (Math.random() < 0.5) ? HEAD : TAIL;
                 }                
-                if (step % 5 === 0) { // limit samples to increase speed
-                    walk.push([step,total]);
-                }                
+                walk.push([step,total]);
                 $.each(counts.points, function(_,point) {
                     if (step === point) {
                         counts[point].record(total);    
@@ -445,8 +443,12 @@
                         markings: [ zeroLine,makeLine(0),makeLine(1),makeLine(2) ]
                     },
                     xaxis: {
-                        ticks: [10,100,STEPS_PER_WALK],
-                        tickLength: tickLength, 
+                        ticks: [[10,
+                                 "<span style='color:"+freqColours[0]+"'>10</span>" ],
+                                [100,
+                                 "<span style='color:"+freqColours[1]+"'>100</span>" ],
+                                [STEPS_PER_WALK,
+                                "<span style='color:"+freqColours[2]+"'>"+STEPS_PER_WALK+"</span>" ]],
                         axisLabel: "step", 
                         position: "top",
                         min: 0,
