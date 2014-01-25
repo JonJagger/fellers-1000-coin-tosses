@@ -2,8 +2,6 @@
 TODO: change red/green colour combination. Worst for people who
       are colour-blind?
 
-TODO: add a single-walk tickMark of 10 to 1st vertical line.
-
 TODO: detect when mouse hovers overs any stat in the help-stat dialog
       and reveals help in the area below the stat (in the help stat dialog)
 
