@@ -1,19 +1,16 @@
       
-TODO: change red/green colour combination. Worst for people who
-      are colour-blind?
-
 TODO: detect when mouse hovers overs any stat in the help-stat dialog
       and reveals help in the area below the stat (in the help stat dialog)
-
 TODO: take values for stats?-help-html from real table.
       generate more detailed explanations (32 heads, 68 tails...)
+TODO: link back to source
+TODO: link back to blog article
 
-TODO: on re-run check no-of-steps > 100
+
+IDEA: change red/green colour combination. Worst for people who
+      are colour-blind?
+IDEA: on re-run check no-of-steps > 100
       you lose 3rd plot...
-
-IDEA: link back to source
-IDEA: link back to blog article
-
 IDEA: could show 3 (say) walks on top graph.
 IDEA: at end could show top-graph with all
       the walks plotted on it. Or some of them.

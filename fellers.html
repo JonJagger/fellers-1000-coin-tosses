@@ -116,7 +116,7 @@
             var walk = [ [0,0] ];
             var total = 0;
             for (var step = 1; step !== STEPS_PER_WALK+1; step++) {
-                if (feedback.nudge()) { // See About odd/even-ness above
+                if (feedback.nudge(step)) { // See About odd/even-ness above
                     total += (total < 0) ? HEAD : TAIL; 
                 } else {
                     total += (Math.random() < 0.5) ? HEAD : TAIL;
@@ -134,20 +134,19 @@
         //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // What are the effects of adding feedback, of nudging
         // the total back towards zero every so often...?
-        // To get a feedback nudge every N'th throw (on average)
-        // call feedback.reset(N). To get no feedback use N == zero.
+        // To get a feedback nudge every N'th throw call
+        // feedback.reset(N). To get no feedback use N == zero.
         
         var feedback = {
             n: undefined
         };
                 
-        feedback.nudge = function() {
-            // Deliberately independent of the step number
+        feedback.nudge = function(step) {
             var NEVER = 0;
             if (feedback.n === NEVER) {
                 return false;
             } else {
-                return Math.floor(Math.random() * feedback.n) === 0;
+                return step % feedback.n === 0;
             }
         }        
         
